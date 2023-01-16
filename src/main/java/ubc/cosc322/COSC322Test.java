@@ -1,6 +1,7 @@
 
 package ubc.cosc322;
 
+import java.awt.Dimension;
 import java.util.List;
 import java.util.Map;
 
@@ -9,11 +10,17 @@ import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 import ygraph.ai.smartfox.games.GamePlayer;
 
+
+
 /**
  * An example illustrating how to implement a GamePlayer
  * @author Yong Gao (yong.gao@ubc.ca)
  * Jan 5, 2021
  *
+ */
+/*
+ * COSC322Test is both a main and self inference class which extends player functionality 
+ * by creating and holding a instance of itself along with server and game data.
  */
 public class COSC322Test extends GamePlayer{
 
@@ -23,6 +30,22 @@ public class COSC322Test extends GamePlayer{
     private String userName = null;
     private String passwd = null;
  
+    
+    /**
+     * Any name and passwd 
+     * @param userName
+      * @param passwd
+     */
+    //CONSTRUCTOR
+    //Initializes GUI components
+    public COSC322Test(String userName, String passwd) {
+    	this.userName = userName;
+    	this.passwd = passwd;
+    	
+    	//To make a GUI-based player, create an instance of BaseGameGUI
+    	//and implement the method getGameGUI() accordingly
+    	this.gamegui = new BaseGameGUI(this);
+    }
 	
     /**
      * The main method
@@ -44,22 +67,12 @@ public class COSC322Test extends GamePlayer{
     	}
     }
 	
-    /**
-     * Any name and passwd 
-     * @param userName
-      * @param passwd
-     */
-    public COSC322Test(String userName, String passwd) {
-    	this.userName = userName;
-    	this.passwd = passwd;
-    	
-    	//To make a GUI-based player, create an instance of BaseGameGUI
-    	//and implement the method getGameGUI() accordingly
-    	//this.gamegui = new BaseGameGUI(this);
-    }
+   
  
 
-
+    /*
+     * EFFECTS: is called by the server upon a successful connection/login.
+     */
     @Override
     public void onLogin() {
     	System.out.println("Congratualations!!! "
@@ -67,7 +80,8 @@ public class COSC322Test extends GamePlayer{
     	System.out.println("The next step is to find a room and join it: "
     			+ "the gameClient instance created in my constructor knows how!"); 
     }
-
+    
+    
     @Override
     public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
     	//This method will be called by the GameClient when it receives a game-related message
@@ -90,13 +104,21 @@ public class COSC322Test extends GamePlayer{
 		// TODO Auto-generated method stub
 		return this.gameClient;
 	}
-
+	/*
+	 * EFFECTS: GUI Components using awt packages for displaying content to user
+	 * 			also is only entry point to modify gui components it contains.
+	 * MODIFIES: this.gamegui to display information to screen
+	 * RETRUNS: a reference to itself as GUI component
+	 */
 	@Override
 	public BaseGameGUI getGameGUI() {
+		this.gamegui.setSize(new Dimension(900,600));
+		this.gamegui.setVisible(true);
 		// TODO Auto-generated method stub
-		return  null;
+		return  this.gamegui;
 	}
 
+	
 	@Override
 	public void connect() {
 		// TODO Auto-generated method stub
