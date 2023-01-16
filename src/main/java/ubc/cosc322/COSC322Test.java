@@ -79,6 +79,11 @@ public class COSC322Test extends GamePlayer{
     			+ "I am called because the server indicated that the login is successfully");
     	System.out.println("The next step is to find a room and join it: "
     			+ "the gameClient instance created in my constructor knows how!"); 
+    	List<Room> rooms = this.gameClient.getRoomList();
+    	for(Room room : rooms) {
+    		System.out.println(room.getName());
+    	}
+    	this.gameClient.joinRoom(rooms.get(4).getName());
     }
     
     
@@ -89,7 +94,8 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	    	
+    	    	System.out.println(messageType);
+    	    	System.out.println(msgDetails);
     	return true;   	
     }
     
