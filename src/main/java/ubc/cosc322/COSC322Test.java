@@ -1,26 +1,23 @@
 
 package ubc.cosc322;
 
-import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
+import ygraph.ai.smartfox.games.GameMessage;
 import ygraph.ai.smartfox.games.GamePlayer;
-//comment
-
+import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
+import ygraph.ai.smartfox.games.amazons.HumanPlayer;
 
 /**
  * An example illustrating how to implement a GamePlayer
  * @author Yong Gao (yong.gao@ubc.ca)
  * Jan 5, 2021
  *
- */
-/*
- * COSC322Test is both a main and self inference class which extends player functionality 
- * by creating and holding a instance of itself along with server and game data.
  */
 public class COSC322Test extends GamePlayer{
 
@@ -30,29 +27,14 @@ public class COSC322Test extends GamePlayer{
     private String userName = null;
     private String passwd = null;
  
-    
-    /**
-     * Any name and passwd 
-     * @param userName
-      * @param passwd
-     */
-    //CONSTRUCTOR
-    //Initializes GUI components
-    public COSC322Test(String userName, String passwd) {
-    	this.userName = userName;
-    	this.passwd = passwd;
-    	
-    	//To make a GUI-based player, create an instance of BaseGameGUI
-    	//and implement the method getGameGUI() accordingly
-    	this.gamegui = new BaseGameGUI(this);
-    }
 	
     /**
      * The main method
      * @param args for name and passwd (current, any string would work)
      */
     public static void main(String[] args) {				 
-    	COSC322Test player = new COSC322Test(args[0], args[1]);
+    	//COSC322Test player = new COSC322Test(args[0], args[1]);
+    	HumanPlayer player = new HumanPlayer();
     	
     	if(player.getGameGUI() == null) {
     		player.Go();
@@ -67,26 +49,34 @@ public class COSC322Test extends GamePlayer{
     	}
     }
 	
-   
+    /**
+     * Any name and passwd 
+     * @param userName
+      * @param passwd
+     */
+    public COSC322Test(String userName, String passwd) {
+    	this.userName = userName;
+    	this.passwd = passwd;
+    	
+    	//To make a GUI-based player, create an instance of BaseGameGUI
+    	//and implement the method getGameGUI() accordingly
+    	this.gamegui = new BaseGameGUI(this);
+    }
  
 
-    /*
-     * EFFECTS: is called by the server upon a successful connection/login.
-     */
+
     @Override
     public void onLogin() {
     	System.out.println("Congratualations!!! "
     			+ "I am called because the server indicated that the login is successfully");
     	System.out.println("The next step is to find a room and join it: "
     			+ "the gameClient instance created in my constructor knows how!"); 
-    	List<Room> rooms = this.gameClient.getRoomList();
-    	for(Room room : rooms) {
-    		System.out.println(room.getName());
+    	
+    	if(gamegui != null) {
+    		gamegui.setRoomInformation(gameClient.getRoomList());
     	}
-    	this.gameClient.joinRoom(rooms.get(4).getName());
     }
-    
-    
+
     @Override
     public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
     	//This method will be called by the GameClient when it receives a game-related message
@@ -94,8 +84,20 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	    	System.out.println(messageType);
-    	    	System.out.println(msgDetails);
+    	switch (messageType) {
+    	case GameMessage.GAME_STATE_BOARD:
+    		this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
+    		break;
+    		case GameMessage.GAME_ACTION_MOVE:
+    			this.gamegui.updateGameState(msgDetails);
+    			break;
+    		default:
+    			assert(false);
+    			break;
+    	
+    	}
+    	
+    
     	return true;   	
     }
     
@@ -110,21 +112,13 @@ public class COSC322Test extends GamePlayer{
 		// TODO Auto-generated method stub
 		return this.gameClient;
 	}
-	/*
-	 * EFFECTS: GUI Components using awt packages for displaying content to user
-	 * 			also is only entry point to modify gui components it contains.
-	 * MODIFIES: this.gamegui to display information to screen
-	 * RETRUNS: a reference to itself as GUI component
-	 */
+
 	@Override
 	public BaseGameGUI getGameGUI() {
-		this.gamegui.setSize(new Dimension(900,600));
-		this.gamegui.setVisible(true);
 		// TODO Auto-generated method stub
 		return  this.gamegui;
 	}
 
-	
 	@Override
 	public void connect() {
 		// TODO Auto-generated method stub
