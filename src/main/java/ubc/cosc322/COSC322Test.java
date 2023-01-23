@@ -34,7 +34,7 @@ public class COSC322Test extends GamePlayer{
     /**
      * Any name and passwd 
      * @param userName
-      * @param passwd
+     * @param passwd
      */
     //CONSTRUCTOR
     //Initializes GUI components
@@ -69,9 +69,9 @@ public class COSC322Test extends GamePlayer{
 	
    
  
-
+    //TODO: change so player instance joins first Non-empty room otherwise prints message that all rooms is full.
     /*
-     * EFFECTS: is called by the server upon a successful connection/login.
+     * EFFECTS: is called by the server upon a successful connection/login then joins room 4 if able
      */
     @Override
     public void onLogin() {
@@ -99,7 +99,7 @@ public class COSC322Test extends GamePlayer{
     	return true;   	
     }
     
-    
+    //hi test thing
     @Override
     public String userName() {
     	return userName;
