@@ -2,14 +2,18 @@
 package ubc.cosc322;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
+import ygraph.ai.smartfox.games.GameMessage;
 import ygraph.ai.smartfox.games.GamePlayer;
-//comment
+import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
+import ygraph.ai.smartfox.games.amazons.HumanPlayer;
+
 
 
 /**
@@ -52,8 +56,8 @@ public class COSC322Test extends GamePlayer{
      * @param args for name and passwd (current, any string would work)
      */
     public static void main(String[] args) {				 
-    	COSC322Test player = new COSC322Test(args[0], args[1]);
-    	
+    	//COSC322Test player = new COSC322Test(args[0], args[1]);
+    	HumanPlayer player = new HumanPlayer();
     	if(player.getGameGUI() == null) {
     		player.Go();
     	}
@@ -67,8 +71,6 @@ public class COSC322Test extends GamePlayer{
     	}
     }
 	
-   
- 
 
     /*
      * EFFECTS: is called by the server upon a successful connection/login.
@@ -79,11 +81,9 @@ public class COSC322Test extends GamePlayer{
     			+ "I am called because the server indicated that the login is successfully");
     	System.out.println("The next step is to find a room and join it: "
     			+ "the gameClient instance created in my constructor knows how!"); 
-    	List<Room> rooms = this.gameClient.getRoomList();
-    	for(Room room : rooms) {
-    		System.out.println(room.getName());
+    	if(gamegui != null) {
+    		gamegui.setRoomInformation(gameClient.getRoomList());
     	}
-    	this.gameClient.joinRoom(rooms.get(4).getName());
     }
     
     
@@ -94,8 +94,17 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	    	System.out.println(messageType);
-    	    	System.out.println(msgDetails);
+    	switch(messageType) {
+    		case GameMessage.GAME_STATE_BOARD:
+    			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
+    			break;
+    		case GameMessage.GAME_ACTION_MOVE:
+    			this.gamegui.updateGameState(msgDetails);
+    			break;
+    		default:
+    			assert(false);
+    			break;
+    	}
     	return true;   	
     }
     
@@ -118,8 +127,8 @@ public class COSC322Test extends GamePlayer{
 	 */
 	@Override
 	public BaseGameGUI getGameGUI() {
-		this.gamegui.setSize(new Dimension(900,600));
-		this.gamegui.setVisible(true);
+		//this.gamegui.setSize(new Dimension(900,600));
+		//this.gamegui.setVisible(true);
 		// TODO Auto-generated method stub
 		return  this.gamegui;
 	}
