@@ -62,6 +62,7 @@ public class COSC322Test extends GamePlayer{
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                 	player.Go();
+					
                 }
             });
     	}
