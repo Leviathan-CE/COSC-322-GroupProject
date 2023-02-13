@@ -33,6 +33,8 @@ public class COSC322Test extends GamePlayer{
 	
     private String userName = null;
     private String passwd = null;
+    
+    private BoardRep chessBoard;
  
     
     /**
@@ -84,6 +86,7 @@ public class COSC322Test extends GamePlayer{
     	if(gamegui != null) {
     		gamegui.setRoomInformation(gameClient.getRoomList());
     	}
+    
     }
     
     
@@ -94,8 +97,13 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
+    	System.out.println("!!!!!!!!!!!"+msgDetails.toString());
     	switch(messageType) {
     		case GameMessage.GAME_STATE_BOARD:
+    			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE);
+    			chessBoard= new BoardRep(thingy);
+    			GameMessage.GAME_TEXT_MESSAGE += chessBoard.toString();
+
     			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
     			break;
     		case GameMessage.GAME_ACTION_MOVE:
@@ -105,6 +113,7 @@ public class COSC322Test extends GamePlayer{
     			assert(false);
     			break;
     	}
+
     	return true;   	
     }
     
