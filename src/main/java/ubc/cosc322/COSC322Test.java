@@ -108,11 +108,16 @@ public class COSC322Test extends GamePlayer{
     			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
     			chessBoard= new BoardRep(thingy);
     			System.out.println(chessBoard.toString());
+    			BoardRep.countQueens();
     		
     			break;
     		case GameMessage.GAME_ACTION_MOVE:    			
     			this.gamegui.updateGameState(msgDetails);    			
-    		
+    			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
+    			thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
+    			chessBoard= new BoardRep(thingy);
+    			System.out.println(chessBoard.toString());
+    			BoardRep.countQueens();
     			break;
     		default:
     			assert(false);

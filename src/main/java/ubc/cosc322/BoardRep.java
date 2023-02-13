@@ -31,7 +31,7 @@ public class BoardRep {
 		
 				
 	}
-	public void countQeens() {
+	public static void countQueens() {
 		int Queen1 = 0;
 		int Queen2 = 0;
 		for(int i= 0; i < boardWidth; i++) {
@@ -42,6 +42,7 @@ public class BoardRep {
 					Queen2++;
 			}
 		}
+		System.out.println("q1 = "+Queen1 +" q2 = "+ Queen2);
 	}
 	
 }
