@@ -97,7 +97,7 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	System.out.println(msgDetails);
+    	//System.out.println(msgDetails);
     	switch(messageType) {
     		case GameMessage.GAME_STATE_BOARD:
     			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
