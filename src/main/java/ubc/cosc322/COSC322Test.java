@@ -58,8 +58,8 @@ public class COSC322Test extends GamePlayer{
      * @param args for name and passwd (current, any string would work)
      */
     public static void main(String[] args) {				 
-    	//COSC322Test player = new COSC322Test(args[0], args[1]);
-    	HumanPlayer player = new HumanPlayer();
+    	COSC322Test player = new COSC322Test(args[0], args[1]);
+    	//HumanPlayer player = new HumanPlayer();
     	if(player.getGameGUI() == null) {
     		player.Go();
     	}
@@ -97,12 +97,12 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	System.out.println("!!!!!!!!!!!"+msgDetails.toString());
+    	System.out.println(msgDetails);
     	switch(messageType) {
     		case GameMessage.GAME_STATE_BOARD:
-    			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE);
+    			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
     			chessBoard= new BoardRep(thingy);
-    			GameMessage.GAME_TEXT_MESSAGE += chessBoard.toString();
+    			System.out.println(chessBoard.toString());
 
     			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
     			break;
