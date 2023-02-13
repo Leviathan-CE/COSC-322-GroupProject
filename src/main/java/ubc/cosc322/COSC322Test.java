@@ -109,6 +109,7 @@ public class COSC322Test extends GamePlayer{
     			chessBoard= new BoardRep(thingy);
     			System.out.println(chessBoard.toString());
     			BoardRep.countQueens();
+    			System.out.println(AmazonsGameMessage.GAME_STATE);
     		
     			break;
     		case GameMessage.GAME_ACTION_MOVE:    			

@@ -12,18 +12,19 @@ public class BoardRep {
 	 static int[][] board = new int[boardWidth][boardHeight];
 	
 	public BoardRep(ArrayList<Integer> gameBoard) {
-		for(int i= 0; i < boardWidth; i++) {
-			for(int j = 0; j <boardHeight; j++) {
-				board[i][j] = Integer.valueOf(gameBoard.get(i*10+j));
+		for(int i= 1; i < boardWidth; i++) {
+			for(int j = 1; j <boardHeight; j++) {
+				board[i][j] = Integer.valueOf(gameBoard.get(i*11+j));
+				
 			}
 		}
 		
 	}
 	public String toString() {
 		String msg ="";
-		for(int i =0; i<boardWidth;i++) {
+		for(int i =1; i<boardWidth;i++) {
 			msg += "\n";
-			for(int j =0; j <boardHeight; j++) {
+			for(int j =1; j <boardHeight; j++) {
 				msg += " , "+board[i][j];
 			}
 		}
