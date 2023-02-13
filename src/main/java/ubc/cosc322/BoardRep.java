@@ -6,10 +6,10 @@ import ygraph.ai.smartfox.games.GameMessage;
 public class BoardRep {
 
 	
-	final static int  boardWidth = 10;
-	final static int  boardHeight = 10;
+	final static int  boardWidth = 11;
+	final static int  boardHeight = 11;
 	
-	 int[][] board = new int[boardWidth][boardHeight];
+	 static int[][] board = new int[boardWidth][boardHeight];
 	
 	public BoardRep(ArrayList<Integer> gameBoard) {
 		for(int i= 0; i < boardWidth; i++) {
@@ -31,16 +31,17 @@ public class BoardRep {
 		
 				
 	}
-	
-	public static void main(String[] args) {
-		ArrayList<Integer> testbaord = new ArrayList<>();
+	public void countQeens() {
+		int Queen1 = 0;
+		int Queen2 = 0;
 		for(int i= 0; i < boardWidth; i++) {
 			for(int j = 0; j <boardHeight; j++) {
-				testbaord.add(0);
+				if(board[i][j] == 1)
+					Queen1++;
+				if(board[i][j] == 2)
+					Queen2++;
 			}
 		}
-		BoardRep test = new BoardRep(testbaord);
-		System.out.println(test.toString());
 	}
 	
 }
