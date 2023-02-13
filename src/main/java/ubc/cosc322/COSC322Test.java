@@ -62,6 +62,8 @@ public class COSC322Test extends GamePlayer{
     	//HumanPlayer player = new HumanPlayer();
     	if(player.getGameGUI() == null) {
     		player.Go();
+    		
+    		
     	}
     	else {
     		BaseGameGUI.sys_setup();
@@ -97,17 +99,25 @@ public class COSC322Test extends GamePlayer{
 	
     	//For a detailed description of the message types and format, 
     	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
-    	//System.out.println(msgDetails);
+    	System.out.println("!!!!!!!!!!!");
+    	  			
+		
     	switch(messageType) {
     		case GameMessage.GAME_STATE_BOARD:
+    			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
     			ArrayList<Integer> thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
     			chessBoard= new BoardRep(thingy);
     			System.out.println(chessBoard.toString());
-
-    			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
+    			BoardRep.countQueens();
+    		
     			break;
-    		case GameMessage.GAME_ACTION_MOVE:
-    			this.gamegui.updateGameState(msgDetails);
+    		case GameMessage.GAME_ACTION_MOVE:    			
+    			this.gamegui.updateGameState(msgDetails);    			
+    			this.getGameGUI().setGameState((ArrayList<Integer>)(msgDetails.get(AmazonsGameMessage.GAME_STATE)));
+    			thingy = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
+    			chessBoard= new BoardRep(thingy);
+    			System.out.println(chessBoard.toString());
+    			BoardRep.countQueens();
     			break;
     		default:
     			assert(false);
