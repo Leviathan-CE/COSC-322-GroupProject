@@ -137,7 +137,7 @@ public class COSC322Test extends GamePlayer {
 				this.gamegui.updateGameState(msgDetails);
 				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
 				
-				//fetch the newest move and store their values in 2d lists
+				//fetch the newest move and store their values in x,y lists
 				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
