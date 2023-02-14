@@ -37,10 +37,15 @@ public class GameBoardState {
 	 * @param gameBaord is list of integers collected from AmazonsGameMessage.GAME_STATE 
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
-		for (int i = 1; i < BOARD_WIDTH; i++) {
-			for (int j = 1; j < BOARD_HIEGHT; j++) {
-				currentBoard[i][j] = Integer.valueOf(gameBoard.get(i * 11 + j));
+		System.out.println(gameBoard.toString());
+		for (int x = 1; x < BOARD_WIDTH; x++) {
+			for (int y = 1; y < BOARD_HIEGHT; y++) {
+				currentBoard[x][y] =Integer.valueOf(gameBoard.get(x * 11 + y));
+			
 			}
+		}
+		for(int[] val : currentBoard) {
+			
 		}
 
 	}
@@ -65,7 +70,7 @@ public class GameBoardState {
 		for (int i = 1; i < BOARD_WIDTH; i++) {
 			msg += "\n";
 			for (int j = 1; j < BOARD_HIEGHT; j++) {
-				msg += " , " + currentBoard[i][j];
+				msg += "  " + currentBoard[i][j];
 			}
 		}
 		return msg;
@@ -73,6 +78,9 @@ public class GameBoardState {
 	}
 	/**
 	 *  print to console currentBoard as matrix
+	 *  prints the representation with the square 1a 
+	 *  as top left corner. which makes the console representation
+	 *  flip'd on the x-axis in relation to the GUI.  
 	 */
 	public void print() {
 		System.out.println(toString());
