@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import GameState.GameBoardState;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -34,6 +35,7 @@ public class COSC322Test extends GamePlayer {
 	private String passwd = null;
 
 	private GameBoardState chessBoard;
+	private int turn = 0; //even is white odd is black
 
 	/**
 	 * Any name and passwd
@@ -105,23 +107,29 @@ public class COSC322Test extends GamePlayer {
 			case GameMessage.GAME_STATE_BOARD:
 				System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
-				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
-						.get(AmazonsGameMessage.GAME_STATE));
+				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
 				chessBoard = new GameBoardState(GottenGameState);
 				System.out.println(chessBoard.toString());
 				GameBoardState.countQueens();
 
 				break;
 			/*
-			 * when enemy moves do this
+			 * when a move occurs update game state and update local board to match
 			 */
 			case GameMessage.GAME_ACTION_MOVE:
-				//this.gamegui.updateGameState(msgDetails);
+				this.gamegui.updateGameState(msgDetails);
 				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
 				
-				//GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
-				//chessBoard = new GameBoardState(GottenGameState);
-				System.out.println(chessBoard.toString());
+				//fetch the newest move and store their values in 2d lists
+				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
+				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
+				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
+				//update local game state to match the new state
+				chessBoard.setPosValue(0, queenPos.get(0), queenPos.get(1));
+				chessBoard.setPosValue(turn % 2 + 1, newQueenPos.get(0), newQueenPos.get(1));
+				chessBoard.setPosValue(3, arrowPos.get(0), arrowPos.get(1));
+
+				chessBoard.print();
 				GameBoardState.countQueens();
 				break;
 			default:
