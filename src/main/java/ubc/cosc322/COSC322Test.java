@@ -34,7 +34,7 @@ public class COSC322Test extends GamePlayer {
 	private String userName = null;
 	private String passwd = null;
 
-	private GameBoardState chessBoard;
+	private GameBoardState[] chessBoard = new GameBoardState[2];
 	private int turn = 1; //even is black odd is white turn and queen number
 
 	/**
@@ -55,8 +55,7 @@ public class COSC322Test extends GamePlayer {
 	}
 
 	/**
-	 * The main method
-	 * 
+	 * The main method	 * 
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
@@ -125,7 +124,7 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
 				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
-				chessBoard = new GameBoardState(GottenGameState);
+				chessBoard[0] = new GameBoardState(GottenGameState);
 				System.out.println(chessBoard.toString());
 				GameBoardState.countQueens();
 
@@ -143,15 +142,15 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 				//update local game state to match the new state
 				//keep in mind the position 1a is the top left corner for console representation
-				chessBoard.setPosValue(0, queenPos.get(0), queenPos.get(1));
-				chessBoard.setPosValue(turn % 2 + 1, newQueenPos.get(0), newQueenPos.get(1));
-				chessBoard.setPosValue(3, arrowPos.get(0), arrowPos.get(1));
+				chessBoard[0].setPosValue(0, queenPos.get(0), queenPos.get(1));
+				chessBoard[0].setPosValue(turn % 2 + 1, newQueenPos.get(0), newQueenPos.get(1));
+				chessBoard[0].setPosValue(3, arrowPos.get(0), arrowPos.get(1));
 				//TODO: detect illegal move from action factory
 				//<code> start detect here
 				
 				//TODO: from action factory calculate move and send it to server
 				//<code> start for action
-				chessBoard.print();
+				chessBoard[0].print();
 				GameBoardState.countQueens();
 				break;
 			default:

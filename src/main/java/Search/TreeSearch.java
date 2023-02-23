@@ -1,12 +1,22 @@
 package Search;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class TreeSearch {
 	private static ArrayList<node> visited = new ArrayList<>();
 	private static node parent;
-
+	
+	public TreeSearch(LinkedList<Integer> adjecencyList) {
+		List<node> nodes = new ArrayList<>();
+		for(Integer in : adjecencyList) {
+			if(in > nodes.size()) {
+				nodes.add(new node(in));
+			}
+		}
+		
+	}
 	public static List<node> DFS(node root, node target) {
 		if (root == null) {
 			return null;
