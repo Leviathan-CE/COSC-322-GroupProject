@@ -59,8 +59,8 @@ public class COSC322Test extends GamePlayer {
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
-		COSC322Test player = new COSC322Test(args[0], args[1]);
-		// HumanPlayer player = new HumanPlayer();
+		//COSC322Test player = new COSC322Test(args[0], args[1]);
+		 HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -148,6 +148,9 @@ public class COSC322Test extends GamePlayer {
 				//TODO: detect illegal move from action factory
 				//<code> start detect here
 				
+				boolean isValid = getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1), newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
+				if(!isValid) {System.out.println("it is invalid move");}
+				
 				//TODO: from action factory calculate move and send it to server
 				//<code> start for action
 				chessBoard[0].print();
@@ -160,6 +163,68 @@ public class COSC322Test extends GamePlayer {
 		}
 
 		return true;
+	}
+	
+	public boolean getIfMoveIsValid (int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
+		if(ifMoveIsValid(qx1, qy1, qx2, qy2)) {
+			if(ifMoveIsValid(qx2, qy2, ax, ay)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean ifMoveIsValid (int qx1, int qy1, int qx2, int qy2) {
+		boolean isValid = false;
+		int[][] board = chessBoard[1].copyCurrentBoard;
+		if ((qy1 == qy2) && (qx1 == qx2)) {
+			return isValid;
+		}
+		
+		if( qy1 == qy2) {
+			int start = qx1 < qx2? qx1: qx2;
+			int end = qx1 < qx2? qx2: qx1;
+			for(int i = start + 1; i <= end; i++) {
+				if(board[i][qy1] !=0 ) return isValid;
+			}
+		}
+		
+		if (qx1 == qx2) {
+			int start = qy1 < qy2? qy1: qy2;
+			int end = qy1 < qy2? qy2: qy1;
+			for(int i = start + 1; i <= end; i++) {
+				if(board[qx1][i] !=0 ) return isValid;
+			}
+		}
+		
+		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {
+			if((qx1 < qx2) && (qy1 < qy2)) {
+				for(int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <=qy2; i++, j++) {
+					if(board[i][j] !=0 ) return isValid;
+				}
+			}
+			else if ((qx1 < qx2) && (qy1 > qy2)) {
+				for(int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <=qy2; i++, j--) {
+					if(board[i][j] !=0 ) return isValid;
+				}
+				
+			}
+			else if ((qx1 > qx2) && (qy1 < qy2)) {
+				for(int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <=qy1; i++, j++) {
+					if(board[i][j] !=0 ) return isValid;
+				}
+				
+			}
+			else if ((qx1 > qx2) && (qy1 > qy2)) {
+				for(int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <=qy1; i++, j--) {
+					if(board[i][j] !=0 ) return isValid;
+				}
+				
+			}
+		}
+		isValid = true;
+		return isValid;
 	}
 	
 

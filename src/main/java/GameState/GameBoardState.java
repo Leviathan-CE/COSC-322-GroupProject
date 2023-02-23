@@ -29,6 +29,7 @@ public class GameBoardState {
 	public final static int BOARD_HIEGHT = 11;
 
 	 static int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
+	 public int[][] copyCurrentBoard = currentBoard;
 	 //static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	/**
