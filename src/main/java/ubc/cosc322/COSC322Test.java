@@ -189,6 +189,7 @@ public class COSC322Test extends GamePlayer {
 				if(board[i][qy1] !=0 ) return isValid;
 			}
 			isValid = true;
+			return isValid;
 		}
 		
 		if (qx1 == qx2) {
@@ -198,6 +199,7 @@ public class COSC322Test extends GamePlayer {
 				if(board[qx1][i] !=0 ) return isValid;
 			}
 			isValid = true;
+			return isValid;
 		}
 		
 		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {
@@ -225,6 +227,7 @@ public class COSC322Test extends GamePlayer {
 				
 			}
 			isValid = true;
+			return isValid;
 		}
 		
 		return isValid;
