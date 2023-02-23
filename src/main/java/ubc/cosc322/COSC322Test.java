@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import GameState.GameBoardState;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -34,9 +35,10 @@ public class COSC322Test extends GamePlayer {
 	private String passwd = null;
 
 	private GameBoardState chessBoard;
+	private int turn = 1; //even is black odd is white turn and queen number
 
 	/**
-	 * Any name and passwd
+	 * Any name and password
 	 * 
 	 * @param userName
 	 * @param passwd
@@ -72,6 +74,15 @@ public class COSC322Test extends GamePlayer {
 			});
 		}
 	}
+	@Override
+	public BaseGameGUI getGameGUI() {return this.gamegui;}
+	@Override
+	public void connect() {	gameClient = new GameClient(userName, passwd, this);	}
+	@Override
+	public String userName() {return userName;}
+	@Override
+	public GameClient getGameClient() {	return this.gameClient;	}
+	
 
 	/*
 	 * EFFECTS: is called by the server upon a successful connection/login then
@@ -88,7 +99,15 @@ public class COSC322Test extends GamePlayer {
 		}
 
 	}
-
+	/**
+	 * EFFECTS: message handler works only for when AI model using a instance of COSC322Test
+	 * @param msgDetails holds extractable and mutable information about the servers state.
+	 * @param messageType determines who's turn it is GAME_STATE_BAORD is initail 
+	 * setup while GAME_ACTION_MOVE is the a game player action input move.
+	 * Their are other type which are yet to be known.
+	 * @return  returns true when a action is sent to server or successfully received from server
+	 * false otherwise.
+	 */
 	@Override
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
 		// This method will be called by the GameClient when it receives a game-related
@@ -105,23 +124,34 @@ public class COSC322Test extends GamePlayer {
 			case GameMessage.GAME_STATE_BOARD:
 				System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
-				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
-						.get(AmazonsGameMessage.GAME_STATE));
+				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
 				chessBoard = new GameBoardState(GottenGameState);
 				System.out.println(chessBoard.toString());
 				GameBoardState.countQueens();
 
 				break;
 			/*
-			 * when enemy moves do this
+			 * when a move occurs update game state and update local board to match
 			 */
 			case GameMessage.GAME_ACTION_MOVE:
-				//this.gamegui.updateGameState(msgDetails);
+				this.gamegui.updateGameState(msgDetails);
 				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
 				
-				//GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
-				//chessBoard = new GameBoardState(GottenGameState);
-				System.out.println(chessBoard.toString());
+				//fetch the newest move and store their values in x,y lists
+				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
+				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
+				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
+				//update local game state to match the new state
+				//keep in mind the position 1a is the top left corner for console representation
+				chessBoard.setPosValue(0, queenPos.get(0), queenPos.get(1));
+				chessBoard.setPosValue(turn % 2 + 1, newQueenPos.get(0), newQueenPos.get(1));
+				chessBoard.setPosValue(3, arrowPos.get(0), arrowPos.get(1));
+				//TODO: detect illegal move from action factory
+				//<code> start detect here
+				
+				//TODO: from action factory calculate move and send it to server
+				//<code> start for action
+				chessBoard.print();
 				GameBoardState.countQueens();
 				break;
 			default:
@@ -132,18 +162,7 @@ public class COSC322Test extends GamePlayer {
 
 		return true;
 	}
-
-	// hi test thing
-	@Override
-	public String userName() {
-		return userName;
-	}
-
-	@Override
-	public GameClient getGameClient() {
-		// TODO Auto-generated method stub
-		return this.gameClient;
-	}
+	
 
 	/*
 	 * EFFECTS: GUI Components using awt packages for displaying content to user
@@ -151,18 +170,6 @@ public class COSC322Test extends GamePlayer {
 	 * this.gamegui to display information to screen RETRUNS: a reference to itself
 	 * as GUI component
 	 */
-	@Override
-	public BaseGameGUI getGameGUI() {
-		// this.gamegui.setSize(new Dimension(900,600));
-		// this.gamegui.setVisible(true);
-		// TODO Auto-generated method stub
-		return this.gamegui;
-	}
-
-	@Override
-	public void connect() {
-		// TODO Auto-generated method stub
-		gameClient = new GameClient(userName, passwd, this);
-	}
+	
 
 }// end of class

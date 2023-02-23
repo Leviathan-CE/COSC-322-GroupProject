@@ -19,7 +19,7 @@
             <artifactId>ygraph-ai-smartfox-client</artifactId>
             <version>2.1</version>
             <type>jar</type>
-        </dependency>
+    </dependency>
     </dependencies>
 	
     <repositories>
