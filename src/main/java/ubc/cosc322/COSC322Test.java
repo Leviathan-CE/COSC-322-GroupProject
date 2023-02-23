@@ -125,8 +125,11 @@ public class COSC322Test extends GamePlayer {
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
 				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
 				chessBoard[0] = new GameBoardState(GottenGameState);
-				System.out.println(chessBoard.toString());
-				GameBoardState.countQueens();
+				chessBoard[0].updatePoses();
+				chessBoard[0].printQPoses();
+				
+				System.out.println(chessBoard[0].toString());
+				//GameBoardState.countQueens();
 
 				break;
 			/*
@@ -150,8 +153,17 @@ public class COSC322Test extends GamePlayer {
 				
 				//TODO: from action factory calculate move and send it to server
 				//<code> start for action
-				chessBoard[0].print();
-				GameBoardState.countQueens();
+				chessBoard[1] = new GameBoardState(chessBoard[0].getCurBoard());
+				ArrayList<Integer> curQ =chessBoard[0].setPosValue(0, chessBoard[0].getQueenPosition1().get(0)[0], chessBoard[0].getQueenPosition1().get(0)[1]); //chosen piece to move
+				ArrayList <Integer>newQ = chessBoard[1].setPosValue(1, 1, 1);
+				ArrayList <Integer> arrow= chessBoard[1].setPosValue(3, 1, 2);
+				
+				
+				this.gameClient.sendMoveMessage(curQ, newQ, arrow);
+				this.gamegui.updateGameState(curQ, newQ, arrow);
+				
+				chessBoard[1].print();
+				//GameBoardState.countQueens();
 				break;
 			default:
 				assert (false);
