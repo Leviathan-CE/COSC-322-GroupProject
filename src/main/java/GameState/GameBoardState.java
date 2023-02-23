@@ -29,7 +29,7 @@ public class GameBoardState {
 	public final static int BOARD_HIEGHT = 11;
 
 	 static int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
-	 static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
+	 //static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	/**
 	 * CONSTRUCTOR EFFECTS: currentBaord, creates 2d array representation of the
@@ -92,7 +92,7 @@ public class GameBoardState {
 	public void SaveBoard() {
 		for (int i = 0; i < BOARD_WIDTH; i++) {
 			for (int j = 0; j < BOARD_HIEGHT; j++) {
-				savedBoard[i][j] = currentBoard[i][j];
+				//savedBoard[i][j] = currentBoard[i][j];
 			}
 		}
 	}
