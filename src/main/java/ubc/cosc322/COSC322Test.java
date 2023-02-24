@@ -64,7 +64,7 @@ public class COSC322Test extends GamePlayer {
 	 */
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
-	//	 HumanPlayer player = new HumanPlayer();
+		// HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -177,7 +177,9 @@ public class COSC322Test extends GamePlayer {
 							chessBoard[0].getQueenPosition2().get(0)[1] };
 					ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[0].MoveQueen(2, targetQueenToMove,
 							new int[] { 1, 1 }, new int[] { 1, 2 });
-
+					
+					boolean isValid2 = chessBoard[0].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
+					if(!isValid2) {System.out.println("it is invalid move");}
 					// send move to serve/opponent
 					System.out.println("send move to server");
 					this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
@@ -230,16 +232,27 @@ public class COSC322Test extends GamePlayer {
 
 				// make our move
 				int[] targetQueenToMove;
-				if (ourColor == 2)
+				ArrayList<ArrayList<Integer>> SenderOBJ;
+				if (ourColor == 2) {
 					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition2().get(0)[0],
-							chessBoard[1].getQueenPosition2().get(1)[1] };
-				else
+							chessBoard[1].getQueenPosition2().get(0)[1] };
+					SenderOBJ = chessBoard[1].MoveQueen(2, targetQueenToMove,
+							new int[] { 1, 1 }, new int[] { 1, 2 });
+
+				}
+				else {
 					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition1().get(1)[0],
 							chessBoard[1].getQueenPosition1().get(1)[1] };
+					SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
+							new int[] { 1, 1 }, new int[] { 1, 2 });
 
-				ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
-						new int[] { 1, 1 }, new int[] { 1, 2 });
+					
+				}
 
+
+				
+				boolean isValid2 = chessBoard[1].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
+				if(!isValid2) {System.out.println("it is invalid move");}
 				// send move to serve/opponent
 				this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
 				this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
