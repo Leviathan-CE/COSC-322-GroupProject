@@ -182,7 +182,7 @@ public class COSC322Test extends GamePlayer {
 			return isValid;
 		}
 		
-		if( qy1 == qy2) {	//when coordinate of y is same, check vertically
+		if( qy1 == qy2) {	//when coordinates of y is same, check vertically
 			int start = qx1 < qx2? qx1: qx2;
 			int end = qx1 < qx2? qx2: qx1;
 			for(int i = start + 1; i <= end; i++) {
@@ -192,7 +192,7 @@ public class COSC322Test extends GamePlayer {
 			return isValid;
 		}
 		
-		if (qx1 == qx2) {	//when coordinate of x is same, check horizontally
+		if (qx1 == qx2) {	//when coordinates of x is same, check horizontally
 			int start = qy1 < qy2? qy1: qy2;
 			int end = qy1 < qy2? qy2: qy1;
 			for(int i = start + 1; i <= end; i++) {
@@ -202,7 +202,7 @@ public class COSC322Test extends GamePlayer {
 			return isValid;
 		}
 		
-		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {	//when coordinate on the y= 1*x + c, check diagonally
+		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {	//when coordinates on the y= 1*x + c, check diagonally
 			if((qx1 < qx2) && (qy1 < qy2)) {
 				for(int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <=qy2; i++, j++) {	//q1 to q2(from left to right, bottom to top)
 					if(board[i][j] !=0 ) return isValid;
