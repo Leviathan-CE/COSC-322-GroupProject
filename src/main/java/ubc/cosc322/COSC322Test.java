@@ -64,7 +64,7 @@ public class COSC322Test extends GamePlayer {
 	 */
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
-		// HumanPlayer player = new HumanPlayer();
+	//	 HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -200,7 +200,17 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
-				System.out.println(":::::" + queenPos);
+				
+
+				//is the opponent move a valid move?
+				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1), newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
+				if(!isValid) {System.out.println("it is invalid move");}
+				
+				//TODO: from action factory calculate move and send it to server
+				//<code> start for action
+				chessBoard[0].print();
+				chessBoard[0].countQueens();
+				
 				// update local game state to match the new state
 				// mutate data to readable
 				int[] QnPos = new int[] { queenPos.get(0), queenPos.get(1) };
@@ -209,8 +219,7 @@ public class COSC322Test extends GamePlayer {
 				// move queen that opponent moved
 				chessBoard[0].MoveQueen(chessBoard[0].getCurBoard()[QnPos[0]][QnPos[1]], QnPos, newQnPos, arrw);
 				chessBoard[0].countQueens();
-				// TODO: detect illegal move from action factory
-				// <code> start detect here
+				
 
 				// copy board state
 				chessBoard[1] = new GameBoardState(chessBoard[0].getCurBoard());
@@ -249,5 +258,8 @@ public class COSC322Test extends GamePlayer {
 
 		return true;
 	}
+	
+	
+	
 
 }// end of class
