@@ -35,7 +35,7 @@ public class COSC322Test extends GamePlayer {
 	private String passwd = null;
 
 	private GameBoardState[] chessBoard = new GameBoardState[2];
-	private int turn = 1; //even is black odd is white turn and queen number
+	private int turn = 1; // even is black odd is white turn and queen number
 
 	/**
 	 * Any name and password
@@ -55,7 +55,8 @@ public class COSC322Test extends GamePlayer {
 	}
 
 	/**
-	 * The main method	 * 
+	 * The main method
+	 * 
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
@@ -73,15 +74,32 @@ public class COSC322Test extends GamePlayer {
 			});
 		}
 	}
+
+	/*
+	 * EFFECTS: GUI Components using awt packages for displaying content to user
+	 * also is only entry point to modify gui components it contains. MODIFIES:
+	 * this.gamegui to display information to screen RETRUNS: a reference to itself
+	 * as GUI component
+	 */
 	@Override
-	public BaseGameGUI getGameGUI() {return this.gamegui;}
+	public BaseGameGUI getGameGUI() {
+		return this.gamegui;
+	}
+
 	@Override
-	public void connect() {	gameClient = new GameClient(userName, passwd, this);	}
+	public void connect() {
+		gameClient = new GameClient(userName, passwd, this);
+	}
+
 	@Override
-	public String userName() {return userName;}
+	public String userName() {
+		return userName;
+	}
+
 	@Override
-	public GameClient getGameClient() {	return this.gameClient;	}
-	
+	public GameClient getGameClient() {
+		return this.gameClient;
+	}
 
 	/*
 	 * EFFECTS: is called by the server upon a successful connection/login then
@@ -98,24 +116,32 @@ public class COSC322Test extends GamePlayer {
 		}
 
 	}
+
 	/**
-	 * EFFECTS: message handler works only for when AI model using a instance of COSC322Test
-	 * @param msgDetails holds extractable and mutable information about the servers state.
-	 * @param messageType determines who's turn it is GAME_STATE_BAORD is initail 
-	 * setup while GAME_ACTION_MOVE is the a game player action input move.
-	 * Their are other type which are yet to be known.
-	 * @return  returns true when a action is sent to server or successfully received from server
-	 * false otherwise.
+	 * EFFECTS: message handler works only for when AI model using a instance of
+	 * COSC322Test
+	 * 
+	 * @param msgDetails  holds extractable and mutable information about the
+	 *                    servers state.
+	 * @param messageType determines who's turn it is GAME_STATE_BAORD is initail
+	 *                    setup while GAME_ACTION_MOVE is the a game player action
+	 *                    input move. Their are other type which are yet to be
+	 *                    known.
+	 * @return returns true when a action is sent to server or successfully received
+	 *         from server false otherwise.
+	 *         
+	 * @note
+	 * 	This method will be called by the GameClient when it receives a game-related
+		 message
+		 from the server.
+
+		 For a detailed description of the message types and format,
+		 see the method GamePlayer.handleGameMessage() in the game-client-api
+		 document.
 	 */
 	@Override
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
-		// This method will be called by the GameClient when it receives a game-related
-		// message
-		// from the server.
 
-		// For a detailed description of the message types and format,
-		// see the method GamePlayer.handleGameMessage() in the game-client-api
-		// document.
 		System.out.println("!!!!!!!!!!!");
 		if (gamegui != null) {
 
@@ -123,15 +149,14 @@ public class COSC322Test extends GamePlayer {
 			case GameMessage.GAME_STATE_BOARD:
 				System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
-				
-				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
-				
+				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
+						.get(AmazonsGameMessage.GAME_STATE));
+				//set initial local state of GameBoard
 				chessBoard[0] = new GameBoardState(GottenGameState);
-				
-				System.out.println(chessBoard[0].toString());
-				
-				GameBoardState.countQueens();
+				chessBoard[0].updateQueenPoses();
+				chessBoard[0].printQPoses();
 
+				System.out.println(chessBoard[0].toString());
 				break;
 			/*
 			 * when a move occurs update game state and update local board to match
@@ -139,41 +164,52 @@ public class COSC322Test extends GamePlayer {
 			case GameMessage.GAME_ACTION_MOVE:
 				this.gamegui.updateGameState(msgDetails);
 				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
-				
-				//fetch the newest move and store their values in x,y lists
-				
-				
+				System.out.println("turn: " + turn);
+
+				// fetch the newest move from Opponent and store their values in x,y lists
 				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 				
-				//fetch new game board state 
-				ArrayList<Integer> NewGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
-				chessBoard[1] = new GameBoardState(NewGameState);
 				
-				//update local game state to match the new state
-				//keep in mind the position 1a is the top left corner for console representation
-				
-				/*
-				chessBoard[0].setPosValue(0, queenPos.get(0), queenPos.get(1));
-				chessBoard[0].setPosValue(turn % 2 + 1, newQueenPos.get(0), newQueenPos.get(1));
-				chessBoard[0].setPosValue(3, arrowPos.get(0), arrowPos.get(1));
-				*/
-				
-				//TODO: detect illegal move from action factory
-				//<code> start detect here
-				
+				// update local game state to match the new state
+				// mutate data to readable
+				int[] QnPos = new int[] { queenPos.get(0), queenPos.get(1) };
+				int[] newQnPos = new int[] { newQueenPos.get(0), newQueenPos.get(1) };
+				int[] arrw = new int[] { arrowPos.get(0), arrowPos.get(1) };
+				// move queen that opponent moved
+				chessBoard[0].MoveQueen(chessBoard[0].getCurBoard()[QnPos[0]][QnPos[1]], QnPos, newQnPos, arrw);
+				chessBoard[0].countQueens();
+				// TODO: detect illegal move from action factory
+				// <code> start detect here
+
 				if (isValid( chessBoard[0], queenPos,newQueenPos,arrowPos )) {
 					
 				} else {
 					System.out.println("invalid move");
 					
 				}
-				
-				//TODO: from action factory calculate move and send it to server
-				//<code> start for action
-				chessBoard[0].print();
-				GameBoardState.countQueens();
+
+				// copy board state
+				chessBoard[1] = new GameBoardState(chessBoard[0].getCurBoard());
+				chessBoard[1].updateQueenPoses();
+				chessBoard[1].printQPoses();
+
+				// TODO: calculate what our best move is and check if it is legal
+
+				// make our move
+				int[] targetQueenToMove = new int[] { chessBoard[1].getQueenPosition1().get(1)[0],
+						chessBoard[1].getQueenPosition1().get(1)[1] };
+				ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
+						new int[] { 1, 1 }, new int[] { 1, 2 });
+
+				// send move to serve/opponent
+				this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+				this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+
+				// print console output
+				chessBoard[1].print();
+				chessBoard[1].countQueens();
 				break;
 			default:
 				assert (false);
@@ -190,7 +226,7 @@ public class COSC322Test extends GamePlayer {
 		int qx2 = 11 - newQueenPos.get(0);
 		int qy1 = queenPos.get(0);
 		int qy2 = 11 - newQueenPos.get(0);
-		int [][] board = chessBoard.currentBoard;
+		//int [][] board = chessBoard.currentBoard;
 		
 		/*
 	 	get absolute x and y values for difference of previous queen pos to new queen pos
@@ -280,12 +316,5 @@ public class COSC322Test extends GamePlayer {
 	
 	
 
-	/*
-	 * EFFECTS: GUI Components using awt packages for displaying content to user
-	 * also is only entry point to modify gui components it contains. MODIFIES:
-	 * this.gamegui to display information to screen RETRUNS: a reference to itself
-	 * as GUI component
-	 */
-	
 
 }// end of class
