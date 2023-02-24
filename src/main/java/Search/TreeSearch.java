@@ -4,19 +4,57 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import GameState.GameBoardState;
+
 public class TreeSearch {
 	private static ArrayList<node> visited = new ArrayList<>();
 	private static node parent;
-	
+	private node[][] structure;
+
+	// ---------CONSTRUCTORS--------------------
+	// construct tree from adjacency list
 	public TreeSearch(LinkedList<Integer> adjecencyList) {
 		List<node> nodes = new ArrayList<>();
-		for(Integer in : adjecencyList) {
-			if(in > nodes.size()) {
+		for (Integer in : adjecencyList) {
+			if (in > nodes.size()) {
 				nodes.add(new node(in));
 			}
 		}
-		
+
 	}
+
+	// Construct tree from non-adjacency matrix
+	public TreeSearch(GameBoardState matrix) {
+		structure = new node[matrix.getCurBoard().length][matrix.getCurBoard()[0].length];
+		for (int x = 1; x < matrix.getCurBoard().length; x++) {
+			for (int y = 1; x < matrix.getCurBoard()[0].length; y++) {
+				structure[x][y] = new node();
+			}
+		}
+
+	}
+
+	private void connectEdges(int[][] matrix, int[] startLocation) {
+		node root = structure[startLocation[0]][startLocation[1]]; 
+		if( startLocation[0]==matrix.length && startLocation[1] == matrix[0].length) {
+			return;
+		}		
+
+        if(startLocation[0] +1 < matrix.length) {
+        	
+        	
+        }
+        		
+        if(startLocation[1] + 1 > matrix[0].length)
+        	
+        if(startLocation[0]-1 < 0)
+        
+       	if(startLocation[1]-1 < 0)
+       		return;
+        
+	}
+
+	// depth first tree traversal
 	public static List<node> DFS(node root, node target) {
 		if (root == null) {
 			return null;
@@ -38,7 +76,7 @@ public class TreeSearch {
 		for (node child : root.children) {
 			DFS(child, target);
 		}
-		
+
 		return visited;
 	}
 
@@ -51,14 +89,20 @@ public class TreeSearch {
 		return message;
 	}
 
+	// tree node
 	public static class node {
 		int id;
+		static int count = 0;
 		private List<node> children;
-		private double f_value;
-		private double g_value;
 
 		node(int id) {
 			this.id = id;
+			count++;
+			this.children = new ArrayList<>();
+		}
+		node(){
+			id = count;
+			count++;
 			this.children = new ArrayList<>();
 		}
 

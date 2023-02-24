@@ -3,6 +3,7 @@ package ubc.cosc322;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class COSC322Test extends GamePlayer {
 
 	private GameBoardState[] chessBoard = new GameBoardState[2];
 	private int turn = 1; // even is black odd is white turn and queen number
+	private int ourColor = 0;
 
 	/**
 	 * Any name and password
@@ -60,7 +62,7 @@ public class COSC322Test extends GamePlayer {
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
-		COSC322Test player = new COSC322Test(args[0], args[1]);
+		COSC322Test player = new COSC322Test("LEVI", args[1]);
 		// HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -129,15 +131,12 @@ public class COSC322Test extends GamePlayer {
 	 *                    known.
 	 * @return returns true when a action is sent to server or successfully received
 	 *         from server false otherwise.
-	 *         
-	 * @note
-	 * 	This method will be called by the GameClient when it receives a game-related
-		 message
-		 from the server.
-
-		 For a detailed description of the message types and format,
-		 see the method GamePlayer.handleGameMessage() in the game-client-api
-		 document.
+	 * 
+	 * @note This method will be called by the GameClient when it receives a
+	 *       game-related message from the server.
+	 * 
+	 *       For a detailed description of the message types and format, see the
+	 *       method GamePlayer.handleGameMessage() in the game-client-api document.
 	 */
 	@Override
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
@@ -146,32 +145,58 @@ public class COSC322Test extends GamePlayer {
 		if (gamegui != null) {
 
 			switch (messageType) {
+			case GameMessage.GAME_ACTION_START:
+				System.out.println("GAME START");
+				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
+				System.out.println(blackUserName);
+				if (blackUserName.equalsIgnoreCase("LEVI"))
+					ourColor = 2;
+				else {
+					ourColor = 1;
+				}
+				
+				break;
+
 			case GameMessage.GAME_STATE_BOARD:
 				System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
-				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
-						.get(AmazonsGameMessage.GAME_STATE));
-				//set initial local state of GameBoard
+				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
+				// set initial local state of GameBoard
 				chessBoard[0] = new GameBoardState(GottenGameState);
 				chessBoard[0].updateQueenPoses();
 				chessBoard[0].printQPoses();
 
+//				if (ourColor == 2 && turn == 2) {
+//					System.out.println("we start make move");
+//					// make our move
+//					int[] targetQueenToMove = new int[] { chessBoard[0].getQueenPosition1().get(0)[0], chessBoard[0].getQueenPosition1().get(0)[1] };
+//					ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[0].MoveQueen(1, targetQueenToMove,
+//							new int[] { 1, 1 }, new int[] { 1, 2 });
+//
+//					// send move to serve/opponent
+//					System.out.println("send move to server");
+//					this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+//					this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+//					
+//				}
+
 				System.out.println(chessBoard[0].toString());
-				break;
+
 			/*
 			 * when a move occurs update game state and update local board to match
 			 */
 			case GameMessage.GAME_ACTION_MOVE:
 				this.gamegui.updateGameState(msgDetails);
 				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
+				System.out.println(AmazonsGameMessage.GAME_STATE);
 				System.out.println("turn: " + turn);
 
+				//if(turn != 1) {
 				// fetch the newest move from Opponent and store their values in x,y lists
 				ArrayList<Integer> queenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
-				
-				
+
 				// update local game state to match the new state
 				// mutate data to readable
 				int[] QnPos = new int[] { queenPos.get(0), queenPos.get(1) };
@@ -182,6 +207,7 @@ public class COSC322Test extends GamePlayer {
 				chessBoard[0].countQueens();
 				// TODO: detect illegal move from action factory
 				// <code> start detect here
+				
 
 				// copy board state
 				chessBoard[1] = new GameBoardState(chessBoard[0].getCurBoard());
@@ -203,6 +229,8 @@ public class COSC322Test extends GamePlayer {
 				// print console output
 				chessBoard[1].print();
 				chessBoard[1].countQueens();
+				//}
+				turn++;
 				break;
 			default:
 				assert (false);
@@ -212,6 +240,5 @@ public class COSC322Test extends GamePlayer {
 
 		return true;
 	}
-
 
 }// end of class
