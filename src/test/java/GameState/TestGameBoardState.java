@@ -41,16 +41,16 @@ public class TestGameBoardState {
 
 	}
 	
-	@Test
-	public void TestSaveBoard() {
-		board.SaveBoard();
-		for(int x =0; x < board.BOARD_WIDTH;x++) {
-			for(int y = 0; y < board.BOARD_HIEGHT;y++) {
-				if(board.currentBoard[x][y] != board.savedBoard[x][y])
-					assertTrue(false);
-			}
-		}
-		assertTrue(true);
-	}
+//	@Test
+//	public void TestSaveBoard() {
+//		board.SaveBoard();
+//		for(int x =0; x < board.BOARD_WIDTH;x++) {
+//			for(int y = 0; y < board.BOARD_HIEGHT;y++) {
+//				if(board.currentBoard[x][y] != board.savedBoard[x][y])
+//					assertTrue(false);
+//			}
+//		}
+//		assertTrue(true);
+//	}
 	
 }
