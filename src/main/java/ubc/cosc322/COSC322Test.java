@@ -172,7 +172,7 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 				
 
-				//is the oponent move a valid move?
+				//is the opponent move a valid move?
 				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1), newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
 				if(!isValid) {System.out.println("it is invalid move");}
 				
