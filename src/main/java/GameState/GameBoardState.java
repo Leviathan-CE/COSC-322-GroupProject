@@ -13,8 +13,11 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
  * 
- * @Note Expected Range of values 0 = empty 1 = white queen 2 = black queen 3 =
- *       arrow
+ * @Note Expected Range of values 
+ * 0 = empty
+ * 1 = white queen 
+ * 2 = black queen
+ * 3 = arrow
  * 
  *       Note: size is not 10 because input also includes the labeling from 1-10
  *       and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
