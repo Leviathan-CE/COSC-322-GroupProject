@@ -166,8 +166,8 @@ public class COSC322Test extends GamePlayer {
 	}
 	
 	public boolean getIfMoveIsValid (int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
-		if(ifMoveIsValid(qx1, qy1, qx2, qy2)) {
-			if(ifMoveIsValid(qx2, qy2, ax, ay)) {
+		if(ifMoveIsValid(qx1, qy1, qx2, qy2)) {	//check  if it is valid to move from (qx1,qy1) to (qx2, qy2)
+			if(ifMoveIsValid(qx2, qy2, ax, ay)) {	//then check if it is valid to shot arrow from (qx2, qy2) to (ax, ay)
 				return true;
 			}
 		}
@@ -178,11 +178,11 @@ public class COSC322Test extends GamePlayer {
 	public boolean ifMoveIsValid (int qx1, int qy1, int qx2, int qy2) {
 		boolean isValid = false;
 		int[][] board = chessBoard[1].copyCurrentBoard;
-		if ((qy1 == qy2) && (qx1 == qx2)) {
+		if ((qy1 == qy2) && (qx1 == qx2)) {	//when it is located at the same coordinate.
 			return isValid;
 		}
 		
-		if( qy1 == qy2) {
+		if( qy1 == qy2) {	//when coordinate of y is same, check vertically
 			int start = qx1 < qx2? qx1: qx2;
 			int end = qx1 < qx2? qx2: qx1;
 			for(int i = start + 1; i <= end; i++) {
@@ -192,7 +192,7 @@ public class COSC322Test extends GamePlayer {
 			return isValid;
 		}
 		
-		if (qx1 == qx2) {
+		if (qx1 == qx2) {	//when coordinate of x is same, check horizontally
 			int start = qy1 < qy2? qy1: qy2;
 			int end = qy1 < qy2? qy2: qy1;
 			for(int i = start + 1; i <= end; i++) {
@@ -202,26 +202,26 @@ public class COSC322Test extends GamePlayer {
 			return isValid;
 		}
 		
-		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {
+		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {	//when coordinate on the y= 1*x + c, check diagonally
 			if((qx1 < qx2) && (qy1 < qy2)) {
-				for(int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <=qy2; i++, j++) {
+				for(int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <=qy2; i++, j++) {	//q1 to q2(from left to right, bottom to top)
 					if(board[i][j] !=0 ) return isValid;
 				}
 			}
 			else if ((qx1 < qx2) && (qy1 > qy2)) {
-				for(int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <=qy2; i++, j--) {
+				for(int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <=qy2; i++, j--) {	//q1 to q2(from left to right, top to bottom)
 					if(board[i][j] !=0 ) return isValid;
 				}
 				
 			}
 			else if ((qx1 > qx2) && (qy1 < qy2)) {
-				for(int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <=qy1; i++, j++) {
+				for(int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <=qy1; i++, j++) {	//q2 to q1(from left to right, bottom to top)
 					if(board[i][j] !=0 ) return isValid;
 				}
 				
 			}
 			else if ((qx1 > qx2) && (qy1 > qy2)) {
-				for(int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <=qy1; i++, j--) {
+				for(int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <=qy1; i++, j--) {	//q2 to q1(from left to right, top to bottom)
 					if(board[i][j] !=0 ) return isValid;
 				}
 				
