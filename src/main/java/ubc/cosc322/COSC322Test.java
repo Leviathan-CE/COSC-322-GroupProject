@@ -38,6 +38,7 @@ public class COSC322Test extends GamePlayer {
 	private GameBoardState[] chessBoard = new GameBoardState[2];
 	private int turn = 1; // even is black odd is white turn and queen number
 	private int ourColor = 0;
+	private final static String KEY = "BOB";
 
 	/**
 	 * Any name and password
@@ -62,7 +63,7 @@ public class COSC322Test extends GamePlayer {
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
-		COSC322Test player = new COSC322Test("LEVI", args[1]);
+		COSC322Test player = new COSC322Test(args[0], args[1]);
 		// HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -163,7 +164,7 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("GAME START");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
-				if (blackUserName.equalsIgnoreCase("LEVI"))
+				if (blackUserName.equalsIgnoreCase(KEY))
 					ourColor = 2;
 				else {
 					ourColor = 1;
