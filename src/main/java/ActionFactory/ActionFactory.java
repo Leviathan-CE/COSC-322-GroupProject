@@ -13,10 +13,8 @@ public class ActionFactory {
 	 * actions based off of what actions can be taken.
 	 * @param rootState is the root for which we calculate the branch factor based from a move set.
 	 * @return all possible game states from the root
+	 * 
 	 */
-
-
-	
 
 	public static GameBoardState[] GenerateActionStates(GameBoardState rootState) {
 		
