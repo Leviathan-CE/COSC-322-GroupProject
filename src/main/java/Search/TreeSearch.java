@@ -61,17 +61,17 @@ public class TreeSearch {
 		}
 
 		System.out.print(root.id + " ");
-		if (root.children.isEmpty()) {
-			if (parent != null)
-				visited.remove(parent);
-			parent = null;
-		}
+//		if (root.children.isEmpty()) {
+//			if (parent != null)
+//				visited.remove(parent);
+//			parent = null;
+//		}
 		if (!root.children.isEmpty()) {
 			parent = root;
 			visited.add(root);
 		}
-		if (root == target)
-			visited.add(target);
+//		if (root == target)
+//			visited.add(target);
 
 		for (node child : root.children) {
 			DFS(child, target);
@@ -93,9 +93,9 @@ public class TreeSearch {
 	public static class node {
 		int id;
 		static int count = 0;
-		private List<node> children;
+		public List<node> children;
 
-		node(int id) {
+		public node(int id) {
 			this.id = id;
 			count++;
 			this.children = new ArrayList<>();
