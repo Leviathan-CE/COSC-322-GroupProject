@@ -56,7 +56,7 @@ public class GameBoardState {
 			}
 		}
 
-	}
+	} 
 
 	public GameBoardState(int[][] gameBoard) {
 		this.currentBoard = gameBoard;
