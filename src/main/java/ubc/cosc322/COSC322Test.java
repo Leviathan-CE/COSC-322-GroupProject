@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import GameState.GameBoardState;
+import GameState.Timer;
+
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -175,6 +177,7 @@ public class COSC322Test extends GamePlayer {
 				break;
 
 			case GameMessage.GAME_ACTION_START:
+				Timer.start();
 				System.out.println("GAME START");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
@@ -191,13 +194,16 @@ public class COSC322Test extends GamePlayer {
 							chessBoard[0].getQueenPosition2().get(0)[1] };
 					ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[0].MoveQueen(2, targetQueenToMove,
 							new int[] { 1, 1 }, new int[] { 1, 2 });
-
+					
+					boolean isValid2 = chessBoard[0].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
+					if(!isValid2) {System.out.println("it is invalid move");}
 					// send move to serve/opponent
 					System.out.println("send move to server");
 					this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
 					this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
 
 				}
+				System.out.println(Timer.currentTime());
 				break;
 
 			/*
@@ -244,16 +250,27 @@ public class COSC322Test extends GamePlayer {
 
 				// make our move
 				int[] targetQueenToMove;
-				if (ourColor == 2)
+				ArrayList<ArrayList<Integer>> SenderOBJ;
+				if (ourColor == 2) {
 					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition2().get(0)[0],
-							chessBoard[1].getQueenPosition2().get(1)[1] };
-				else
+							chessBoard[1].getQueenPosition2().get(0)[1] };
+					SenderOBJ = chessBoard[1].MoveQueen(2, targetQueenToMove,
+							new int[] { 1, 1 }, new int[] { 1, 2 });
+
+				}
+				else {
 					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition1().get(1)[0],
 							chessBoard[1].getQueenPosition1().get(1)[1] };
+					SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
+							new int[] { 1, 1 }, new int[] { 1, 2 });
 
-				ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
-						new int[] { 1, 1 }, new int[] { 1, 2 });
+					
+				}
 
+
+				
+				boolean isValid2 = chessBoard[1].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
+				if(!isValid2) {System.out.println("it is invalid move");}
 				// send move to serve/opponent
 				this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
 				this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
