@@ -63,8 +63,8 @@ public class COSC322Test extends GamePlayer {
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
-		COSC322Test player = new COSC322Test(args[0], args[1]);
-	//	 HumanPlayer player = new HumanPlayer();
+		//COSC322Test player = new COSC322Test(args[0], args[1]);
+		HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -142,20 +142,34 @@ public class COSC322Test extends GamePlayer {
 	@Override
 	public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
 
-		System.out.println("!!!!!!!!!!!");
+		System.out.println("!!!!!!------------------!!!!!!");
 		if (gamegui != null) {
 
 			switch (messageType) {
 
 			case GameMessage.GAME_STATE_BOARD:
 				System.out.println("ENEMY MOVE GET THINGY");
+				
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
 				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
 						.get(AmazonsGameMessage.GAME_STATE));
+				
+				System.out.println("debug0");
+				
+				
 				// set initial local state of GameBoard
 				chessBoard[0] = new GameBoardState(GottenGameState);
+				
+				
+				
+				
 				chessBoard[0].updateQueenPoses();
+				
+				
+				
 				chessBoard[0].printQPoses();
+				
+				
 
 				System.out.println(chessBoard[0].toString());
 				break;

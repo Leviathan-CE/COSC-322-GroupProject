@@ -48,7 +48,7 @@ public class GameBoardState {
 	 *                  AmazonsGameMessage.GAME_STATE
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
-		System.out.println(gameBoard.toString());
+		//System.out.println(gameBoard.toString());
 		for (int y = 1; y < BOARD_WIDTH; y++) {
 			for (int x = 1; x < BOARD_HIEGHT; x++) {
 				currentBoard[BOARD_WIDTH - y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
