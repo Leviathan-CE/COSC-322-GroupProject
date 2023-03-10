@@ -21,7 +21,7 @@ public class Node extends GameBoardState {
 		ArrayList<Node> children = new ArrayList<>();
 		
 		
-		// F(n) = g+h+M 
+		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
 		public double getValue() {return (g+h)+(M*C);}
 		public void setUtilScore(double newVal) {M = newVal;} //monteCarlo value
 		public void setHueristicScore(double newVal) {h = newVal;}
