@@ -1,6 +1,6 @@
 package ActionFactory;
 import java.util.ArrayList;
-package ActionFactory;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +79,9 @@ public class ActionFactory {
 	                                            // Create a new copy of the gameboard and update it to reflect the arrow placement.
 	                                            int[][] arrowGameboard = copyGameboard(newGameboard);
 	                                            arrowGameboard[bx][by] = 3;
+	                                            
+	                                            
+	                                            GameBoardState game = new GameBoardState(arrowGameboard);
 	                                            // Add the new gameboard to the list of legal moves.
 	                                            legalMoves.add(arrowGameboard);
 	                                        }
@@ -98,7 +101,7 @@ public class ActionFactory {
 	    return legalMoves;
 	}
 	
-	  private int[][] copyGameboard(GameBoardState gameboard) {
+	  private int[][] copyGameboard(int[][] gameboard) {
 	        int[][] newGameboard = new int[10][10];
 	        for (int i = 0; i < 10; i++) {
 	            for (int j = 0; j < 10; j++) {
