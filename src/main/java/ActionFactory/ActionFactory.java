@@ -29,6 +29,9 @@ public class ActionFactory {
 
 		 
 	// This function generates all legal moves for a given player on the gameboard.
+	// function assumes player will be an int of value 1 or 2
+	// takes a 2d array as its input value and returns a array list of 2d arrays that represent possible child states.
+	//TODO Modify to work with our gameboardstate and Node - consult with team members
 	public ArrayList<int[][]> getLegalMoves(int[][] gameboard, int player) {
 	    // Initialize an empty ArrayList to store the legal moves.
 	    ArrayList<int[][]> legalMoves = new ArrayList<>();
@@ -37,6 +40,7 @@ public class ActionFactory {
 	    for (int i = 0; i < 10; i++) {
 	        for (int j = 0; j < 10; j++) {
 	            // Check if the current cell contains the player's piece.
+	        	//this if statement should only be triggered 4 times 
 	            if (gameboard[i][j] == player) {
 	                // Iterate over each possible direction that the piece can move in.
 	                for (int dx = -1; dx <= 1; dx++) {
@@ -100,7 +104,7 @@ public class ActionFactory {
 	    // Return the list of legal moves.
 	    return legalMoves;
 	}
-	
+		//helper function for copying 2d arrays 
 	  private int[][] copyGameboard(int[][] gameboard) {
 	        int[][] newGameboard = new int[10][10];
 	        for (int i = 0; i < 10; i++) {
