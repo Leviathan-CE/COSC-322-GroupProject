@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
+import ActionFactory.Node;
 import ygraph.ai.smartfox.games.GameMessage;
 import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
 
@@ -32,7 +33,8 @@ public class GameBoardState {
 
 	public final static int BOARD_WIDTH = 11;
 	public final static int BOARD_HIEGHT = 11;
-
+	
+	public String ID;
 	int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
@@ -48,11 +50,12 @@ public class GameBoardState {
 	 *                  AmazonsGameMessage.GAME_STATE
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
+		
 		System.out.println(gameBoard.toString());
 		for (int y = 1; y < BOARD_WIDTH; y++) {
 			for (int x = 1; x < BOARD_HIEGHT; x++) {
 				currentBoard[BOARD_WIDTH - y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
-
+				ID = ID + String.valueOf(Integer.valueOf(gameBoard.get(y * 11 + x)));
 			}
 		}
 
@@ -63,7 +66,12 @@ public class GameBoardState {
 	}
 
 	// ------Helper Methods-----------
-
+	
+	public boolean equals(Node node) {
+		if(this.ID == node.ID)
+			return true;
+		return false;
+	}
 	/**
 	 * print to console currentBoard as matrix prints the representation with the
 	 * square 1a as top left corner. which makes the console representation flip'd
@@ -113,8 +121,8 @@ public class GameBoardState {
 	}
 
 	/**
-	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
-	 * currentBaord
+	 * EFFECTS: sets new value of of board x position and y position
+	 * MODIFIES: currentBaord
 	 * 
 	 * @param newValue the new value that will be set in the matrix
 	 * @param x        is the x integer value position of a column 1-10
@@ -129,8 +137,8 @@ public class GameBoardState {
 	}
 
 	/**
-	 * EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: QueenPose1White
-	 * or QueenPOse2Black, CurrentBoard
+	 * EFFECTS: Moves a single Queen and shoots a arrow. 
+	 * MODIFIES: QueenPose1White or QueenPOse2Black, CurrentBoard
 	 * 
 	 * @param queenColor  the queen color to select 1 is white 2 is black
 	 * @param oldPosXY    is the current queens position as a (x,y) pair
@@ -169,9 +177,9 @@ public class GameBoardState {
 		}
 		// package data into server readable's with new move
 		ArrayList<ArrayList<Integer>> senderObj = new ArrayList<>();
-		senderObj.add(this.setPosValue(0, oldPosXY[0], oldPosXY[1]));
-		senderObj.add(this.setPosValue(queenColor, newPosXY[0], newPosXY[1]));
-		senderObj.add(this.setPosValue(3, newArrowPos[0], newArrowPos[1]));
+		senderObj.add(this.setPosValue(0, oldPosXY[0], oldPosXY[1])); //set old move empty
+		senderObj.add(this.setPosValue(queenColor, newPosXY[0], newPosXY[1])); //move queen to new location
+		senderObj.add(this.setPosValue(3, newArrowPos[0], newArrowPos[1])); //place arrow
 
 		// update queen that moved locally
 		if (queenColor == 1) {
@@ -302,6 +310,8 @@ public class GameBoardState {
 		
 		return isValid;
 	}
+
+	
 
 }
 

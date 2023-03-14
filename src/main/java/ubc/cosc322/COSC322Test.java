@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import GameState.GameBoardState;
+import GameState.Timer;
+
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -161,6 +163,7 @@ public class COSC322Test extends GamePlayer {
 				break;
 
 			case GameMessage.GAME_ACTION_START:
+				Timer.start();
 				System.out.println("GAME START");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
@@ -186,6 +189,7 @@ public class COSC322Test extends GamePlayer {
 					this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
 
 				}
+				System.out.println(Timer.currentTime());
 				break;
 
 			/*
