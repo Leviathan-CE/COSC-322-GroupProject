@@ -14,7 +14,7 @@ public class Node extends GameBoardState  {
 
 		int id = 1;
 		static int count = 1;
-		public String BID = ID;
+		
 		
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
@@ -22,7 +22,7 @@ public class Node extends GameBoardState  {
 		public double C = 1; //carlo constant
 		
 		private int numWins=0;
-		private int visits=0; 
+		private int visits=1; 
 		private int depth = 0;
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
@@ -32,13 +32,12 @@ public class Node extends GameBoardState  {
 		public double getValue() {return Math.abs((g+h)/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
 		public void setHueristicScore(double newVal) {h = newVal;}
 		public void setGval(double newVal){g=newVal;}
-		public String getID() {return BID;}
+
 		
 		//-----CONSTRUCTORS-----------
 
 		public Node(ArrayList<Integer> gameBoard) {
-			super(gameBoard);
-			BID = ID;
+			super(gameBoard);			
 			id= count++;
 		}
 		public Node(int[][] gameBoard) {

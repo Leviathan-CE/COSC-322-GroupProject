@@ -32,10 +32,10 @@ public class ActionFactory {
 	// function assumes player will be an int of value 1 or 2
 	// takes a 2d array as its input value and returns a array list of 2d arrays that represent possible child states.
 	//TODO Modify to work with our gameboardstate and Node - consult with team members
-	public static ArrayList<Node> getLegalMoves(int[][] gameboard, int player) {
+	public static ArrayList<Node> getLegalMoves(Node node, int player) {
 	    // Initialize an empty ArrayList to store the legal moves.
 	    ArrayList<Node> legalMoves = new ArrayList<>();
-
+	    int[][] gameboard = node.getCurBoard();
 	    // Iterate over each cell on the gameboard.
 	    for (int i = 0; i < 10; i++) {
 	        for (int j = 0; j < 10; j++) {
@@ -86,7 +86,7 @@ public class ActionFactory {
 	                                            
 	                                            
 	                                            Node game = new Node(arrowGameboard);
-	                                            
+	                                            game.parent = node;
 	                                            
 	                                            // Add the new gameboard to the list of legal moves.
 	                                            legalMoves.add(game);
