@@ -61,12 +61,12 @@ public class MonteTreeSearch {
 		Node node4 = new Node(new int[11][11]);
 		Node node5 = new Node(new int[11][11]);
 		Node node6 = new Node(new int[11][11]);
-		root.setUtilScore(9); //root value doesn't matter
-		node2.setUtilScore(2);
-		node3.setUtilScore(4);
-		node4.setUtilScore(3);
-		node5.setUtilScore(1);
-		node6.setUtilScore(3);
+//		root.setUtilScore(9); //root value doesn't matter
+//		node2.setUtilScore(2);
+//		node3.setUtilScore(4);
+//		node4.setUtilScore(3);
+//		node5.setUtilScore(1);
+//		node6.setUtilScore(3);
 		root.children.add(node2);
 		root.children.add(node3);
 		node2.children.add(node6);
