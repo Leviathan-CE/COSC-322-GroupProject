@@ -42,7 +42,7 @@ public class GameBoardState implements Serializable {
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
 	private ArrayList<int[]> queenPose2Black = new ArrayList<>();
-
+	private ArrayList<int[]> arrowsPos = new ArrayList<>();
 	// static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	/**
@@ -131,6 +131,9 @@ public class GameBoardState implements Serializable {
 
 	public ArrayList<int[]> getQueenPosition2() {
 		return queenPose2Black;
+	}
+	public ArrayList<int[]> getArrowPositions(){
+		return arrowsPos;
 	}
 
 	@Override
@@ -250,7 +253,7 @@ public class GameBoardState implements Serializable {
 	public void updateQueenPoses() {
 		ArrayList<int[]> q1w = new ArrayList<>(4);
 		ArrayList<int[]> q2b = new ArrayList<>(4);
-
+		ArrayList<int[]> arrw = new ArrayList<>();
 		for (int y = 1; y < BOARD_WIDTH; y++) {
 			for (int x = 1; x < BOARD_WIDTH; x++) {
 				if (currentBoard[y][x] == 1) {
@@ -259,13 +262,16 @@ public class GameBoardState implements Serializable {
 				if (currentBoard[y][x] == 2) {
 					q2b.add(new int[] { y, x });
 				}
+				if(currentBoard[y][x] == 3) {
+					arrw.add(new int[] {y,x});
+				}
 
 			}
 
 		}
 		queenPose1White = q1w;
 		queenPose2Black = q2b;
-
+		arrowsPos = arrw;
 	}
 
 	public boolean getIfMoveIsValid(int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
