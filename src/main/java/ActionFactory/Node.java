@@ -1,5 +1,6 @@
 package ActionFactory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,38 +8,55 @@ import GameState.GameBoardState;
 import Search.TreeSearch.node;
 
 
-public class Node extends GameBoardState {
+public class Node extends GameBoardState  {
 	
 		
+
 		int id = 1;
 		static int count = 1;
+		
 		
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
 		private double g =0; //g-val
 		public double C = 1; //carlo constant
+		
+		private int numWins=0;
+		private int visits=1; 
+		private int depth = 0;
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
 		
 		
 		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
-		public double getValue() {return (g+h)+(M*C);}
-		public void setUtilScore(double newVal) {M = newVal;} //monteCarlo value
+		public double getValue() {return Math.abs((g+h)/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
 		public void setHueristicScore(double newVal) {h = newVal;}
 		public void setGval(double newVal){g=newVal;}
+
 		
+		//-----CONSTRUCTORS-----------
+
 		public Node(ArrayList<Integer> gameBoard) {
-			super(gameBoard);
+			super(gameBoard);			
 			id= count++;
 		}
 		public Node(int[][] gameBoard) {
 			super(gameBoard);
 			id= count++;
 		}
+		
+		//---HELP ME--------------	
+		//meant to be called through backprpagation to update weather the node that it has been visited and weather it won.
+		public void updateNode(boolean didWin) {
+			if(didWin)
+				numWins++;
+			visits++;
+		}
+		
 		public String toString() {
 			return "" + id;
 		}
-
+		
 		public void setParent(Node node) {
 			parent = node;
 		}

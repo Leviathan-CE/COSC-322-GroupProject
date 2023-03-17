@@ -1,5 +1,6 @@
 package GameState;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,11 +15,8 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
  * 
- * @Note Expected Range of values 
- * 0 = empty
- * 1 = white queen 
- * 2 = black queen
- * 3 = arrow
+ * @Note Expected Range of values 0 = empty 1 = white queen 2 = black queen 3 =
+ *       arrow
  * 
  *       Note: size is not 10 because input also includes the labeling from 1-10
  *       and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
@@ -29,12 +27,17 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * 
  *
  */
-public class GameBoardState {
+public class GameBoardState implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1004773758902058794L;
 	public final static int BOARD_WIDTH = 11;
 	public final static int BOARD_HIEGHT = 11;
-	
-	public String ID;
+
+	private String ID;
+	private int hashCode = -1;
 	int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
@@ -50,7 +53,7 @@ public class GameBoardState {
 	 *                  AmazonsGameMessage.GAME_STATE
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
-		
+
 		System.out.println(gameBoard.toString());
 		for (int y = 1; y < BOARD_WIDTH; y++) {
 			for (int x = 1; x < BOARD_HIEGHT; x++) {
@@ -66,12 +69,36 @@ public class GameBoardState {
 	}
 
 	// ------Helper Methods-----------
-	
+
 	public boolean equals(Node node) {
-		if(this.ID == node.ID)
+		if (this.ID.contentEquals(node.getID()))
 			return true;
 		return false;
 	}
+
+	/**
+	 * EFFECTS: sums the values in each row by the rows index  and then 
+	 * sums the column by the column index
+	 * {X1j +X2j + xnj} * Xj 
+	 */
+	@Override
+	public int hashCode() {
+		int total = 0;
+		if (hashCode == -1) {
+			for (int y = 1; y < BOARD_WIDTH; y++) {
+				for (int x = 1; x < BOARD_HIEGHT; x++) {
+					total += y*x;
+					total += x*y;
+				}
+
+			}
+			hashCode = total;
+			return total;
+		}
+		return hashCode;
+	}
+	public String getID() {return ID;}
+	
 	/**
 	 * print to console currentBoard as matrix prints the representation with the
 	 * square 1a as top left corner. which makes the console representation flip'd
@@ -121,8 +148,8 @@ public class GameBoardState {
 	}
 
 	/**
-	 * EFFECTS: sets new value of of board x position and y position
-	 * MODIFIES: currentBaord
+	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
+	 * currentBaord
 	 * 
 	 * @param newValue the new value that will be set in the matrix
 	 * @param x        is the x integer value position of a column 1-10
@@ -137,8 +164,8 @@ public class GameBoardState {
 	}
 
 	/**
-	 * EFFECTS: Moves a single Queen and shoots a arrow. 
-	 * MODIFIES: QueenPose1White or QueenPOse2Black, CurrentBoard
+	 * EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: QueenPose1White
+	 * or QueenPOse2Black, CurrentBoard
 	 * 
 	 * @param queenColor  the queen color to select 1 is white 2 is black
 	 * @param oldPosXY    is the current queens position as a (x,y) pair
@@ -177,9 +204,9 @@ public class GameBoardState {
 		}
 		// package data into server readable's with new move
 		ArrayList<ArrayList<Integer>> senderObj = new ArrayList<>();
-		senderObj.add(this.setPosValue(0, oldPosXY[0], oldPosXY[1])); //set old move empty
-		senderObj.add(this.setPosValue(queenColor, newPosXY[0], newPosXY[1])); //move queen to new location
-		senderObj.add(this.setPosValue(3, newArrowPos[0], newArrowPos[1])); //place arrow
+		senderObj.add(this.setPosValue(0, oldPosXY[0], oldPosXY[1])); // set old move empty
+		senderObj.add(this.setPosValue(queenColor, newPosXY[0], newPosXY[1])); // move queen to new location
+		senderObj.add(this.setPosValue(3, newArrowPos[0], newArrowPos[1])); // place arrow
 
 		// update queen that moved locally
 		if (queenColor == 1) {
@@ -240,79 +267,84 @@ public class GameBoardState {
 		queenPose2Black = q2b;
 
 	}
-	
-	public boolean getIfMoveIsValid (int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
-		if(ifMoveIsValid(qx1, qy1, qx2, qy2)) {	//check  if it is valid to move from (qx1,qy1) to (qx2, qy2)
-			if(ifMoveIsValid(qx2, qy2, ax, ay)) {	//then check if it is valid to shot arrow from (qx2, qy2) to (ax, ay)
+
+	public boolean getIfMoveIsValid(int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
+		if (ifMoveIsValid(qx1, qy1, qx2, qy2)) { // check if it is valid to move from (qx1,qy1) to (qx2, qy2)
+			if (ifMoveIsValid(qx2, qy2, ax, ay)) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
+													// ay)
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
-	public boolean ifMoveIsValid (int qx1, int qy1, int qx2, int qy2) {
+	public boolean ifMoveIsValid(int qx1, int qy1, int qx2, int qy2) {
 		boolean isValid = false;
 		int[][] board = currentBoard;
-		if ((qy1 == qy2) && (qx1 == qx2)) {	//when it is located at the same coordinate.
+		if ((qy1 == qy2) && (qx1 == qx2)) { // when it is located at the same coordinate.
 			return isValid;
 		}
-		
-		if( qy1 == qy2) {	//when coordinates of y is same, check vertically
-			int start = qx1 < qx2? qx1: qx2;
-			int end = qx1 < qx2? qx2: qx1;
-			for(int i = start + 1; i <= end; i++) { //this for loop checks the vertical path of the queen from start to end and checks to make sure that path is clear
-				if(board[i][qy1] !=0 ) return isValid;
+
+		if (qy1 == qy2) { // when coordinates of y is same, check vertically
+			int start = qx1 < qx2 ? qx1 : qx2;
+			int end = qx1 < qx2 ? qx2 : qx1;
+			for (int i = start + 1; i <= end; i++) { // this for loop checks the vertical path of the queen from start
+														// to end and checks to make sure that path is clear
+				if (board[i][qy1] != 0)
+					return isValid;
 			}
 			isValid = true;
 			return isValid;
 		}
-		
-		if (qx1 == qx2) {	//when coordinates of x is same, check horizontally
-			int start = qy1 < qy2? qy1: qy2;
-			int end = qy1 < qy2? qy2: qy1;
-			for(int i = start + 1; i <= end; i++) { //this for loop checks the horizontal path of the queen from start to end and checks to make sure that path is clear
-				if(board[qx1][i] !=0 ) return isValid;
+
+		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
+			int start = qy1 < qy2 ? qy1 : qy2;
+			int end = qy1 < qy2 ? qy2 : qy1;
+			for (int i = start + 1; i <= end; i++) { // this for loop checks the horizontal path of the queen from start
+														// to end and checks to make sure that path is clear
+				if (board[qx1][i] != 0)
+					return isValid;
 			}
 			isValid = true;
 			return isValid;
 		}
-		
-		
-		//diagonal checks
-		if(Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) {	//when coordinates on the y= 1*x + c, check diagonally
-			if((qx1 < qx2) && (qy1 < qy2)) {
-				for(int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <=qy2; i++, j++) {	//q1 to q2(from left to right, bottom to top)
-					if(board[i][j] !=0 ) return isValid;
+
+		// diagonal checks
+		if (Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) { // when coordinates on the y= 1*x + c, check diagonally
+			if ((qx1 < qx2) && (qy1 < qy2)) {
+				for (int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <= qy2; i++, j++) { // q1 to q2(from left to right,
+																						// bottom to top)
+					if (board[i][j] != 0)
+						return isValid;
 				}
-			}
-			else if ((qx1 < qx2) && (qy1 > qy2)) {
-				for(int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <=qy2; i++, j--) {	//q1 to q2(from left to right, top to bottom)
-					if(board[i][j] !=0 ) return isValid;
+			} else if ((qx1 < qx2) && (qy1 > qy2)) {
+				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <= qy2; i++, j--) { // q1 to q2(from left to right, top
+																						// to bottom)
+					if (board[i][j] != 0)
+						return isValid;
 				}
-				
-			}
-			else if ((qx1 > qx2) && (qy1 < qy2)) {
-				for(int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <=qy1; i++, j++) {	//q2 to q1(from left to right, bottom to top)
-					if(board[i][j] !=0 ) return isValid;
+
+			} else if ((qx1 > qx2) && (qy1 < qy2)) {
+				for (int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <= qy1; i++, j++) { // q2 to q1(from left to right,
+																						// bottom to top)
+					if (board[i][j] != 0)
+						return isValid;
 				}
-				
-			}
-			else if ((qx1 > qx2) && (qy1 > qy2)) {
-				for(int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <=qy1; i++, j--) {	//q2 to q1(from left to right, top to bottom)
-					if(board[i][j] !=0 ) return isValid;
+
+			} else if ((qx1 > qx2) && (qy1 > qy2)) {
+				for (int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <= qy1; i++, j--) { // q2 to q1(from left to right, top
+																						// to bottom)
+					if (board[i][j] != 0)
+						return isValid;
 				}
-				
+
 			}
 			isValid = true;
 			return isValid;
 		}
-		
+
 		return isValid;
 	}
 
-	
-
 }
-
-
