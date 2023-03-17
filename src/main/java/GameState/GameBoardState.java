@@ -310,6 +310,62 @@ public class GameBoardState {
 		
 		return isValid;
 	}
+	
+	
+	public int geth1() {
+		
+		return h1(); 
+	}
+	
+/*
+ * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1 then we add to each teams score
+ *  we then return sumEnemyteam - sumOurteam
+ */
+public  int  h1() {
+		
+		int sumOfWhiteQueen =0 ; 
+		int sumOfBlackQueen = 0; 
+		int[][] board = currentBoard;
+		//get WHite queeen value 
+		
+		for(int i = 0 ; i < 4; i ++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					if (!(x == 0 && y == 0)) {//if tile is queen tile then skip
+						if(queenPose1White.get(i)[0]+x >0 && queenPose1White.get(i)[0]+x <11 && (queenPose1White.get(i)[1] + y)>0 && (queenPose1White.get(i)[1] + y)<11 )
+							{
+								if (board[(queenPose1White.get(i)[0] + x)][(queenPose1White.get(i)[1] + y)]!= 0) {
+									sumOfWhiteQueen++;
+										}
+							}else {
+								sumOfWhiteQueen++;
+							}
+					}
+				}
+			}				
+		}
+		
+		for(int i = 0 ; i < 4; i ++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					if (!(x == 0 && y == 0)) { //if tile is queen tile then skip
+						if(queenPose2Black.get(i)[0]+x >0 && queenPose2Black.get(i)[0]+x <11 && (queenPose2Black.get(i)[1] + y)>0 && (queenPose2Black.get(i)[1] + y)<11 )
+							{
+								if (board[(queenPose2Black.get(i)[0] + x)][(queenPose2Black.get(i)[1] + y)]!= 0) {
+									sumOfBlackQueen++;
+										}
+							}else {
+								sumOfBlackQueen++;
+							}
+					}
+				}
+			}
+								
+		}
+	
+	return  (sumOfBlackQueen - sumOfWhiteQueen);
+}
+	
 
 	
 
