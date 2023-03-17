@@ -85,7 +85,7 @@ public class ActionFactory {
 	                                            arrowGameboard[bx][by] = 3;
 	                                            
 	                                            
-	                                            Node game = new Node(arrowGameboard);
+	                                            Node game = new Node(arrowGameboard, player);
 	                                            
 	                                            
 	                                            // Add the new gameboard to the list of legal moves.
