@@ -1,5 +1,6 @@
 package GameState;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,12 +30,17 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * 
  *
  */
-public class GameBoardState {
+public class GameBoardState implements Serializable  {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1004773758902058794L;
 	public final static int BOARD_WIDTH = 11;
 	public final static int BOARD_HIEGHT = 11;
 	
-	public String ID;
+	protected String ID;
 	int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
@@ -68,9 +74,15 @@ public class GameBoardState {
 	// ------Helper Methods-----------
 	
 	public boolean equals(Node node) {
-		if(this.ID == node.ID)
+		if(this.ID.contentEquals(node.ID))
 			return true;
 		return false;
+	}
+	//Probably need better hashcode value for states
+	@Override
+	public int hashCode()
+	{
+		return Integer.valueOf(ID);
 	}
 	/**
 	 * print to console currentBoard as matrix prints the representation with the
@@ -310,6 +322,8 @@ public class GameBoardState {
 		
 		return isValid;
 	}
+
+	
 
 	
 
