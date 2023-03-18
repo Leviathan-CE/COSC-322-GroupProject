@@ -11,7 +11,8 @@ import ygraph.ai.smartfox.games.GameClient;
 
 public class MoveSequence {
 
-	public static Node ChosenMove= null;
+	public static Node ChosenMove = null;
+
 	/**
 	 * @EFFECTS : generates all possible legal actions from action factory and then
 	 *          calculates the utility score for each. then chooses the maxuim from
@@ -31,18 +32,17 @@ public class MoveSequence {
 
 		ChosenMove = MonteTreeSearch.Search(root);
 		ChosenMove.updateQueenPoses();
-		
 
 		decoupleUnusedChildren(ChosenMove, chioces, root);
 		// get move package
 		int[] oldQ = ChosenMove.moveInfo.oldQPos;
 		int[] newQ = ChosenMove.moveInfo.newQPos;
 		int[] arrw = ChosenMove.moveInfo.arrow;
-		
+
 		// transform back to a=old board 11x11
-		oldQ[0]++; //= 10-oldQ[0];
+		oldQ[0]++; // = 10-oldQ[0];
 		oldQ[1]++;
-		newQ[0]++; //=10-newQ[0];
+		newQ[0]++; // =10-newQ[0];
 		newQ[1]++;
 		arrw[0]++;// =10-arrw[0];
 		arrw[1]++;
@@ -51,7 +51,6 @@ public class MoveSequence {
 				+ "] arrw: [" + arrw[0] + ";" + arrw[1] + "]");
 		ChosenMove.printQPoses();
 		ChosenMove.print();
-		
 
 		return setSenderObj(oldQ, newQ, arrw);
 	}
@@ -83,7 +82,6 @@ public class MoveSequence {
 			n.C = Math.random() * 5;
 
 		}
-
 		return root;
 	}
 
@@ -97,11 +95,12 @@ public class MoveSequence {
 	private static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 		chioces.remove(chosenMove);
 		for (Node n : chioces) {
-			n.setParent(null);
-			root.RemoveChild(n);
+			if (n.getvisits() > 1) {
+				n.setParent(null);
+				root.RemoveChild(n);
+			}
 		}
 	}
-	
 
 	private static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
 

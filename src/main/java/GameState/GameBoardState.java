@@ -83,26 +83,22 @@ public class GameBoardState implements Serializable {
 	 * 
 	 * @param gameBoard
 	 */
-	public GameBoardState(int[][] gameBoard) {
+	public GameBoardState(int[][] gameBoard) {	
 		currentBoard = new int[10][10];
-
 		// if the board is not size 11 refactor to size ten
-		if (currentBoard[0].length == 10) {
+		if (gameBoard[0].length == 10) {
+			
 			for (int y = 0; y < INTERANL_STATE; y++) {
 				for (int x = 0; x < INTERANL_STATE; x++) {
 
 					currentBoard[y][x] = gameBoard[y][x];
 				}
 			}
-		} else {
-			// otherwise copy it size ten into size ten
-			for (int y = 0; y < INTERANL_STATE; y++) {
-				for (int x = 0; x < INTERANL_STATE; x++) {
-					if (!(y < 9 && x < 9))
-						currentBoard[y][x] = gameBoard[y][x];
-				}
+		}else
+			{
+				throw new IndexOutOfBoundsException("game Board must be of demensions of 10x10");
 			}
-		}
+		
 	}
 
 	// ------Helper Methods-----------

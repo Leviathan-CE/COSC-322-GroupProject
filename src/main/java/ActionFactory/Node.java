@@ -52,7 +52,7 @@ public class Node extends GameBoardState  {
 				numWins++;
 			visits++;
 		}
-		
+		public int getvisits() {return visits;}
 //		public String toString() {
 //			return "" + id;
 //		}
