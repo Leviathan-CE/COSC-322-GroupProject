@@ -21,8 +21,7 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  *       Note: size is not 10 because input also includes the labeling from 1-10
  *       and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
- * @param BOARD_WIDTH  set to 11
- * @param BOARD_HIEGHT set to 11
+ * @param BOARD_DEMENSIONS = 11
  * 
  * 
  *
@@ -33,12 +32,12 @@ public class GameBoardState implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1004773758902058794L;
-	public final static int BOARD_WIDTH = 11;
-	public final static int BOARD_HIEGHT = 11;
+	public final static int BORAD_DEMENSIONS = 11;
+	
 
-	private String ID;
+	private String ID = "";
 	private int hashCode = -1;
-	int[][] currentBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
+	int[][] currentBoard = new int[BORAD_DEMENSIONS][BORAD_DEMENSIONS];
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
 	private ArrayList<int[]> queenPose2Black = new ArrayList<>();
@@ -55,17 +54,29 @@ public class GameBoardState implements Serializable {
 	public GameBoardState(ArrayList<Integer> gameBoard) {
 
 		System.out.println(gameBoard.toString());
-		for (int y = 1; y < BOARD_WIDTH; y++) {
-			for (int x = 1; x < BOARD_HIEGHT; x++) {
-				currentBoard[BOARD_WIDTH - y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
+		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+				currentBoard[BORAD_DEMENSIONS-y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
 				ID = ID + String.valueOf(Integer.valueOf(gameBoard.get(y * 11 + x)));
 			}
 		}
 
 	}
-
+	
+	/**
+	 * CONSSTRUCTOR EFFECTS: can build game board with int[][] but REQUIRES 
+	 * the int[][] to be indexed from 1-10 rather from 0-11 for all relative board positions.
+	 * @param gameBoard
+	 */
 	public GameBoardState(int[][] gameBoard) {
-		this.currentBoard = gameBoard;
+		if(gameBoard[0].length < 10)
+			 throw new IndexOutOfBoundsException("Board mst be demension 11x11 and indexed from 1-10");
+		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+				currentBoard[y][x] = gameBoard[y][x];
+				
+			}
+		}
 	}
 
 	// ------Helper Methods-----------
@@ -85,8 +96,8 @@ public class GameBoardState implements Serializable {
 	public int hashCode() {
 		int total = 0;
 		if (hashCode == -1) {
-			for (int y = 1; y < BOARD_WIDTH; y++) {
-				for (int x = 1; x < BOARD_HIEGHT; x++) {
+			for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+				for (int x = 1; x < BORAD_DEMENSIONS; x++) {
 					total += y*x;
 					total += x*y;
 				}
@@ -139,10 +150,10 @@ public class GameBoardState implements Serializable {
 	@Override
 	public String toString() {
 		String msg = "";
-		for (int y = 1; y < BOARD_WIDTH; y++) {
+		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
 			msg += "\n";
-			for (int x = 1; x < BOARD_HIEGHT; x++) {
-				msg += "  " + currentBoard[BOARD_WIDTH - y][x];
+			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+				msg += "  " + currentBoard[BORAD_DEMENSIONS-y][x];
 			}
 		}
 
@@ -234,8 +245,8 @@ public class GameBoardState implements Serializable {
 	public int[] countQueens() {
 		int Queen1 = 0;
 		int Queen2 = 0;
-		for (int i = 0; i < BOARD_WIDTH; i++) {
-			for (int j = 0; j < BOARD_HIEGHT; j++) {
+		for (int i = 0; i < BORAD_DEMENSIONS; i++) {
+			for (int j = 0; j < BORAD_DEMENSIONS; j++) {
 				if (currentBoard[i][j] == 1)
 					Queen1++;
 				if (currentBoard[i][j] == 2)
@@ -254,8 +265,9 @@ public class GameBoardState implements Serializable {
 		ArrayList<int[]> q1w = new ArrayList<>(4);
 		ArrayList<int[]> q2b = new ArrayList<>(4);
 		ArrayList<int[]> arrw = new ArrayList<>();
-		for (int y = 1; y < BOARD_WIDTH; y++) {
-			for (int x = 1; x < BOARD_WIDTH; x++) {
+		
+		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
 				if (currentBoard[y][x] == 1) {
 					q1w.add(new int[] { y, x });
 				}
@@ -269,6 +281,7 @@ public class GameBoardState implements Serializable {
 			}
 
 		}
+		
 		queenPose1White = q1w;
 		queenPose2Black = q2b;
 		arrowsPos = arrw;
