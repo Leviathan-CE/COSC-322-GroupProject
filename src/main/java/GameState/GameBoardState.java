@@ -33,11 +33,13 @@ public class GameBoardState implements Serializable {
 	 */
 	private static final long serialVersionUID = 1004773758902058794L;
 	public final static int BORAD_DEMENSIONS = 11;
+	public final static int INTERANL_STATE = 10;
+	
 	
 
 	private String ID = "";
 	private int hashCode = -1;
-	int[][] currentBoard = new int[BORAD_DEMENSIONS][BORAD_DEMENSIONS];
+	private int[][] currentBoard = null;
 
 	private ArrayList<int[]> queenPose1White = new ArrayList<>();
 	private ArrayList<int[]> queenPose2Black = new ArrayList<>();
@@ -54,14 +56,24 @@ public class GameBoardState implements Serializable {
 	public GameBoardState(ArrayList<Integer> gameBoard) {
 
 		System.out.println(gameBoard.toString());
+		currentBoard = new int[11][11];
 		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
 			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
 				currentBoard[BORAD_DEMENSIONS-y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
 				ID = ID + String.valueOf(Integer.valueOf(gameBoard.get(y * 11 + x)));
 			}
 		}
+		int[][] down = new int[10][10];
+		for(int y = 9; y >= 0;y--) {
+			for(int x = 9; x >= 0; x--) {
+				down[y][x] = currentBoard[y+1][x+1];
+			}
+		}
+		currentBoard = down;
 
 	}
+
+
 	
 	/**
 	 * CONSSTRUCTOR EFFECTS: can build game board with int[][] but REQUIRES 
@@ -69,14 +81,15 @@ public class GameBoardState implements Serializable {
 	 * @param gameBoard
 	 */
 	public GameBoardState(int[][] gameBoard) {
-		if(gameBoard[0].length < 10)
-			 throw new IndexOutOfBoundsException("Board mst be demension 11x11 and indexed from 1-10");
-		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
-			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
-				currentBoard[y][x] = gameBoard[y][x];
-				
-			}
-		}
+//		if(gameBoard[0].length != 10)
+//			throw new IndexOutOfBoundsException("both x and y demensions must be 10");
+		currentBoard = new int[10][10];
+		for (int y = 0; y < INTERANL_STATE; y++) {
+		    for (int x = 0; x < INTERANL_STATE; x++) {
+		    	if(!( y < 9 && x < 9))		    	
+		    		currentBoard[y][x] = gameBoard[y][x];
+		    }
+		}	
 	}
 
 	// ------Helper Methods-----------
@@ -148,12 +161,36 @@ public class GameBoardState implements Serializable {
 	}
 
 	@Override
+//	public String toString() {
+//		String msg = "";
+//		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+//			msg += "\n";
+//			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+//				msg += "  " + currentBoard[BORAD_DEMENSIONS-y][x];
+//			}
+//		}
+//
+//		return msg;
+//
+//	}
+//	public String toString() {
+//		String msg = "";
+//		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+//			msg += "\n";
+//			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+//				msg += "  " + currentBoard[BORAD_DEMENSIONS-y][x];
+//			}
+//		}
+//
+//		return msg;
+//
+//	}
 	public String toString() {
 		String msg = "";
-		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+		for (int y = 0; y < 10; y++) {
 			msg += "\n";
-			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
-				msg += "  " + currentBoard[BORAD_DEMENSIONS-y][x];
+			for (int x = 0; x < 10; x++) {
+				msg += "  " + currentBoard[9-y][x];
 			}
 		}
 
@@ -196,7 +233,7 @@ public class GameBoardState implements Serializable {
 			throw new IndexOutOfBoundsException("that is not a vaible queen to move. queen: " + queenColor
 					+ " :: pos: [" + oldPosXY[0] + "," + oldPosXY[1] + "]");
 		}
-		if (newPosXY[0] < 1 || newPosXY[1] < 1 || newPosXY[0] > 10 || newPosXY[1] > 10)
+		if (newPosXY[0] < 0 || newPosXY[1] < 0 || newPosXY[0] > 9 || newPosXY[1] > 9)
 			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
 
 		// retrieve index of queen that moved
@@ -245,8 +282,8 @@ public class GameBoardState implements Serializable {
 	public int[] countQueens() {
 		int Queen1 = 0;
 		int Queen2 = 0;
-		for (int i = 0; i < BORAD_DEMENSIONS; i++) {
-			for (int j = 0; j < BORAD_DEMENSIONS; j++) {
+		for (int i = 0; i < INTERANL_STATE; i++) {
+			for (int j = 0; j < INTERANL_STATE; j++) {
 				if (currentBoard[i][j] == 1)
 					Queen1++;
 				if (currentBoard[i][j] == 2)
@@ -261,13 +298,39 @@ public class GameBoardState implements Serializable {
 	 * EFFECTS: updates location of queens locally by searching for them. MODIFIES:
 	 * queenPoses1White and queenPoses2Black
 	 */
+//	public void updateQueenPoses() {
+//		ArrayList<int[]> q1w = new ArrayList<>(4);
+//		ArrayList<int[]> q2b = new ArrayList<>(4);
+//		ArrayList<int[]> arrw = new ArrayList<>();
+//		
+//		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
+//			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+//				if (currentBoard[y][x] == 1) {
+//					q1w.add(new int[] { y, x });
+//				}
+//				if (currentBoard[y][x] == 2) {
+//					q2b.add(new int[] { y, x });
+//				}
+//				if(currentBoard[y][x] == 3) {
+//					arrw.add(new int[] {y,x});
+//				}
+//
+//			}
+//
+//		}
+//		
+//		queenPose1White = q1w;
+//		queenPose2Black = q2b;
+//		arrowsPos = arrw;
+//	}
+	
 	public void updateQueenPoses() {
 		ArrayList<int[]> q1w = new ArrayList<>(4);
 		ArrayList<int[]> q2b = new ArrayList<>(4);
 		ArrayList<int[]> arrw = new ArrayList<>();
 		
-		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
-			for (int x = 1; x < BORAD_DEMENSIONS; x++) {
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 10; x++) {
 				if (currentBoard[y][x] == 1) {
 					q1w.add(new int[] { y, x });
 				}

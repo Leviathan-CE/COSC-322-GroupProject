@@ -223,11 +223,11 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 
 				// is the opponent move a valid move?
-				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1),
-						newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
-				if (!isValid) {
-					System.out.println("OPPONENT is a INVALID move");
-				}
+//				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1),
+//						newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
+//				if (!isValid) {
+//					System.out.println("OPPONENT is a INVALID move");
+//				}
 
 				// TODO: from action factory calculate move and send it to server
 				// <code> start for action
@@ -236,17 +236,23 @@ public class COSC322Test extends GamePlayer {
 
 				// update local game state to match the new state
 				// mutate data to readable
-				int[] QnPos = new int[] { queenPos.get(0), queenPos.get(1) };
-				int[] newQnPos = new int[] { newQueenPos.get(0), newQueenPos.get(1) };
-				int[] arrw = new int[] { arrowPos.get(0), arrowPos.get(1) };
+				int[] QnPos = new int[] { queenPos.get(0)-1, queenPos.get(1)-1 };
+				int[] newQnPos = new int[] { newQueenPos.get(0)-1, newQueenPos.get(1)-1 };
+				int[] arrw = new int[] { arrowPos.get(0)-1, arrowPos.get(1)-1 };
 				// move queen that opponent moved
 				chessBoard[0].MoveQueen(chessBoard[0].getCurBoard()[QnPos[0]][QnPos[1]], QnPos, newQnPos, arrw);
 				chessBoard[0].countQueens();
 
+				
+				
+				
+				
+				
 				// copy board state
 				chessBoard[1] = new Node(chessBoard[0].getCurBoard());
 				chessBoard[1].updateQueenPoses();
 				chessBoard[1].printQPoses();
+				System.out.println("ches[0]:" + chessBoard[0].getCurBoard()[0].length);
 
 				// TODO: calculate what our best move is and check if it is legal
 				
@@ -254,8 +260,8 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Node> chioces = ActionFactory.getLegalMoves(chessBoard[1], ourColor);
 				System.out.println("is chioces for bot empty? : " + chioces.isEmpty());
 				System.out.println("xd old: " + chessBoard[1].getCurBoard()[0].length);
-				System.out.println("xD: " + chioces.get(0).getCurBoard()[0].length + "\n yD:"
-						+ chioces.get(0).getCurBoard()[1].length);
+				//System.out.println("xD: " + chioces.get(0).getCurBoard()[0].length + "\n yD:"
+				//		+ chioces.get(0).getCurBoard()[1].length);
 				//calculate the utility function for all the nodes that came from the root
 				for (Node n : chioces) {
 					n.C = Math.random() * 5;
@@ -336,12 +342,12 @@ public class COSC322Test extends GamePlayer {
 //					
 //				}
 
-				boolean isValid2 = OurMove.getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1),
-						SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0),
-						SenderOBJ.get(2).get(1));
-				if (!isValid2) {
-					System.out.println("OUR MOVE is INVALD move");
-				}
+//				boolean isValid2 = OurMove.getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1),
+//						SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0),
+//						SenderOBJ.get(2).get(1));
+//				if (!isValid2) {
+//					System.out.println("OUR MOVE is INVALD move");
+//				}
 
 				// send move to serve/opponent
 				this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
