@@ -12,7 +12,7 @@ public class TestGameBoardState {
 	static GameBoardState board;
 	static  GameBoardState board10x10;
 	static GameBoardState boardOrientation;
-    int[][] gameboard = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
+    int[][] gameboard = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
 			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
 			             {0, 0, 1, 0, 0, 1, 0, 0, 0, 0,},
 			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
@@ -42,15 +42,15 @@ public class TestGameBoardState {
 	@Test
 	public void TestsetPosValue() {
 		board.print();
-		board.setPosValue(3, 10, 10);
+		board.setPosValue(3, 9, 0);
 		board.print();
 		try {
-			board.setPosValue(3, 11, 10);
+			board.setPosValue(3, 10, 9);
 		}catch(IndexOutOfBoundsException e) {
 			assertTrue(true);
 		}
 		try {
-			board.setPosValue(3, 10, 0);
+			board.setPosValue(3, 9, -1);
 		}catch(IndexOutOfBoundsException e) {
 			assertTrue(true);
 		}
@@ -62,11 +62,11 @@ public class TestGameBoardState {
 	@Test
 	public void TestBoardDenensions() {
 		try {
-		board10x10 = new GameBoardState(new int[10][10]);
+		board10x10 = new GameBoardState(new int[11][11]);
 		}catch(IndexOutOfBoundsException e) {
 			assertTrue(true);
 		}
-		assertTrue(board.getCurBoard()[0].length ==11);
+		assertTrue(board.getCurBoard()[0].length ==10);
 		
 		
 	
@@ -89,8 +89,8 @@ public class TestGameBoardState {
 		GameBoardState state = new GameBoardState(gameboard);
 		System.out.println("oreintation state");
 		state.print();
-		assertTrue(true);
-		//assertTrue(boardOrientation.getCurBoard()[1][1] == 1);
+		assertTrue(true);		
+		assertTrue(state.getCurBoard()[0][0] == 1);
 
 	}
 	
