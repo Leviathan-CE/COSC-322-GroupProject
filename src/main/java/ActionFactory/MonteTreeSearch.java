@@ -29,7 +29,7 @@ public class MonteTreeSearch {
 			deepestChild = child;
 			if(BestPick == null)
 				BestPick = child;
-			if(BestPick.getValue() < child.getValue() && child.children.isEmpty())
+			if(BestPick.getUCB() < child.getUCB() && child.children.isEmpty())
 				BestPick = child;
 			Search(child);
 		}
