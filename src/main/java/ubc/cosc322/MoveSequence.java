@@ -31,15 +31,14 @@ public class MoveSequence {
 
 		ChosenMove = MonteTreeSearch.Search(root);
 		ChosenMove.updateQueenPoses();
-		ChosenMove.printQPoses();
+		
 
 		decoupleUnusedChildren(ChosenMove, chioces, root);
 		// get move package
-		int[] oldQ = getOldQueenPos(root, ChosenMove, QueenColor);
-		int[] newQ = getNewQueenPos(root, ChosenMove, QueenColor);
-		int[] arrw = getArrow(root, ChosenMove);
+		int[] oldQ = ChosenMove.moveInfo.oldQPos;
+		int[] newQ = ChosenMove.moveInfo.newQPos;
+		int[] arrw = ChosenMove.moveInfo.arrow;
 		
-		ChosenMove.MoveQueen(QueenColor, oldQ, newQ, arrw);
 		// transform back to a=old board 11x11
 		oldQ[0]++; //= 10-oldQ[0];
 		oldQ[1]++;
@@ -50,7 +49,9 @@ public class MoveSequence {
 
 		System.out.println("chosenMove: Q: [" + oldQ[0] + ";" + oldQ[1] + "] nQ: [" + newQ[0] + ";" + newQ[1]
 				+ "] arrw: [" + arrw[0] + ";" + arrw[1] + "]");
+		ChosenMove.printQPoses();
 		ChosenMove.print();
+		
 
 		return setSenderObj(oldQ, newQ, arrw);
 	}
@@ -100,76 +101,7 @@ public class MoveSequence {
 			root.RemoveChild(n);
 		}
 	}
-
-	// get queen position that changed between two states looking for the initial
-	// state
-	private static int[] getOldQueenPos(Node root, Node chosenMove, int QueenColor) {
-		int[] oldQuen = new int[2];
-		for (int i = 0; i < 4; i++) {
-			// find oldqueen pos for black
-			if (QueenColor == 1)
-				if (root.getQueenPosition1().get(i)[0] != chosenMove.getQueenPosition1().get(i)[0]
-						|| root.getQueenPosition1().get(i)[1] != chosenMove.getQueenPosition1().get(i)[1]) {
-					oldQuen = root.getQueenPosition1().get(i);
-					break;
-				}
-			// get old pos if white
-			if (QueenColor == 2)
-				if (root.getQueenPosition2().get(i)[0] != chosenMove.getQueenPosition2().get(i)[0]
-						|| root.getQueenPosition2().get(i)[1] != chosenMove.getQueenPosition2().get(i)[1]) {
-					oldQuen = root.getQueenPosition2().get(i);
-					break;
-				}
-		}
-		System.out.println("oldQinMeth: " + oldQuen[0] + ";" + oldQuen[1]);
-		return oldQuen;
-	}
-
-	// get queen position that changed between two states looking for the new
-	// position.
-	private static int[] getNewQueenPos(Node root, Node chosenMove, int QueenColor) {
-		int[] newQuen = new int[2];
-		for (int i = 0; i < 4; i++) {
-			// find oldqueen pos for black
-			if (QueenColor == 1)
-				if (root.getQueenPosition1().get(i)[0] != chosenMove.getQueenPosition1().get(i)[0]
-						|| root.getQueenPosition1().get(i)[1] != chosenMove.getQueenPosition1().get(i)[1]) {
-					newQuen = chosenMove.getQueenPosition1().get(i);
-					break;
-				}
-			// get old pos if white
-			if (QueenColor == 2)
-				if (root.getQueenPosition2().get(i)[0] != chosenMove.getQueenPosition2().get(i)[0]
-						|| root.getQueenPosition2().get(i)[1] != chosenMove.getQueenPosition2().get(i)[1]) {
-					newQuen = chosenMove.getQueenPosition2().get(i);
-					break;
-				}
-		}
-		System.out.println("NewQinMeth: " + newQuen[0] + ";" + newQuen[1]);
-		return newQuen;
-	}
-
-	// looking for the new arrow that was thrown
-	private static int[] getArrow(Node root, Node chosenMove) {
-		int[] arrow = new int[2];
-		// get arrow from new game state
-		for (int x = 0; x < chosenMove.getArrowPositions().size(); x++) {
-			// if our newest arrow is last in list grab it return it
-			if (x == chosenMove.getArrowPositions().size() - 1) {
-				arrow = chosenMove.getArrowPositions().get(x);
-				break;
-			}
-			
-			// otherwise loop through until we find the arrow pair thats different
-			if (chosenMove.getArrowPositions().get(x)[0] != root.getArrowPositions().get(x)[0]||
-				chosenMove.getArrowPositions().get(x)[1] != root.getArrowPositions().get(x)[1]) {
-					arrow = chosenMove.getArrowPositions().get(x);
-					break;
-				
-			}
-		}
-		return arrow;
-	}
+	
 
 	private static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
 
@@ -182,4 +114,75 @@ public class MoveSequence {
 		SenderOBJ.add(arrowMe);
 		return SenderOBJ;
 	}
+
+//	// get queen position that changed between two states looking for the initial
+//	// state
+//	private static int[] getOldQueenPos(Node root, Node chosenMove, int QueenColor) {
+//		int[] oldQuen = new int[2];
+//		for (int i = 0; i < 4; i++) {
+//			// find oldqueen pos for black
+//			if (QueenColor == 1)
+//				if (root.getQueenPosition1().get(i)[0] != chosenMove.getQueenPosition1().get(i)[0]
+//						|| root.getQueenPosition1().get(i)[1] != chosenMove.getQueenPosition1().get(i)[1]) {
+//					oldQuen = root.getQueenPosition1().get(i);
+//					break;
+//				}
+//			// get old pos if white
+//			if (QueenColor == 2)
+//				if (root.getQueenPosition2().get(i)[0] != chosenMove.getQueenPosition2().get(i)[0]
+//						|| root.getQueenPosition2().get(i)[1] != chosenMove.getQueenPosition2().get(i)[1]) {
+//					oldQuen = root.getQueenPosition2().get(i);
+//					break;
+//				}
+//		}
+//		System.out.println("oldQinMeth: " + oldQuen[0] + ";" + oldQuen[1]);
+//		return oldQuen;
+//	}
+//
+//	// get queen position that changed between two states looking for the new
+//	// position.
+//	private static int[] getNewQueenPos(Node root, Node chosenMove, int QueenColor) {
+//		int[] newQuen = new int[2];
+//		for (int i = 0; i < 4; i++) {
+//			// find oldqueen pos for black
+//			if (QueenColor == 1)
+//				if (root.getQueenPosition1().get(i)[0] != chosenMove.getQueenPosition1().get(i)[0]
+//						|| root.getQueenPosition1().get(i)[1] != chosenMove.getQueenPosition1().get(i)[1]) {
+//					newQuen = chosenMove.getQueenPosition1().get(i);
+//					break;
+//				}
+//			// get old pos if white
+//			if (QueenColor == 2)
+//				if (root.getQueenPosition2().get(i)[0] != chosenMove.getQueenPosition2().get(i)[0]
+//						|| root.getQueenPosition2().get(i)[1] != chosenMove.getQueenPosition2().get(i)[1]) {
+//					newQuen = chosenMove.getQueenPosition2().get(i);
+//					break;
+//				}
+//		}
+//		System.out.println("NewQinMeth: " + newQuen[0] + ";" + newQuen[1]);
+//		return newQuen;
+//	}
+//
+//	// looking for the new arrow that was thrown
+//	private static int[] getArrow(Node root, Node chosenMove) {
+//		int[] arrow = new int[2];
+//		// get arrow from new game state
+//		for (int x = 0; x < chosenMove.getArrowPositions().size(); x++) {
+//			// if our newest arrow is last in list grab it return it
+//			if (x == chosenMove.getArrowPositions().size() - 1) {
+//				arrow = chosenMove.getArrowPositions().get(x);
+//				break;
+//			}
+//			
+//			// otherwise loop through until we find the arrow pair thats different
+//			if (chosenMove.getArrowPositions().get(x)[0] != root.getArrowPositions().get(x)[0]||
+//				chosenMove.getArrowPositions().get(x)[1] != root.getArrowPositions().get(x)[1]) {
+//					arrow = chosenMove.getArrowPositions().get(x);
+//					break;
+//				
+//			}
+//		}
+//		return arrow;
+//	}
+
 }

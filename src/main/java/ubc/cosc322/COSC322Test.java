@@ -43,6 +43,7 @@ public class COSC322Test extends GamePlayer {
 	private Node[] chessBoard = new Node[2];
 	private int turn = 1; // 1 = black 2 = white
 	private int ourColor = 0;
+	private int notOurColor = 0;
 	private final static String KEY = "BOB";
 
 	/**
@@ -170,36 +171,19 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("GAME START");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
-				if (blackUserName.equalsIgnoreCase(KEY))
+				
+				//determine who is what color
+				if (blackUserName.equalsIgnoreCase(KEY)) {
 					ourColor = 1;
-				else {
+					notOurColor = 2;
+				} else {
 					ourColor = 2;
+					notOurColor = 1;
 				}
 
 				if (ourColor == 1) {
-
-//					System.out.println("we start make move");
-//					ArrayList<Node> chioces =  ActionFactory.getLegalMoves(chessBoard[0], ourColor);
-//					System.out.println("is chioces for bot empty? : "+chioces.isEmpty());
-//					for(Node n : chioces) {
-//						n.C = Math.random()*5;
-//						chessBoard[0].addChild(n);
-//					}
-//					Node OurMove =  MonteTreeSearch.Search(chessBoard[1]);
-//					OurMove.updateQueenPoses();
-					// make our move
-//					int[] targetQueenToMove = new int[] { chessBoard[0].getQueenPosition2().get(0)[0],
-//							chessBoard[0].getQueenPosition2().get(0)[1] };
-//					ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[0].MoveQueen(2, targetQueenToMove,
-//							new int[] { 1, 1 }, new int[] { 1, 2 });
-
-//					
-//					boolean isValid2 = chessBoard[0].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
-//					if(!isValid2) {System.out.println("it is invalid move");}
-//					// send move to serve/opponent
-//					System.out.println("send move to server");
-//					this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
-//					this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+					MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
+							MoveSequence.GenerateMove(chessBoard[0], ourColor));
 
 				}
 				System.out.println(Timer.currentTime());
@@ -229,29 +213,28 @@ public class COSC322Test extends GamePlayer {
 
 				// TODO: from action factory calculate move and send it to server
 				// <code> start for action
-				if (MoveSequence.ChosenMove != null)
-					chessBoard[0] = MoveSequence.ChosenMove;
-				chessBoard[0].print();
-				chessBoard[0].countQueens();
+				if (MoveSequence.ChosenMove != null) {
+					chessBoard[0] = new Node(MoveSequence.ChosenMove.getCurBoard());
+					chessBoard[0].updateQueenPoses();
+					chessBoard[0].printQPoses();
+				}
 
 				// update local game state to match the new state
 				// mutate data to readable
 				int[] QnPos = new int[] { queenPos.get(0) - 1, queenPos.get(1) - 1 };
 				int[] newQnPos = new int[] { newQueenPos.get(0) - 1, newQueenPos.get(1) - 1 };
 				int[] arrw = new int[] { arrowPos.get(0) - 1, arrowPos.get(1) - 1 };
-				// move queen that opponent moved
-				chessBoard[0].MoveQueen(chessBoard[0].getCurBoard()[QnPos[0]][QnPos[1]], QnPos, newQnPos, arrw);
-				chessBoard[0].countQueens();
 
-				// copy board state
-				chessBoard[1] = new Node(chessBoard[0].getCurBoard());
-				chessBoard[1].updateQueenPoses();
-				chessBoard[1].printQPoses();
-				System.out.println("ches[0]:" + chessBoard[0].getCurBoard()[0].length);
-				chessBoard[1].print();
+				// move queen that opponent moved locally
+				chessBoard[0].setPosValue(0, QnPos[0], QnPos[1]);
+				chessBoard[0].setPosValue(notOurColor, newQnPos[0], newQnPos[1]);
+				chessBoard[0].setPosValue(3, arrw[0], arrw[1]);
+				chessBoard[0].updateQueenPoses();
+				chessBoard[0].countQueens();
+				chessBoard[0].print();
 
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
-						MoveSequence.GenerateMove(chessBoard[1], ourColor));
+						MoveSequence.GenerateMove(chessBoard[0], ourColor));
 				System.out.println("update local");
 
 				turn++;
