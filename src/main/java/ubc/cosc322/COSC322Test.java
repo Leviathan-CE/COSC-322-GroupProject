@@ -68,8 +68,8 @@ public class COSC322Test extends GamePlayer {
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
-		COSC322Test player = new COSC322Test(args[0], args[1]);
-		// HumanPlayer player = new HumanPlayer();
+		//COSC322Test player = new COSC322Test(args[0], args[1]);
+		HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
