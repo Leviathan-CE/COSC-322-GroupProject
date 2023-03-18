@@ -33,8 +33,8 @@ public class GameBoardState implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1004773758902058794L;
-	public final static int BOARD_WIDTH = 11;
-	public final static int BOARD_HIEGHT = 11;
+	public final static int BOARD_WIDTH = 10;
+	public final static int BOARD_HIEGHT = 10;
 
 	private String ID;
 	private int hashCode = -1;
@@ -55,9 +55,9 @@ public class GameBoardState implements Serializable {
 	public GameBoardState(ArrayList<Integer> gameBoard) {
 
 		System.out.println(gameBoard.toString());
-		for (int y = 1; y < BOARD_WIDTH; y++) {
-			for (int x = 1; x < BOARD_HIEGHT; x++) {
-				currentBoard[BOARD_WIDTH - y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
+		for (int y = 0; y < 10; y++) {
+			for (int x = 0; x < 10; x++) {
+				currentBoard[9 - y][x] = Integer.valueOf(gameBoard.get(y * 11 + x));
 				ID = ID + String.valueOf(Integer.valueOf(gameBoard.get(y * 11 + x)));
 			}
 		}

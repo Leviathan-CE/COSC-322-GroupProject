@@ -32,6 +32,8 @@ public class ActionFactory {
 	public static ArrayList<Node> getLegalMoves(Node node, int player) {
 	    // Initialize an empty ArrayList to store the legal moves.
 	    ArrayList<Node> legalMoves = new ArrayList<>();
+	    
+	    
 	    int[][] gameboard = node.getCurBoard();
 	    // Iterate over each cell on the gameboard.
 	    for (int i = 0; i < 10; i++) {
