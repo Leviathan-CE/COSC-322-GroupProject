@@ -53,10 +53,10 @@ public class Node extends GameBoardState  {
 			visits++;
 		}
 		
-		public String toString() {
-			return "" + id;
-		}
-		
+//		public String toString() {
+//			return "" + id;
+//		}
+//		
 		public void setParent(Node node) {
 			parent = node;
 		}

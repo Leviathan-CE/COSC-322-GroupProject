@@ -35,6 +35,8 @@ public class ActionFactory {
 	public static ArrayList<Node> getLegalMoves(Node node, int player) {
 	    // Initialize an empty ArrayList to store the legal moves.
 	    ArrayList<Node> legalMoves = new ArrayList<>();
+	    
+	    
 	    int[][] gameboard = node.getCurBoard();
 	    // Iterate over each cell on the gameboard.
 	    for (int i = 0; i < 10; i++) {
@@ -116,6 +118,16 @@ public class ActionFactory {
 	        }
 	        return newGameboard;
 	    }
+	  
+	  private static int[][] copyfinalGameboard(int[][] gameboard) {
+          int[][] newGameboard = new int[11][11];
+          for (int i = 1; i < 11; i++) {
+              for (int j = 1; j < 11; j++) {
+                  newGameboard[i][j] = gameboard[i][j];
+              }
+          }
+          return newGameboard;
+      }
 
 		    
 		    
