@@ -15,13 +15,14 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
  * 
- * @Note Expected Range of values 0 = empty 1 = white queen 2 = black queen 3 =
+ * @Note Expected Range of values 0 = empty 2 = white queen 1 = black queen 3 =
  *       arrow
  * 
  *       Note: size is not 10 because input also includes the labeling from 1-10
  *       and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
  * @param BOARD_DEMENSIONS = 11
+ * @param INTERNAL_STATE = 10 : the default game board size
  * 
  * 
  *
@@ -35,20 +36,24 @@ public class GameBoardState implements Serializable {
 	public final static int BORAD_DEMENSIONS = 11;
 	public final static int INTERANL_STATE = 10;
 	
-	
+	public MoveInfo lastMove = null;
 
 	private String ID = "";
 	private int hashCode = -1;
 	private int[][] currentBoard = null;
 
-	private ArrayList<int[]> queenPose1White = new ArrayList<>();
-	private ArrayList<int[]> queenPose2Black = new ArrayList<>();
+	private ArrayList<int[]> queenPosBlack1 = new ArrayList<>();
+	private ArrayList<int[]> queenPosWhite2 = new ArrayList<>();
 	private ArrayList<int[]> arrowsPos = new ArrayList<>();
 	// static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	/**
-	 * CONSTRUCTOR EFFECTS: currentBaord, creates 2d array representation of the
-	 * game board. Modifies: currentBoard
+	 * @CONSTRUCTOR : take in a 121 arraylist of integer and transforms 
+	 * it into a readable 11x11 game board were positions are located between
+	 * then down-sized to a 10x10 gamebaord.
+	 * @EFFECTS: currentBaord, creates 2d array representation of the
+	 * game board.
+	 * @Modifies: currentBoard
 	 * 
 	 * @param gameBaord is list of integers collected from
 	 *                  AmazonsGameMessage.GAME_STATE
@@ -63,27 +68,28 @@ public class GameBoardState implements Serializable {
 				ID = ID + String.valueOf(Integer.valueOf(gameBoard.get(y * 11 + x)));
 			}
 		}
-		int[][] down = new int[10][10];
+		int[][] down_size = new int[10][10];
 		for(int y = 9; y >= 0;y--) {
 			for(int x = 9; x >= 0; x--) {
-				down[y][x] = currentBoard[y+1][x+1];
+				down_size[y][x] = currentBoard[y+1][x+1];
 			}
 		}
-		currentBoard = down;
+		currentBoard = down_size;
 
 	}
 
 
 	
 	/**
-	 * CONSSTRUCTOR EFFECTS: can build game board with int[][] but REQUIRES 
-	 * the int[][] to be indexed from 1-10 rather from 0-11 for all relative board positions.
+	 * @CONSTRUCTOR : create a new game state from a game board that is 
+	 * either 11x11 to be down-sized to 10x10 or deep copy a 10x10 game board 
+	 * 
 	 * @param gameBoard
 	 */
 	public GameBoardState(int[][] gameBoard) {
-//		if(gameBoard[0].length != 10)
-//			throw new IndexOutOfBoundsException("both x and y demensions must be 10");
 		currentBoard = new int[10][10];
+		
+		//if the board is not size 11 refactor to size ten 
 		if(currentBoard[0].length == 10) {
 			for (int y = 0; y < INTERANL_STATE; y++) {
 			    for (int x = 0; x < INTERANL_STATE; x++) {
@@ -93,6 +99,7 @@ public class GameBoardState implements Serializable {
 			}	
 		}
 		
+		//otherwise copy it size ten into size ten
 		for (int y = 0; y < INTERANL_STATE; y++) {
 		    for (int x = 0; x < INTERANL_STATE; x++) {
 		    	if(!( y < 9 && x < 9))		    	
@@ -146,24 +153,24 @@ public class GameBoardState implements Serializable {
 	}
 
 	public void printQPoses() {
-		for (int i = 0; i < queenPose1White.size(); i++) {
-			System.out.print(Arrays.toString(queenPose1White.get(i)));
+		for (int i = 0; i < queenPosBlack1.size(); i++) {
+			System.out.print( "1:Black :: "+Arrays.toString(queenPosBlack1.get(i)));
 
 		}
 		System.out.println();
-		for (int i = 0; i < queenPose2Black.size(); i++) {
-			System.out.print(Arrays.toString(queenPose2Black.get(i)));
+		for (int i = 0; i < queenPosWhite2.size(); i++) {
+			System.out.print( "2:White :: "+Arrays.toString(queenPosWhite2.get(i)));
 
 		}
 		System.out.println();
 	}
 
 	public ArrayList<int[]> getQueenPosition1() {
-		return queenPose1White;
+		return queenPosBlack1;
 	}
 
 	public ArrayList<int[]> getQueenPosition2() {
-		return queenPose2Black;
+		return queenPosWhite2;
 	}
 	public ArrayList<int[]> getArrowPositions(){
 		return arrowsPos;
@@ -216,8 +223,8 @@ public class GameBoardState implements Serializable {
 	 * @param y        is the y integer value position of a row 1-10
 	 */
 	public ArrayList<Integer> setPosValue(int newvalue, int x, int y) {
-		if (x < 1 || y < 1 || x > 10 || y > 10)
-			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
+//		if (x < 1 || y < 1 || x > 10 || y > 10)
+//			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
 		currentBoard[x][y] = newvalue;
 		ArrayList<Integer> posVal = new ArrayList<Integer>((Arrays.asList(x, y)));
 		return posVal;
@@ -238,18 +245,18 @@ public class GameBoardState implements Serializable {
 	 */
 	public ArrayList<ArrayList<Integer>> MoveQueen(int queenColor, int[] oldPosXY, int[] newPosXY, int[] newArrowPos) {
 		// if out of bounds throw exception
-		if (currentBoard[oldPosXY[0]][oldPosXY[1]] != queenColor) {
-			throw new IndexOutOfBoundsException("that is not a vaible queen to move. queen: " + queenColor
-					+ " :: pos: [" + oldPosXY[0] + "," + oldPosXY[1] + "]");
-		}
-		if (newPosXY[0] < 0 || newPosXY[1] < 0 || newPosXY[0] > 9 || newPosXY[1] > 9)
-			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
+//		if (currentBoard[oldPosXY[0]][oldPosXY[1]] != queenColor) {
+//			throw new IndexOutOfBoundsException("that is not a vaible queen to move. queen: " + queenColor
+//					+ " :: pos: [" + oldPosXY[0] + "," + oldPosXY[1] + "]");
+//		}
+//		if (newPosXY[0] < 0 || newPosXY[1] < 0 || newPosXY[0] > 9 || newPosXY[1] > 9)
+//			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
 
 		// retrieve index of queen that moved
 		int queenIndex = 0;
 		if (queenColor == 1) {
 			for (int i = 0; i < 4; i++)
-				if (queenPose1White.get(i)[0] == oldPosXY[0] && queenPose1White.get(i)[1] == oldPosXY[1]) {
+				if (queenPosBlack1.get(i)[0] == oldPosXY[0] && queenPosBlack1.get(i)[1] == oldPosXY[1]) {
 					queenIndex = i;
 					break;
 				}
@@ -257,7 +264,7 @@ public class GameBoardState implements Serializable {
 
 		if (queenColor == 2) {
 			for (int i = 0; i < 4; i++)
-				if (queenPose2Black.get(i)[0] == oldPosXY[0] && queenPose2Black.get(i)[1] == oldPosXY[1]) {
+				if (queenPosWhite2.get(i)[0] == oldPosXY[0] && queenPosWhite2.get(i)[1] == oldPosXY[1]) {
 					queenIndex = i;
 					break;
 				}
@@ -270,12 +277,12 @@ public class GameBoardState implements Serializable {
 
 		// update queen that moved locally
 		if (queenColor == 1) {
-			queenPose1White.get(queenIndex)[0] = newPosXY[0];
-			queenPose1White.get(queenIndex)[1] = newPosXY[1];
+			queenPosBlack1.get(queenIndex)[0] = newPosXY[0];
+			queenPosBlack1.get(queenIndex)[1] = newPosXY[1];
 		}
 		if (queenColor == 2) {
-			queenPose2Black.get(queenIndex)[0] = newPosXY[0];
-			queenPose2Black.get(queenIndex)[1] = newPosXY[1];
+			queenPosWhite2.get(queenIndex)[0] = newPosXY[0];
+			queenPosWhite2.get(queenIndex)[1] = newPosXY[1];
 		}
 		// return sender object data
 		return senderObj;
@@ -354,8 +361,8 @@ public class GameBoardState implements Serializable {
 
 		}
 		
-		queenPose1White = q1w;
-		queenPose2Black = q2b;
+		queenPosBlack1 = q1w;
+		queenPosWhite2 = q2b;
 		arrowsPos = arrw;
 	}
 

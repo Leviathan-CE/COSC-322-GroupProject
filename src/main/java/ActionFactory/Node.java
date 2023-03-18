@@ -62,7 +62,10 @@ public class Node extends GameBoardState  {
 		}
 		public void addChild(Node node) {
 			children.add(node);
-		}		
+		}
+		public void RemoveChild(Node node) {
+			children.remove(node);
+		}
 		
 
 	
