@@ -252,8 +252,10 @@ public class COSC322Test extends GamePlayer {
 				chessBoard[1] = new Node(chessBoard[0].getCurBoard());
 				chessBoard[1].updateQueenPoses();
 				chessBoard[1].printQPoses();
-				System.out.println("ches[0]:" + chessBoard[0].getCurBoard()[0].length);
+				
 
+				System.out.println("ches[0]:" + chessBoard[0].getCurBoard()[0].length);
+				chessBoard[1].print();
 				// TODO: calculate what our best move is and check if it is legal
 				
 				//get all possible choices that are legal for the root node to make

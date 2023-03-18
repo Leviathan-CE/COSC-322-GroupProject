@@ -84,6 +84,15 @@ public class GameBoardState implements Serializable {
 //		if(gameBoard[0].length != 10)
 //			throw new IndexOutOfBoundsException("both x and y demensions must be 10");
 		currentBoard = new int[10][10];
+		if(currentBoard[0].length == 10) {
+			for (int y = 0; y < INTERANL_STATE; y++) {
+			    for (int x = 0; x < INTERANL_STATE; x++) {
+			    		    	
+			    		currentBoard[y][x] = gameBoard[y][x];
+			    }
+			}	
+		}
+		
 		for (int y = 0; y < INTERANL_STATE; y++) {
 		    for (int x = 0; x < INTERANL_STATE; x++) {
 		    	if(!( y < 9 && x < 9))		    	
