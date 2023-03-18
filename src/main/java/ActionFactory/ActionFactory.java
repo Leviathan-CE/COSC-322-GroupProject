@@ -34,8 +34,8 @@ public class ActionFactory {
 	    ArrayList<Node> legalMoves = new ArrayList<>();
 	    int[][] gameboard = node.getCurBoard();
 	    // Iterate over each cell on the gameboard.
-	    for (int i = 0; i < 10; i++) {
-	        for (int j = 0; j < 10; j++) {
+	    for (int i = 1; i < GameBoardState.BORAD_DEMENSIONS; i++) {
+	        for (int j = 1; j < GameBoardState.BORAD_DEMENSIONS; j++) {
 	            // Check if the current cell contains the player's piece.
 	        	//this if statement should only be triggered 4 times 
 	            if (gameboard[i][j] == player) {
@@ -52,13 +52,13 @@ public class ActionFactory {
 	                        int y = j;
 
 	                        // Move the piece in the current direction until it hits an occupied cell or the edge of the gameboard.
-	                        while (x + dx >= 0 && x + dx < 10 && y + dy >= 0 && y + dy < 10) {
+	                        while (x + dx >= 1 && x + dx < GameBoardState.BORAD_DEMENSIONS && y + dy >= 1 && y + dy < GameBoardState.BORAD_DEMENSIONS) {
 	                            x += dx;
 	                            y += dy;
 	                            // If the current cell is empty, the move is legal.
 	                            if (gameboard[x][y] == 0) {
 	                                // Create a new copy of the gameboard and update it to reflect the move.
-	                                int[][] newGameboard = copyGameboard(gameboard);
+	                                int[][] newGameboard = copyfinalGameboard(gameboard);
 	                                newGameboard[i][j] = 0;
 	                                newGameboard[x][y] = player;
 	                                
@@ -70,7 +70,7 @@ public class ActionFactory {
 	                                        int by = y;
 
 	                                        // Move the arrow in the current direction until it hits an occupied cell or the edge of the gameboard.
-	                                        while (bx + ax >= 0 && bx + ax < 10 && by + ay >= 0 && by + ay < 10) {
+	                                        while (bx + ax >= 1 && bx + ax < GameBoardState.BORAD_DEMENSIONS && by + ay >= 1 && by + ay < GameBoardState.BORAD_DEMENSIONS) {
 	                                            bx += ax;
 	                                            by += ay;
 	                                            // If the current cell is not empty, the arrow cannot be placed there.
@@ -78,12 +78,13 @@ public class ActionFactory {
 	                                                break;
 	                                            }
 	                                            // Create a new copy of the gameboard and update it to reflect the arrow placement.
-	                                            int[][] arrowGameboard = copyGameboard(newGameboard);
+	                                            int[][] arrowGameboard = copyfinalGameboard(newGameboard);
 	                                            arrowGameboard[bx][by] = 3;
 	                                            
 	                                            
 	                                            Node game = new Node(arrowGameboard);
 	                                            game.parent = node;
+	                                            
 	                                            
 	                                            // Add the new gameboard to the list of legal moves.
 	                                            legalMoves.add(game);
@@ -113,6 +114,16 @@ public class ActionFactory {
 	        }
 	        return newGameboard;
 	    }
+	  
+	  private static int[][] copyfinalGameboard(int[][] gameboard) {
+          int[][] newGameboard = new int[11][11];
+          for (int i = 1; i < 11; i++) {
+              for (int j = 1; j < 11; j++) {
+                  newGameboard[i][j] = gameboard[i][j];
+              }
+          }
+          return newGameboard;
+      }
 
 		    
 		    
