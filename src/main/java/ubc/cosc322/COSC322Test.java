@@ -11,6 +11,7 @@ import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
 import GameState.GameBoardState;
+import GameState.MoveInfo;
 import GameState.Timer;
 
 import sfs2x.client.entities.Room;
@@ -205,11 +206,7 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 
 				// is the opponent move a valid move?
-//				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1),
-//						newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
-//				if (!isValid) {
-//					System.out.println("OPPONENT is a INVALID move");
-//				}
+
 
 				// TODO: from action factory calculate move and send it to server
 				// <code> start for action
@@ -225,6 +222,17 @@ public class COSC322Test extends GamePlayer {
 				int[] newQnPos = new int[] { newQueenPos.get(0) - 1, newQueenPos.get(1) - 1 };
 				int[] arrw = new int[] { arrowPos.get(0) - 1, arrowPos.get(1) - 1 };
 
+				boolean isValid = chessBoard[0].getIfMoveIsValid(QnPos[0],QnPos[1],
+						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
+				if (!isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("OPPONENT made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+				}
 				// move queen that opponent moved locally
 				chessBoard[0].setPosValue(0, QnPos[0], QnPos[1]);
 				chessBoard[0].setPosValue(notOurColor, newQnPos[0], newQnPos[1]);
@@ -236,6 +244,18 @@ public class COSC322Test extends GamePlayer {
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 						MoveSequence.GenerateMove(chessBoard[0], ourColor));
 				System.out.println("update local");
+				MoveInfo info  = MoveSequence.ChosenMove.moveInfo;
+				isValid = MoveSequence.ChosenMove.getIfMoveIsValid(info.oldQPos[0],info.oldQPos[1],
+						info.newQPos[0],info.newQPos[1],info.arrow[0],info.arrow[1]);
+				if (!isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+				}
 
 				turn++;
 				break;

@@ -94,6 +94,7 @@ public class MoveSequence {
 	 */
 	private static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 		chioces.remove(chosenMove);
+		//only decouples nodes that are not part of the monte carlo tree
 		for (Node n : chioces) {
 			if (n.getvisits() > 1) {
 				n.setParent(null);

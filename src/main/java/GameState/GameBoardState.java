@@ -18,8 +18,8 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * @Note Expected Range of values 0 = empty 2 = white queen 1 = black queen 3 =
  *       arrow
  * 
- *       Note: size is not 10 because input also includes the labeling from 1-10
- *       and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
+ * @Note: size is not 10 because input also includes the labeling from 1-10 and
+ *        a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
  * @param BOARD_DEMENSIONS = 11
  * @param INTERNAL_STATE   = 10 : the default game board size
@@ -29,9 +29,6 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  */
 public class GameBoardState implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1004773758902058794L;
 	public final static int BORAD_DEMENSIONS = 11;
 	public final static int INTERANL_STATE = 10;
@@ -45,7 +42,6 @@ public class GameBoardState implements Serializable {
 	private ArrayList<int[]> queenPosBlack1 = new ArrayList<>();
 	private ArrayList<int[]> queenPosWhite2 = new ArrayList<>();
 	private ArrayList<int[]> arrowsPos = new ArrayList<>();
-	// static int[][] savedBoard = new int[BOARD_WIDTH][BOARD_HIEGHT];
 
 	/**
 	 * @CONSTRUCTOR : take in a 121 arraylist of integer and transforms it into a
@@ -83,22 +79,21 @@ public class GameBoardState implements Serializable {
 	 * 
 	 * @param gameBoard
 	 */
-	public GameBoardState(int[][] gameBoard) {	
+	public GameBoardState(int[][] gameBoard) {
 		currentBoard = new int[10][10];
-		// if the board is not size 11 refactor to size ten
+
 		if (gameBoard[0].length == 10) {
-			
+
 			for (int y = 0; y < INTERANL_STATE; y++) {
 				for (int x = 0; x < INTERANL_STATE; x++) {
 
 					currentBoard[y][x] = gameBoard[y][x];
 				}
 			}
-		}else
-			{
-				throw new IndexOutOfBoundsException("game Board must be of demensions of 10x10");
-			}
-		
+		} else { // if baord state is not 10x10 throw error
+			throw new IndexOutOfBoundsException("game Board must be of demensions of 10x10");
+		}
+
 	}
 
 	// ------Helper Methods-----------
@@ -187,8 +182,8 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
-	 * currentBaord
+	 * @EFFECTS: sets new value of of board x position and y position MODIFIES:
+	 *           currentBaord
 	 * 
 	 * @param newValue the new value that will be set in the matrix
 	 * @param x        is the x integer value position of a column 1-10
@@ -203,8 +198,9 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: QueenPose1White
-	 * or QueenPOse2Black, CurrentBoard
+	 * @deprecated To be Removed
+	 * @EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: QueenPose1White
+	 *           or QueenPOse2Black, CurrentBoard
 	 * 
 	 * @param queenColor  the queen color to select 1 is white 2 is black
 	 * @param oldPosXY    is the current queens position as a (x,y) pair
@@ -262,8 +258,8 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * EFFECTS: count the the number of queens on both sides expected their should
-	 * always be four of each.
+	 * @EFFECTS: count the the number of queens on both sides expected their should
+	 *           always be four of each.
 	 * 
 	 * @return returns 2d array position 0 is white queen position 1 is black queen
 	 */
