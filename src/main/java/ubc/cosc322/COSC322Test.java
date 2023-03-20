@@ -45,7 +45,7 @@ public class COSC322Test extends GamePlayer {
 	private int turn = 1; // 1 = black 2 = white
 	private int ourColor = 0;
 	private int notOurColor = 0;
-	private final static String KEY = "BOB";
+	private static String KEY = "BOB";
 
 	/**
 	 * Any name and password
@@ -71,6 +71,7 @@ public class COSC322Test extends GamePlayer {
 	 */
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
+		KEY = args[0];
 		// HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
@@ -170,7 +171,7 @@ public class COSC322Test extends GamePlayer {
 
 			case GameMessage.GAME_ACTION_START:
 				Timer.start();
-				System.out.println("GAME START");
+				System.out.println("------GAME START-------");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
 				
@@ -178,6 +179,8 @@ public class COSC322Test extends GamePlayer {
 				if (blackUserName.equalsIgnoreCase(KEY)) {
 					ourColor = 1;
 					notOurColor = 2;
+					System.out.println("ourColor : "+ourColor);
+				
 				} else {
 					ourColor = 2;
 					notOurColor = 1;
@@ -189,6 +192,7 @@ public class COSC322Test extends GamePlayer {
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
 				System.out.println(Timer.currentTime());
+				System.out.println("------Start Next TURNS-------");
 				break;
 
 			/*
