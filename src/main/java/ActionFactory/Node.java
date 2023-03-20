@@ -62,7 +62,7 @@ public class Node extends GameBoardState  {
 			h = node.h;
 			C = node.C;
 			id = node.id;
-			numWins = node.numWins;
+			wins = node.wins;
 			visits = node.visits;
 			
 			parent = node.parent;
@@ -117,7 +117,6 @@ public class Node extends GameBoardState  {
 		}
 		public void incrWins(int simResult) {
 			this.wins = this.wins + simResult;
-		}
 		}
 		public void RemoveChild(Node node) {
 			children.remove(node);

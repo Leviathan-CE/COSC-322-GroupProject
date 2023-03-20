@@ -39,7 +39,7 @@ public class MC_moveGenerator {
 			}
 			// for leaves :
 			if (current.getChildren().size() > 1) { // if there remains more than one gamestate option
-				if(current.getVisits() == 0) { 	// if node has not been visited, expand
+				if(current.getVisits() == 1) { 	// if node has not been visited, expand
 					simulate(current, player);
 					backprop(current);
 				}
