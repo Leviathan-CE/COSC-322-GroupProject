@@ -163,6 +163,7 @@ public class COSC322Test extends GamePlayer {
 				chessBoard[0].printQPoses();
 
 				System.out.println(chessBoard[0].toString());
+				System.out.println("h1 = " + chessBoard[0].geth1());
 				break;
 
 			case GameMessage.GAME_ACTION_START:
