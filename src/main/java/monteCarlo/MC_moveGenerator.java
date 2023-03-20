@@ -86,8 +86,7 @@ public class MC_moveGenerator {
 		}
 	}
 	public void expand(Node parent, int player) {
-		ActionFactory actFact = new ActionFactory();
-		parent.setChildren(actFact.getLegalMoves(parent, player)); 
+		parent.setChildren(ActionFactory.getLegalMoves(parent, player)); 
 		parent.setExpanded(true);
 	}
 	public Node findBestChild(Node parent) {

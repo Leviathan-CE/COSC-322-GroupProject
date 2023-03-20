@@ -27,8 +27,8 @@ public class MonteTreeSearch {
 				deepestChild = child;
 				if (BestPick == null || BestPick == root)
 					BestPick = child;
-				if (BestPick.getValue() < child.getValue() && child.children.isEmpty())
-					BestPick = child;
+//				if (BestPick.getValue() < child.getValue() && child.children.isEmpty())
+//					BestPick = child;
 				Search(child);
 			}
 
