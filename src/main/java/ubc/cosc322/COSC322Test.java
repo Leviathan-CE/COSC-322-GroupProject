@@ -11,6 +11,7 @@ import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
 import GameState.GameBoardState;
+import GameState.MoveInfo;
 import GameState.Timer;
 
 import sfs2x.client.entities.Room;
@@ -41,8 +42,9 @@ public class COSC322Test extends GamePlayer {
 	private String passwd = null;
 
 	private Node[] chessBoard = new Node[2];
-	private int turn = 1; // even is black odd is white turn and queen number
+	private int turn = 1; // 1 = black 2 = white
 	private int ourColor = 0;
+	private int notOurColor = 0;
 	private final static String KEY = "BOB";
 
 	/**
@@ -171,26 +173,19 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("GAME START");
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
-				if (blackUserName.equalsIgnoreCase(KEY))
-					ourColor = 2;
-				else {
+				
+				//determine who is what color
+				if (blackUserName.equalsIgnoreCase(KEY)) {
 					ourColor = 1;
+					notOurColor = 2;
+				} else {
+					ourColor = 2;
+					notOurColor = 1;
 				}
 
-				if (ourColor == 2) {
-					System.out.println("we start make move");
-					// make our move
-					int[] targetQueenToMove = new int[] { chessBoard[0].getQueenPosition2().get(0)[0],
-							chessBoard[0].getQueenPosition2().get(0)[1] };
-					ArrayList<ArrayList<Integer>> SenderOBJ = chessBoard[0].MoveQueen(2, targetQueenToMove,
-							new int[] { 1, 1 }, new int[] { 1, 2 });
-					
-					boolean isValid2 = chessBoard[0].getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
-					if(!isValid2) {System.out.println("it is invalid move");}
-					// send move to serve/opponent
-					System.out.println("send move to server");
-					this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
-					this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
+				if (ourColor == 1) {
+					MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
+							MoveSequence.GenerateMove(chessBoard[0], ourColor));
 
 				}
 				System.out.println(Timer.currentTime());
@@ -212,122 +207,58 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 				
 
-				//is the opponent move a valid move?
-				boolean isValid = chessBoard[0].getIfMoveIsValid(queenPos.get(1), queenPos.get(0), newQueenPos.get(1), newQueenPos.get(0), arrowPos.get(1), arrowPos.get(0));
-				if(!isValid) {System.out.println("it is invalid move");}
-				
-				//TODO: from action factory calculate move and send it to server
-				//<code> start for action
-				chessBoard[0].print();
-				chessBoard[0].countQueens();
-				
+				// is the opponent move a valid move?
+
+
+				// TODO: from action factory calculate move and send it to server
+				// <code> start for action
+				if (MoveSequence.ChosenMove != null) {
+					chessBoard[0] = new Node(MoveSequence.ChosenMove.getCurBoard());
+					chessBoard[0].updateQueenPoses();
+					chessBoard[0].printQPoses();
+				}
+
 				// update local game state to match the new state
 				// mutate data to readable
-				int[] QnPos = new int[] { queenPos.get(0), queenPos.get(1) };
-				int[] newQnPos = new int[] { newQueenPos.get(0), newQueenPos.get(1) };
-				int[] arrw = new int[] { arrowPos.get(0), arrowPos.get(1) };
-				// move queen that opponent moved
-				chessBoard[0].MoveQueen(chessBoard[0].getCurBoard()[QnPos[0]][QnPos[1]], QnPos, newQnPos, arrw);
+				int[] QnPos = new int[] { queenPos.get(0) - 1, queenPos.get(1) - 1 };
+				int[] newQnPos = new int[] { newQueenPos.get(0) - 1, newQueenPos.get(1) - 1 };
+				int[] arrw = new int[] { arrowPos.get(0) - 1, arrowPos.get(1) - 1 };
+
+				boolean isValid = chessBoard[0].getIfMoveIsValid(QnPos[0],QnPos[1],
+						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
+				if (!isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("OPPONENT made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+				}
+				// move queen that opponent moved locally
+				chessBoard[0].setPosValue(0, QnPos[0], QnPos[1]);
+				chessBoard[0].setPosValue(notOurColor, newQnPos[0], newQnPos[1]);
+				chessBoard[0].setPosValue(3, arrw[0], arrw[1]);
+				chessBoard[0].updateQueenPoses();
 				chessBoard[0].countQueens();
-				
+				chessBoard[0].print();
 
-				// copy board state
-				chessBoard[1] = new Node(chessBoard[0].getCurBoard());
-				chessBoard[1].updateQueenPoses();
-				chessBoard[1].printQPoses();
-
-				// TODO: calculate what our best move is and check if it is legal
-				ArrayList<Node> chioces =  ActionFactory.getLegalMoves(chessBoard[1], ourColor);
-				for(Node n : chioces) {
-					n.C = Math.random()*5;
+				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
+						MoveSequence.GenerateMove(chessBoard[0], ourColor));
+				System.out.println("update local");
+				MoveInfo info  = MoveSequence.ChosenMove.moveInfo;
+				isValid = MoveSequence.ChosenMove.getIfMoveIsValid(info.oldQPos[0],info.oldQPos[1],
+						info.newQPos[0],info.newQPos[1],info.arrow[0],info.arrow[1]);
+				if (!isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
 				}
-				Node OurMove =  MonteTreeSearch.Search(chessBoard[1]);
-				OurMove.updateQueenPoses();
-				
-				
-				
-				//exctract our move from the new game state using the positions of the queens and arrwos from 
-				//the old game sate and the new games state
-				int[] queenOld = new int[2];
-				int[] newQueen = new int[2];
-				int[] arrow = new int[2];
-				for(int i = 0 ; i < 4; i++) {
-					
-					//find oldqueen pos for black
-					if(chessBoard[1].getQueenPosition1().get(i)[0] != OurMove.getQueenPosition1().get(i)[0] ) 
-						if(chessBoard[1].getQueenPosition1().get(i)[1] != OurMove.getQueenPosition1().get(i)[1]) {
-							queenOld = chessBoard[1].getQueenPosition1().get(i);
-							newQueen = OurMove.getQueenPosition1().get(i);
-							break;
-						}
-					//get old pos if white
-					if(chessBoard[1].getQueenPosition2().get(i)[0] != OurMove.getQueenPosition2().get(i)[0] ) 
-						if(chessBoard[1].getQueenPosition2().get(i)[1] != OurMove.getQueenPosition2().get(i)[1]) {
-							queenOld = chessBoard[1].getQueenPosition2().get(i);
-							newQueen = OurMove.getQueenPosition2().get(i);
-							break;
-						}
-					
-				}
-				//get arrrow from new game state
-				for(int x=0; x< OurMove.getArrowPositions().size();x++) {
-					if(x == OurMove.getArrowPositions().size()-1) {
-						arrow = OurMove.getArrowPositions().get(x);
-						break;
-					}
-					
-					if(OurMove.getArrowPositions().get(x)[0] == chessBoard[1].getArrowPositions().get(x)[0]) {
-						if(OurMove.getArrowPositions().get(x)[1] == chessBoard[1].getArrowPositions().get(x)[1]) {
-							arrow = OurMove.getArrowPositions().get(x);
-							break;
-						}
-					}
-					
-				}
-				//package move contents into readable and ship it.
-				ArrayList<ArrayList<Integer>> SenderOBJ = new ArrayList<>();
-				ArrayList<Integer> oldquen = new ArrayList<Integer>(Arrays.asList(queenOld[0], queenOld[1]));
-				ArrayList<Integer> newquen = new ArrayList<Integer>(Arrays.asList(newQueen[0], newQueen[1]));
-				ArrayList<Integer> arrowMe = new ArrayList<Integer>(Arrays.asList(arrow[0], arrow[1]));
-				SenderOBJ.add(oldquen);
-				SenderOBJ.add(newquen);
-				SenderOBJ.add(arrowMe);
-				
-				
-				
-				///----end calc return move
 
-				// make our move
-//				int[] targetQueenToMove;
-//				ArrayList<ArrayList<Integer>> SenderOBJ;
-//				if (ourColor == 2) {
-//					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition2().get(0)[0],
-//							chessBoard[1].getQueenPosition2().get(0)[1] };
-//					SenderOBJ = chessBoard[1].MoveQueen(2, targetQueenToMove,
-//							new int[] { 1, 1 }, new int[] { 1, 2 });
-//
-//				}
-//				else {
-//					targetQueenToMove = new int[] { chessBoard[1].getQueenPosition1().get(1)[0],
-//							chessBoard[1].getQueenPosition1().get(1)[1] };
-//					SenderOBJ = chessBoard[1].MoveQueen(1, targetQueenToMove,
-//							new int[] { 1, 1 }, new int[] { 1, 2 });
-//
-//					
-//				}
-
-
-				
-				boolean isValid2 = OurMove.getIfMoveIsValid(SenderOBJ.get(0).get(0), SenderOBJ.get(0).get(1), SenderOBJ.get(1).get(0), SenderOBJ.get(1).get(1), SenderOBJ.get(2).get(0), SenderOBJ.get(2).get(1));
-				if(!isValid2) {System.out.println("it is invalid move");}
-				// send move to serve/opponent
-				this.gameClient.sendMoveMessage(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
-				this.gamegui.updateGameState(SenderOBJ.get(0), SenderOBJ.get(1), SenderOBJ.get(2));
-
-				// print console output
-				OurMove.print();
-				OurMove.countQueens();
-				// }
 				turn++;
 				break;
 			default:

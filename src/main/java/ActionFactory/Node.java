@@ -52,17 +52,20 @@ public class Node extends GameBoardState  {
 				numWins++;
 			visits++;
 		}
-		
-		public String toString() {
-			return "" + id;
-		}
-		
+		public int getvisits() {return visits;}
+//		public String toString() {
+//			return "" + id;
+//		}
+//		
 		public void setParent(Node node) {
 			parent = node;
 		}
 		public void addChild(Node node) {
 			children.add(node);
-		}		
+		}
+		public void RemoveChild(Node node) {
+			children.remove(node);
+		}
 		
 
 	

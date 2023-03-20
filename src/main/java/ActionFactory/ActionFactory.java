@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import GameState.GameBoardState;
+import GameState.MoveInfo;
 import Search.TreeSearch;
 import Search.TreeSearch.node;
 
@@ -41,6 +42,7 @@ public class ActionFactory {
 	            // Check if the current cell contains the player's piece.
 	        	//this if statement should only be triggered 4 times 
 	            if (gameboard[i][j] == player) {
+	            	System.out.println("i "+i+";"+j);	           
 	                // Iterate over each possible direction that the piece can move in.
 	                for (int dx = -1; dx <= 1; dx++) {
 	                    for (int dy = -1; dy <= 1; dy++) {
@@ -52,6 +54,7 @@ public class ActionFactory {
 	                        // Initialize temporary variables to store the current position of the piece.
 	                        int x = i;
 	                        int y = j;
+	                    
 
 	                        // Move the piece in the current direction until it hits an occupied cell or the edge of the gameboard.
 	                        while (x + dx >= 0 && x + dx < 10 && y + dy >= 0 && y + dy < 10) {
@@ -63,6 +66,7 @@ public class ActionFactory {
 	                                int[][] newGameboard = copyGameboard(gameboard);
 	                                newGameboard[i][j] = 0;
 	                                newGameboard[x][y] = player;
+	                                
 	                                
 	                                // Generate all possible arrow placements from the new position of the piece.
 	                                for (int ax = -1; ax <= 1; ax++) {
@@ -82,9 +86,11 @@ public class ActionFactory {
 	                                            // Create a new copy of the gameboard and update it to reflect the arrow placement.
 	                                            int[][] arrowGameboard = copyGameboard(newGameboard);
 	                                            arrowGameboard[bx][by] = 3;
+	                                   
 	                                            
 	                                            
 	                                            Node game = new Node(arrowGameboard);
+	                                            game.moveInfo = new MoveInfo(new int[] {i,j},new int[] {x,y},new int[] {bx,by});
 	                                            game.parent = node;
 	                                            
 	                                            // Add the new gameboard to the list of legal moves.
@@ -102,6 +108,11 @@ public class ActionFactory {
 	            }
 	        }
 	    }
+	    //add all children to parent
+	    for( Node n : legalMoves)
+	    	node.addChild(n);
+
+	    
 	    // Return the list of legal moves.
 	    return legalMoves;
 	}
