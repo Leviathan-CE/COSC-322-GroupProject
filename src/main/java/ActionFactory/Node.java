@@ -14,7 +14,7 @@ public class Node extends GameBoardState  {
 
 		int id = 1;
 		static int count = 1;
-		public String BID = ID;
+		
 		
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
@@ -22,7 +22,7 @@ public class Node extends GameBoardState  {
 		public double C = 1; //carlo constant
 		
 		private int wins = 0;
-		private int visits = 0; 
+		private int visits = 1; 
 		private boolean expanded = false;
 		private double ucb;
 		
@@ -34,13 +34,12 @@ public class Node extends GameBoardState  {
 		public double getUCB() {return Math.abs( wins/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
 		public void setHueristicScore(double newVal) {h = newVal;}
 		public void setGval(double newVal){g=newVal;}
-		public String getID() {return BID;}
+
 		
 		//-----CONSTRUCTORS-----------
 
 		public Node(ArrayList<Integer> gameBoard) {
-			super(gameBoard);
-			BID = ID;
+			super(gameBoard);			
 			id= count++;
 		}
 		public Node(int[][] gameBoard) {
@@ -52,6 +51,28 @@ public class Node extends GameBoardState  {
 			this.setParent(parent);
 			id= count++;
 		}
+		/**
+		 * @deprecated
+		 * @param node
+		 */
+		public Node(Node node) {
+			super(node.getCurBoard());
+			g =node.g;
+			M = node.M;
+			h = node.h;
+			C = node.C;
+			id = node.id;
+			numWins = node.numWins;
+			visits = node.visits;
+			
+			parent = node.parent;
+			for(Node n : node.children)
+				children.add(n);
+			
+			moveInfo = node.moveInfo;
+			
+		}
+		
 		//---HELP ME--------------	
 		//meant to be called through backprpagation to update weather the node that it has been visited and weather it won.
 		public void updateNode(boolean didWin) {
@@ -59,11 +80,11 @@ public class Node extends GameBoardState  {
 				wins++;
 			visits++;
 		}
-		
-		public String toString() {
-			return "" + id;
-		}
-		
+		public int getvisits() {return visits;}
+//		public String toString() {
+//			return "" + id;
+//		}
+//		
 		public void setParent(Node node) {
 			parent = node;
 		}
@@ -97,6 +118,11 @@ public class Node extends GameBoardState  {
 		public void incrWins(int simResult) {
 			this.wins = this.wins + simResult;
 		}
+		}
+		public void RemoveChild(Node node) {
+			children.remove(node);
+		}
+		public int childCount() {return children.size();}
 
 	
 }
