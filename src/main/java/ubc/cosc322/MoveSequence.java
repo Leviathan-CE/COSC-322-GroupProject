@@ -30,17 +30,17 @@ public class MoveSequence {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
 		
-		Node chosenOne = MonteTreeSearch.Search(root);
+		Node chosenOne =  MonteTreeSearch.Search(root);
 		
-		System.out.println("children in root: "+chosenOne.childCount());
+		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
 
 		decoupleUnusedChildren(chosenOne, chioces, root);
-		// get move package
 		
-		int[] oldQ = chosenOne.moveInfo.oldQPos;
-		int[] newQ = chosenOne.moveInfo.newQPos;
-		int[] arrw = chosenOne.moveInfo.arrow;	
+		// get move package		
+		int[] oldQ = chosenOne.moveInfo.getOldQPos();
+		int[] newQ = chosenOne.moveInfo.getNewQPos();
+		int[] arrw = chosenOne.moveInfo.getArrow();	
 		
 
 		System.out.println("chosenMove: Q: [" + oldQ[0] + ";" + oldQ[1] + "] nQ: [" + newQ[0] + ";" + newQ[1]

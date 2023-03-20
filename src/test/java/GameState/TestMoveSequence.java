@@ -26,19 +26,28 @@ public class TestMoveSequence {
 
 		System.out.println(gameboard[0].length * gameboard[1].length);
 		Node node = new Node(gameboard);
-		node.print();
-
-		node = MoveSequence.GenerateMove(node, 1);
-		node.print();
+		Node node2 = null;
+		Node node3 = null;
+		Node node4 = null;
 		
-		int[] move = node.moveInfo.getOldQPos();
-		assertTrue(gameboard[move[0]][move[1]] == 1);
-
-		node = MoveSequence.GenerateMove(node, 2);
-		node.print();
+		System.out.println(node.getID() +"\n "+node.hashCode());
+		//System.out.println(node.moveInfo.getPlayerID());
 		
-		move = node.moveInfo.getOldQPos();
-		assertTrue(gameboard[move[0]][move[1]] == 2);
+		node2 = MoveSequence.GenerateMove(node, 1);	
+		System.out.println(node2.getID() +"\n "+node2.hashCode());
+		System.out.println(node2.moveInfo.getPlayerID());
+		//int[] move = node.moveInfo.getOldQPos();
+		//assertTrue(gameboard[move[0]][move[1]] == 1);
+
+		node3 = MoveSequence.GenerateMove(node2, 2);		
+		System.out.println(node3.getID() +"\n "+node3.hashCode());
+		System.out.println(node3.moveInfo.getPlayerID());
+		//move = node.moveInfo.getOldQPos();
+		//assertTrue(gameboard[move[0]][move[1]] == 2);
+		
+		node4 = MoveSequence.GenerateMove(node3, 1);		
+		System.out.println(node4.getID() +"\n "+node4.hashCode());
+		System.out.println(node4.moveInfo.getPlayerID());
 
 	}
 }

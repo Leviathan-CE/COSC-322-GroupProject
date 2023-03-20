@@ -102,7 +102,7 @@ public class ActionFactory {
 												Node game = new Node(arrowGameboard);												
 												//store the move made in a info data class
 												game.moveInfo = new MoveInfo(new int[] { i, j }, new int[] { x, y },
-														new int[] { bx, by });
+														new int[] { bx, by }, player);
 												game.parent = node;
 
 												// Add the new gameboard to the list of legal moves.

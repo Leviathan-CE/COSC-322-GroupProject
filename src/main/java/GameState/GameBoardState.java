@@ -54,7 +54,7 @@ public class GameBoardState implements Serializable {
 	 *                  AmazonsGameMessage.GAME_STATE
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
-
+		ID = "";
 		System.out.println(gameBoard.toString());
 		currentBoard = new int[11][11];
 		for (int y = 1; y < BORAD_DEMENSIONS; y++) {
@@ -81,11 +81,12 @@ public class GameBoardState implements Serializable {
 	 */
 	public GameBoardState(int[][] gameBoard) {
 		currentBoard = new int[10][10];
-
+		ID = "";
 		if (gameBoard[0].length == 10) {
 			for (int y = 9; y >= 0; y--) {
 				for (int x = 9; x >= 0; x--) {
 					currentBoard[y][x] = gameBoard[y][x];
+					ID = ID + gameBoard[y][x];
 				}
 			}
 //			for (int y = 0; y < INTERANL_STATE; y++) {

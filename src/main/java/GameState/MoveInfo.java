@@ -5,13 +5,16 @@ public class MoveInfo {
 	private int[] oldQPos;
 	private int[] newQPos;
 	private int[] arrow;
+	private int playerID = 0;
 
-	public MoveInfo(int[] oldQ, int[] newQ, int[] arrw) {
+	public MoveInfo(int[] oldQ, int[] newQ, int[] arrw, int playerID) {
 		oldQPos = oldQ;
 		newQPos = newQ;
 		arrow = arrw;
+		this.playerID = playerID;
 	}
 	
+	public int getPlayerID() {return playerID;}
 	public int[] getOldQPos() {return oldQPos;}
 	public int[] getNewQPos() {return newQPos;}
 	public int[] getArrow() {return arrow;}
