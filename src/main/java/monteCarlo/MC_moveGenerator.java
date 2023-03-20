@@ -3,18 +3,11 @@ import java.util.ArrayList;
 
 import ActionFactory.ActionFactory;
 import ActionFactory.Node;
-import GameState.GameBoardState;
 
 // selection, expansion, simulation, backpropagation
 public class MC_moveGenerator {
-	private double timeLimit = 25;
-	private int myTeam;
-	private double startTime;
 	
-	// constructor
-	public MC_moveGenerator(int myTeam) {
-		this.myTeam = myTeam;	}
-	
+			
 	// selection, expansion, simulation, backpropagation
 
 	// while time remains:
@@ -25,9 +18,11 @@ public class MC_moveGenerator {
 	//				current = first new child node, SIMULATE, backpropagate
 	//			- no? SIMULATE! backpropagate
 	
-	public Node mcts(Node root, int player) {
+	public static Node mcts(Node root, int player) {
 		Node current = null;
 		Node bestChild = null;
+		double startTime;
+		double timeLimit = 15;
 		startTime = (System.currentTimeMillis() / 1000.);	// snatched from ejohn, implement our timer instead?
 		double currentTime = (System.currentTimeMillis() / 1000.);
 		
@@ -41,11 +36,16 @@ public class MC_moveGenerator {
 			if (current.getChildren().size() > 1) { // if there remains more than one gamestate option
 				if(current.getVisits() == 1) { 	// if node has not been visited, expand
 					simulate(current, player);
+					System.out.println("simulation ran, sim value: " + current.getWins());
 					backprop(current);
+					System.out.println("result backpropagated");
 				}
 				else {
 					expand(current, player);
 					simulate(current.getChildren().get(0), player); // all children have infinite ucb, simulate first child 
+					System.out.println("simulation ran, sim value: " + current.getWins());
+					backprop(current); 
+					System.out.println("result backpropagated");
 				}
 			}
 			return current.getChildren().get(0); // if only one gamestate remains, return final state
@@ -53,7 +53,7 @@ public class MC_moveGenerator {
 		return findBestChild(root); // when time runs out, return best option from provided gamestate/player
 	}
 	
-	public ArrayList<Node> backprop(Node node) {
+	public static ArrayList<Node> backprop(Node node) {
 		ArrayList<Node> nodeList = new ArrayList<Node>();
 		nodeList.add(node);
 		int simResult = node.getWins();	// 1 if game won, 0 if lost
@@ -68,7 +68,7 @@ public class MC_moveGenerator {
 	
 	// simulate a random game from current gamestate, update node wins (0 or 1) based on 
 	// win/loss of sim, and increment visits
-	public void simulate(Node node, int player) { 
+	public static void simulate(Node node, int player) { 
 		ArrayList<Node> possibleMoves = ActionFactory.getLegalMoves(node, player); 
 		int index;
 		Node newGameState;
@@ -85,11 +85,11 @@ public class MC_moveGenerator {
 			node.incrWins(1);
 		}
 	}
-	public void expand(Node parent, int player) {
+	public static void expand(Node parent, int player) {
 		parent.setChildren(ActionFactory.getLegalMoves(parent, player)); 
 		parent.setExpanded(true);
 	}
-	public Node findBestChild(Node parent) {
+	public static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
 		double largestUCB = 0;
 		double tempUCB;

@@ -6,6 +6,7 @@ import java.util.Arrays;
 import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
+import monteCarlo.MC_moveGenerator;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 
@@ -30,7 +31,7 @@ public class MoveSequence {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
 		
-		Node chosenOne =  MonteTreeSearch.Search(root);
+		Node chosenOne =  MC_moveGenerator.mcts(root, QueenColor);
 		
 		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
