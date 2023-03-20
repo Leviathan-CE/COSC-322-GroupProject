@@ -328,24 +328,40 @@ public class GameBoardState implements Serializable {
 		}
 
 		if (qy1 == qy2) { // when coordinates of y is same, check vertically
-			int start = qx1 < qx2 ? qx1 : qx2;
-			int end = qx1 < qx2 ? qx2 : qx1;
-			for (int i = start + 1; i <= end; i++) { // this for loop checks the vertical path of the queen from start
-														// to end and checks to make sure that path is clear
-				if (board[i][qy1] != 0)
+
+			if(qx1 < qx2) {
+				for (int i = qx1 + 1; i <= qx2; i++) { // this for loop checks the vertical path of the queen from start
+					// to end and checks to make sure that path is clear
+					if (board[i][qy1] != 0)
 					return isValid;
+				}
+			}else if(qx1 > qx2){
+				for (int i = qx1 - 1; i >= qx2; i--) { // this for loop checks the vertical path of the queen from start
+					// to end and checks to make sure that path is clear
+					if (board[i][qy1] != 0)
+					return isValid;
+				}
 			}
+			
 			isValid = true;
 			return isValid;
 		}
 
 		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
-			int start = qy1 < qy2 ? qy1 : qy2;
-			int end = qy1 < qy2 ? qy2 : qy1;
-			for (int i = start + 1; i <= end; i++) { // this for loop checks the horizontal path of the queen from start
-														// to end and checks to make sure that path is clear
-				if (board[qx1][i] != 0)
+
+			if(qy1 < qy2) {
+				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from start
+					// to end and checks to make sure that path is clear
+					if (board[qx1][i] != 0)
 					return isValid;
+				}
+			}else if(qy1 > qy2) {
+				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from start
+					// to end and checks to make sure that path is clear
+					if (board[qx1][i] != 0)
+					return isValid;
+				}
+				
 			}
 			isValid = true;
 			return isValid;
@@ -360,21 +376,21 @@ public class GameBoardState implements Serializable {
 						return isValid;
 				}
 			} else if ((qx1 < qx2) && (qy1 > qy2)) {
-				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j <= qy2; i++, j--) { // q1 to q2(from left to right, top
+				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j >= qy2; i++, j--) { // q1 to q2(from left to right, top
 																						// to bottom)
 					if (board[i][j] != 0)
 						return isValid;
 				}
 
 			} else if ((qx1 > qx2) && (qy1 < qy2)) {
-				for (int i = qx2 + 1, j = qy2 + 1; i <= qx1 && j <= qy1; i++, j++) { // q2 to q1(from left to right,
+				for (int i = qx1 - 1, j = qy1 + 1; i >= qx2 && j <= qy2; i--, j++) { // q2 to q1(from left to right,
 																						// bottom to top)
 					if (board[i][j] != 0)
 						return isValid;
 				}
 
 			} else if ((qx1 > qx2) && (qy1 > qy2)) {
-				for (int i = qx2 + 1, j = qy2 - 1; i <= qx1 && j <= qy1; i++, j--) { // q2 to q1(from left to right, top
+				for (int i = qx1 - 1, j = qy1 - 1; i >= qx2 && j >= qy2; i--, j--) { // q2 to q1(from left to right, top
 																						// to bottom)
 					if (board[i][j] != 0)
 						return isValid;

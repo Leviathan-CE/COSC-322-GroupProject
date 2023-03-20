@@ -26,16 +26,19 @@ public class MoveSequence {
 	 */
 	public static Node GenerateMove(Node root, int QueenColor) {
 		System.out.println("------CHOSEN MOVE STATE--------");
+		System.out.println("Who's Turn :"+QueenColor);
+
 		// gen legal moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
-		
+		if(chioces.size() == 0)
+			throw new RuntimeException("WE LOOSE");
 		Node chosenOne =  MonteTreeSearch.Search(root);
 		
 		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
 
-		decoupleUnusedChildren(chosenOne, chioces, root);
+		//decoupleUnusedChildren(chosenOne, chioces, root);
 		
 		// get move package		
 		int[] oldQ = chosenOne.moveInfo.getOldQPos();
@@ -48,6 +51,13 @@ public class MoveSequence {
 		chosenOne.printQPoses();
 		
 		chosenOne.print();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		System.out.println("------END OF STATE--------");
 
 		return chosenOne;
@@ -85,7 +95,7 @@ public class MoveSequence {
 			}
 			n.updateQueenPoses();
 			n.C = Math.random() * 5;
-			//n.setGval(n.h1());
+			n.setGval(n.h1());
 		}
 		return root;
 	}
