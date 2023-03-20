@@ -83,14 +83,18 @@ public class GameBoardState implements Serializable {
 		currentBoard = new int[10][10];
 
 		if (gameBoard[0].length == 10) {
-
-			for (int y = 0; y < INTERANL_STATE; y++) {
-				for (int x = 0; x < INTERANL_STATE; x++) {
-
+			for (int y = 9; y >= 0; y--) {
+				for (int x = 9; x >= 0; x--) {
 					currentBoard[y][x] = gameBoard[y][x];
 				}
 			}
-		} else { // if baord state is not 10x10 throw error
+//			for (int y = 0; y < INTERANL_STATE; y++) {
+//				for (int x = 0; x < INTERANL_STATE; x++) {
+//
+//					currentBoard[y][x] = gameBoard[y][x];
+//				}
+//			}
+		} else { // if board state is not 10x10 throw error
 			throw new IndexOutOfBoundsException("game Board must be of demensions of 10x10");
 		}
 
@@ -274,7 +278,7 @@ public class GameBoardState implements Serializable {
 					Queen2++;
 			}
 		}
-		System.out.println("q1 = " + Queen1 + " q2 = " + Queen2);
+		//System.out.println("q1 = " + Queen1 + " q2 = " + Queen2);
 		return new int[] { Queen1, Queen2 };
 	}
 
@@ -404,9 +408,9 @@ public  int  h1() {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) {//if tile is queen tile then skip
-						if(queenPose1White.get(i)[0]+x >0 && queenPose1White.get(i)[0]+x <11 && (queenPose1White.get(i)[1] + y)>0 && (queenPose1White.get(i)[1] + y)<11 )
+						if(queenPosWhite2.get(i)[0]+x >0 && queenPosWhite2.get(i)[0]+x <10 && (queenPosWhite2.get(i)[1] + y)>0 && (queenPosWhite2.get(i)[1] + y)<10 )
 							{
-								if (board[(queenPose1White.get(i)[0] + x)][(queenPose1White.get(i)[1] + y)]!= 0) {
+								if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)]!= 0) {
 									sumOfWhiteQueen++;
 										}
 							}else {
@@ -421,9 +425,9 @@ public  int  h1() {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { //if tile is queen tile then skip
-						if(queenPose2Black.get(i)[0]+x >0 && queenPose2Black.get(i)[0]+x <11 && (queenPose2Black.get(i)[1] + y)>0 && (queenPose2Black.get(i)[1] + y)<11 )
+						if(queenPosBlack1.get(i)[0]+x >0 && queenPosBlack1.get(i)[0]+x <10 && (queenPosBlack1.get(i)[1] + y)>0 && (queenPosBlack1.get(i)[1] + y)<10 )
 							{
-								if (board[(queenPose2Black.get(i)[0] + x)][(queenPose2Black.get(i)[1] + y)]!= 0) {
+								if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)]!= 0) {
 									sumOfBlackQueen++;
 										}
 							}else {

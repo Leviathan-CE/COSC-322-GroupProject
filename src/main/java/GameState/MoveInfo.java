@@ -2,16 +2,20 @@ package GameState;
 
 public class MoveInfo {
 
-	public int[] oldQPos;
-	public int[] newQPos;
-	public int[] arrow;
+	private int[] oldQPos;
+	private int[] newQPos;
+	private int[] arrow;
 
 	public MoveInfo(int[] oldQ, int[] newQ, int[] arrw) {
 		oldQPos = oldQ;
 		newQPos = newQ;
 		arrow = arrw;
 	}
-
+	
+	public int[] getOldQPos() {return oldQPos;}
+	public int[] getNewQPos() {return newQPos;}
+	public int[] getArrow() {return arrow;}
+	
 	public void copy(MoveInfo info) {
 		if (info.oldQPos != null)
 			oldQPos = new int[] { info.oldQPos[0], info.newQPos[1] };

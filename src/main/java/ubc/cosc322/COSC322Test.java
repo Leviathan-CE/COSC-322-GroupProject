@@ -41,7 +41,7 @@ public class COSC322Test extends GamePlayer {
 	private String userName = null;
 	private String passwd = null;
 
-	private Node[] chessBoard = new Node[2];
+	private Node chessBoard;
 	private int turn = 1; // 1 = black 2 = white
 	private int ourColor = 0;
 	private int notOurColor = 0;
@@ -160,12 +160,12 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
 						.get(AmazonsGameMessage.GAME_STATE));
 				// set initial local state of GameBoard
-				chessBoard[0] = new Node(GottenGameState);
-				chessBoard[0].updateQueenPoses();
-				chessBoard[0].printQPoses();
+				chessBoard = new Node(GottenGameState);
+				chessBoard.updateQueenPoses();
+				chessBoard.printQPoses();
 
-				System.out.println(chessBoard[0].toString());
-				System.out.println("h1 = " + chessBoard[0].geth1());
+				System.out.println(chessBoard.toString());
+				System.out.println("h1 = " + chessBoard.geth1());
 				break;
 
 			case GameMessage.GAME_ACTION_START:
@@ -183,10 +183,10 @@ public class COSC322Test extends GamePlayer {
 					notOurColor = 1;
 				}
 
-				if (ourColor == 1) {
-					MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
-							MoveSequence.GenerateMove(chessBoard[0], ourColor));
-
+				if (ourColor == 1) {				
+						chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
+								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
 				System.out.println(Timer.currentTime());
 				break;
@@ -211,11 +211,6 @@ public class COSC322Test extends GamePlayer {
 
 				// TODO: from action factory calculate move and send it to server
 				// <code> start for action
-				if (MoveSequence.ChosenMove != null) {
-					chessBoard[0] = new Node(MoveSequence.ChosenMove.getCurBoard());
-					chessBoard[0].updateQueenPoses();
-					chessBoard[0].printQPoses();
-				}
 
 				// update local game state to match the new state
 				// mutate data to readable
@@ -223,40 +218,51 @@ public class COSC322Test extends GamePlayer {
 				int[] newQnPos = new int[] { newQueenPos.get(0) - 1, newQueenPos.get(1) - 1 };
 				int[] arrw = new int[] { arrowPos.get(0) - 1, arrowPos.get(1) - 1 };
 
-				boolean isValid = chessBoard[0].getIfMoveIsValid(QnPos[0],QnPos[1],
-						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
-				if (!isValid) {
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("OPPONENT made a INVALID move");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-				}
-				// move queen that opponent moved locally
-				chessBoard[0].setPosValue(0, QnPos[0], QnPos[1]);
-				chessBoard[0].setPosValue(notOurColor, newQnPos[0], newQnPos[1]);
-				chessBoard[0].setPosValue(3, arrw[0], arrw[1]);
-				chessBoard[0].updateQueenPoses();
-				chessBoard[0].countQueens();
-				chessBoard[0].print();
+//				boolean isValid = chessBoard[0].getIfMoveIsValid(QnPos[0],QnPos[1],
+//						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
+//				if (!isValid) {
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("OPPONENT made a INVALID move");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//				}
+				// update baord so our move is in it before enemy make move
+//				if (MoveSequence.ChosenMove != null) {
+//					chessBoard[0] = new Node(MoveSequence.ChosenMove.getCurBoard());
+//					chessBoard[0].updateQueenPoses();
+//					chessBoard[0].printQPoses();
+//				}
+				
 
+				//apply opponent move
+				chessBoard.setPosValue(0, QnPos[0], QnPos[1]);
+				chessBoard.setPosValue(notOurColor, newQnPos[0], newQnPos[1]);
+				chessBoard.setPosValue(3, arrw[0], arrw[1]);
+				chessBoard.updateQueenPoses();
+				chessBoard.countQueens();
+				chessBoard.print();
+
+				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
-						MoveSequence.GenerateMove(chessBoard[0], ourColor));
+						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				System.out.println("update local");
-				MoveInfo info  = MoveSequence.ChosenMove.moveInfo;
-				isValid = MoveSequence.ChosenMove.getIfMoveIsValid(info.oldQPos[0],info.oldQPos[1],
-						info.newQPos[0],info.newQPos[1],info.arrow[0],info.arrow[1]);
-				if (!isValid) {
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-				}
+//				chessBoard.setPosValue(0, info.oldQPos[0], info.oldQPos[1]);
+//				chessBoard.setPosValue(notOurColor, info.newQPos[0], info.newQPos[1]);
+//				chessBoard.setPosValue(3, info.arrow[0], info.arrow[1]);
+//				isValid = MoveSequence.ChosenMove.getIfMoveIsValid(info.oldQPos[0],info.oldQPos[1],
+//						info.newQPos[0],info.newQPos[1],info.arrow[0],info.arrow[1]);
+//				if (!isValid) {
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//				}
 
 				turn++;
 				break;

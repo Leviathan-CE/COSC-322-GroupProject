@@ -11,7 +11,7 @@ import ygraph.ai.smartfox.games.GameClient;
 
 public class MoveSequence {
 
-	public static Node ChosenMove = null;
+
 
 	/**
 	 * @EFFECTS : generates all possible legal actions from action factory and then
@@ -22,37 +22,35 @@ public class MoveSequence {
 	 * @param root       : the game state Node that the game is currently in
 	 * @param QueenColor : which Queen/Team are we generating moves for
 	 * 
-	 * @return Package data for game client
+	 * @return  Node that is chsen and filled with move infomation
 	 */
-	public static ArrayList<ArrayList<Integer>> GenerateMove(Node root, int QueenColor) {
-
+	public static Node GenerateMove(Node root, int QueenColor) {
+		System.out.println("------CHOSEN MOVE STATE--------");
 		// gen legal moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
+		
+		Node chosenOne = MonteTreeSearch.Search(root);
+		
+		System.out.println("children in root: "+chosenOne.childCount());
+		chosenOne.updateQueenPoses();
 
-		ChosenMove = MonteTreeSearch.Search(root);
-		ChosenMove.updateQueenPoses();
-
-		decoupleUnusedChildren(ChosenMove, chioces, root);
+		decoupleUnusedChildren(chosenOne, chioces, root);
 		// get move package
-		int[] oldQ = ChosenMove.moveInfo.oldQPos;
-		int[] newQ = ChosenMove.moveInfo.newQPos;
-		int[] arrw = ChosenMove.moveInfo.arrow;
-
-		// transform back to a=old board 11x11
-		oldQ[0]++; // = 10-oldQ[0];
-		oldQ[1]++;
-		newQ[0]++; // =10-newQ[0];
-		newQ[1]++;
-		arrw[0]++;// =10-arrw[0];
-		arrw[1]++;
+		
+		int[] oldQ = chosenOne.moveInfo.oldQPos;
+		int[] newQ = chosenOne.moveInfo.newQPos;
+		int[] arrw = chosenOne.moveInfo.arrow;	
+		
 
 		System.out.println("chosenMove: Q: [" + oldQ[0] + ";" + oldQ[1] + "] nQ: [" + newQ[0] + ";" + newQ[1]
 				+ "] arrw: [" + arrw[0] + ";" + arrw[1] + "]");
-		ChosenMove.printQPoses();
-		ChosenMove.print();
+		chosenOne.printQPoses();
+		
+		chosenOne.print();
+		System.out.println("------END OF STATE--------");
 
-		return setSenderObj(oldQ, newQ, arrw);
+		return chosenOne;
 	}
 
 	/**
@@ -78,9 +76,16 @@ public class MoveSequence {
 	private static Node CalcUtilityScore(ArrayList<Node> chioces, Node root) {
 		// calculate the utility function for all the nodes that came from the root
 		// temporary solution
+		int count =0;
 		for (Node n : chioces) {
+			count++;
+			int[] qs = n.countQueens();
+			if(qs[0] != 4 || qs[1] !=4) {
+			throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+";"+qs[1]+" in iteration: "+count);
+			}
+			n.updateQueenPoses();
 			n.C = Math.random() * 5;
-
+			//n.setGval(n.h1());
 		}
 		return root;
 	}
@@ -103,12 +108,12 @@ public class MoveSequence {
 		}
 	}
 
-	private static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
+	public static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
 
 		ArrayList<ArrayList<Integer>> SenderOBJ = new ArrayList<>();
-		ArrayList<Integer> oldquen = new ArrayList<Integer>(Arrays.asList(oldQ[0], oldQ[1]));
-		ArrayList<Integer> newquen = new ArrayList<Integer>(Arrays.asList(newQ[0], newQ[1]));
-		ArrayList<Integer> arrowMe = new ArrayList<Integer>(Arrays.asList(arrw[0], arrw[1]));
+		ArrayList<Integer> oldquen = new ArrayList<Integer>(Arrays.asList(oldQ[0]+1, oldQ[1]+1));
+		ArrayList<Integer> newquen = new ArrayList<Integer>(Arrays.asList(newQ[0]+1, newQ[1]+1));
+		ArrayList<Integer> arrowMe = new ArrayList<Integer>(Arrays.asList(arrw[0]+1, arrw[1]+1));
 		SenderOBJ.add(oldquen);
 		SenderOBJ.add(newquen);
 		SenderOBJ.add(arrowMe);
