@@ -72,7 +72,7 @@ public class COSC322Test extends GamePlayer {
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		KEY = args[0];
-		// HumanPlayer player = new HumanPlayer();
+	//	HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 

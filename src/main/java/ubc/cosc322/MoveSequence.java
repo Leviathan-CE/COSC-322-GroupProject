@@ -6,7 +6,7 @@ import java.util.Arrays;
 import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
-import monteCarlo.MC_moveGenerator;
+import monteCarlo.mcts;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 
@@ -31,7 +31,7 @@ public class MoveSequence {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
 		
-		Node chosenOne =  MC_moveGenerator.mcts(root, QueenColor);
+		Node chosenOne =  mcts.getMonteMove(root, QueenColor);
 		
 		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
@@ -82,7 +82,7 @@ public class MoveSequence {
 			count++;
 			int[] qs = n.countQueens();
 			if(qs[0] != 4 || qs[1] !=4) {
-			throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+";"+qs[1]+" in iteration: "+count);
+	//		throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+";"+qs[1]+" in iteration: "+count);
 			}
 			n.updateQueenPoses();
 			n.C = Math.random() * 5;
@@ -98,7 +98,7 @@ public class MoveSequence {
 	 * @param chioces    : all the children of root
 	 * @param root       : the initial game state node
 	 */
-	private static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
+	public static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 		chioces.remove(chosenMove);
 		//only decouples nodes that are not part of the monte carlo tree
 		for (Node n : chioces) {

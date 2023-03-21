@@ -122,6 +122,7 @@ public class Node extends GameBoardState  {
 			children.remove(node);
 		}
 		public int childCount() {return children.size();}
+		public double getValue() {return Math.abs((g+h)/visits + C*Math.sqrt(Math.log(parent.visits)/visits));}
 
 	
 }

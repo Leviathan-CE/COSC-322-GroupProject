@@ -66,7 +66,7 @@ public class ActionFactory {
 
 							// Move the piece in the current direction until it hits an occupied cell or the
 							// edge of the gameboard.
-							while (x + dx >= 0 && x + dx < 9 && y + dy >= 0 && y + dy < 9) {
+							while (x + dx >= 0 && x + dx < 10 && y + dy >= 0 && y + dy < 10) {
 								x += dx;
 								y += dy;
 								// If the current cell is empty, the move is legal.
@@ -87,7 +87,7 @@ public class ActionFactory {
 
 											// Move the arrow in the current direction until it hits an occupied cell or
 											// the edge of the gameboard.
-											while (bx + ax >= 0 && bx + ax < 9 && by + ay >= 0 && by + ay < 9) {
+											while (bx + ax >= 0 && bx + ax < 10 && by + ay >= 0 && by + ay < 10) {
 												bx += ax;
 												by += ay;
 												// If the current cell is not empty, the arrow cannot be placed there.
