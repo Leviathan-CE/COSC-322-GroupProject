@@ -65,14 +65,13 @@ public class COSC322Test extends GamePlayer {
 	}
 
 	/**
-	 * The main method
-	 * 
+	 * The main method 
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		KEY = args[0];
-		// HumanPlayer player = new HumanPlayer();
+		//HumanPlayer player = new HumanPlayer();
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -225,8 +224,8 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
 				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
 				
-//				boolean isValid = chessBoard.getIfMoveIsValid(QnPos[0],QnPos[1],
-//						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
+//				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
+//				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
 //				if (!isValid) {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
@@ -247,19 +246,26 @@ public class COSC322Test extends GamePlayer {
 				chessBoard.countQueens();
 				chessBoard.print();
 				System.out.println("--------end of enemy turn-----------");
-
+				
+				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				System.out.println("update local");
 
+				//check our move is valid
 //			   boolean isValid2 = chessBoard.getIfMoveIsValid(chessBoard.moveInfo.getOldQPos()[0]
 //					   ,chessBoard.moveInfo.getOldQPos()[1]
 //							   ,chessBoard.moveInfo.getNewQPos()[0]
 //									   ,chessBoard.moveInfo.getNewQPos()[1]
 //											   ,chessBoard.moveInfo.getArrow()[0]
 //													   ,chessBoard.moveInfo.getArrow()[1]);
-//				if (!isValid2) {
+				
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
+//						chessBoard.moveInfo.getNewQPos());
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
+//						chessBoard.moveInfo.getArrow());
+//				if (!isValid) {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");

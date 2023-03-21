@@ -279,7 +279,7 @@ public class GameBoardState implements Serializable {
 					Queen2++;
 			}
 		}
-		//System.out.println("q1 = " + Queen1 + " q2 = " + Queen2);
+		// System.out.println("q1 = " + Queen1 + " q2 = " + Queen2);
 		return new int[] { Queen1, Queen2 };
 	}
 
@@ -309,6 +309,35 @@ public class GameBoardState implements Serializable {
 		arrowsPos = arrw;
 	}
 
+	public boolean checkIfPathIsClear(int[] pos1, int[] pos2) {
+	    // Check if both positions are on the same row, column, or diagonal
+	    if (pos1[0] == pos2[0] || pos1[1] == pos2[1] || Math.abs(pos1[0] - pos2[0]) == Math.abs(pos1[1] - pos2[1])) {
+	        // Check if there are any pieces in the way
+	        int startX = Math.min(pos1[0], pos2[0]);
+	        int startY = Math.min(pos1[1], pos2[1]);
+	        int endX = Math.max(pos1[0], pos2[0]);
+	        int endY = Math.max(pos1[1], pos2[1]);
+	        for (int x = startX; x <= endX; x++) {
+	            for (int y = startY; y <= endY; y++) {
+	                if (x == pos1[0] && y == pos1[1]) {
+	                    // Ignore the queen's starting position
+	                    continue;
+	                }
+	                if (currentBoard[x][y] != 0) {
+	                    // There's a piece in the way
+	                    return false;
+	                }
+	            }
+	        }
+	        // The path is clear
+	        return true;
+	    } else {
+	        // The queen is not moving along a valid path
+	        return false;
+	    }
+	}
+
+
 	public boolean getIfMoveIsValid(int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
 		if (ifMoveIsValid(qx1, qy1, qx2, qy2)) { // check if it is valid to move from (qx1,qy1) to (qx2, qy2)
 			if (ifMoveIsValid(qx2, qy2, ax, ay)) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
@@ -329,39 +358,41 @@ public class GameBoardState implements Serializable {
 
 		if (qy1 == qy2) { // when coordinates of y is same, check vertically
 
-			if(qx1 < qx2) {
+			if (qx1 < qx2) {
 				for (int i = qx1 + 1; i <= qx2; i++) { // this for loop checks the vertical path of the queen from start
 					// to end and checks to make sure that path is clear
 					if (board[i][qy1] != 0)
-					return isValid;
+						return isValid;
 				}
-			}else if(qx1 > qx2){
+			} else if (qx1 > qx2) {
 				for (int i = qx1 - 1; i >= qx2; i--) { // this for loop checks the vertical path of the queen from start
 					// to end and checks to make sure that path is clear
 					if (board[i][qy1] != 0)
-					return isValid;
+						return isValid;
 				}
 			}
-			
+
 			isValid = true;
 			return isValid;
 		}
 
 		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
 
-			if(qy1 < qy2) {
-				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from start
+			if (qy1 < qy2) {
+				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from
+														// start
 					// to end and checks to make sure that path is clear
 					if (board[qx1][i] != 0)
-					return isValid;
+						return isValid;
 				}
-			}else if(qy1 > qy2) {
-				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from start
+			} else if (qy1 > qy2) {
+				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from
+														// start
 					// to end and checks to make sure that path is clear
 					if (board[qx1][i] != 0)
-					return isValid;
+						return isValid;
 				}
-				
+
 			}
 			isValid = true;
 			return isValid;
@@ -403,61 +434,59 @@ public class GameBoardState implements Serializable {
 
 		return isValid;
 	}
-	
-	
+
 	public int geth1() {
-		
-		return h1(); 
+
+		return h1();
 	}
-	
-/*
- * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1 then we add to each teams score
- *  we then return sumEnemyteam - sumOurteam
- */
-public  int  h1() {
-		
-		int sumOfWhiteQueen =0 ; 
-		int sumOfBlackQueen = 0; 
+
+	/*
+	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
+	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
+	 */
+	public int h1() {
+
+		int sumOfWhiteQueen = 0;
+		int sumOfBlackQueen = 0;
 		int[][] board = currentBoard;
-		//get WHite queeen value 
-		
-		for(int i = 0 ; i < 4; i ++) {
+		// get WHite queeen value
+
+		for (int i = 0; i < 4; i++) {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
-					if (!(x == 0 && y == 0)) {//if tile is queen tile then skip
-						if(queenPosWhite2.get(i)[0]+x >0 && queenPosWhite2.get(i)[0]+x <10 && (queenPosWhite2.get(i)[1] + y)>0 && (queenPosWhite2.get(i)[1] + y)<10 )
-							{
-								if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)]!= 0) {
-									sumOfWhiteQueen++;
-										}
-							}else {
+					if (!(x == 0 && y == 0)) {// if tile is queen tile then skip
+						if (queenPosWhite2.get(i)[0] + x > 0 && queenPosWhite2.get(i)[0] + x < 10
+								&& (queenPosWhite2.get(i)[1] + y) > 0 && (queenPosWhite2.get(i)[1] + y) < 10) {
+							if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)] != 0) {
 								sumOfWhiteQueen++;
 							}
-					}
-				}
-			}				
-		}
-		
-		for(int i = 0 ; i < 4; i ++) {
-			for (int x = -1; x <= 1; x++) {
-				for (int y = -1; y <= 1; y++) {
-					if (!(x == 0 && y == 0)) { //if tile is queen tile then skip
-						if(queenPosBlack1.get(i)[0]+x >0 && queenPosBlack1.get(i)[0]+x <10 && (queenPosBlack1.get(i)[1] + y)>0 && (queenPosBlack1.get(i)[1] + y)<10 )
-							{
-								if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)]!= 0) {
-									sumOfBlackQueen++;
-										}
-							}else {
-								sumOfBlackQueen++;
-							}
+						} else {
+							sumOfWhiteQueen++;
+						}
 					}
 				}
 			}
-								
 		}
-	
-	return  (sumOfBlackQueen - sumOfWhiteQueen);
-}
-	
+
+		for (int i = 0; i < 4; i++) {
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
+						if (queenPosBlack1.get(i)[0] + x > 0 && queenPosBlack1.get(i)[0] + x < 10
+								&& (queenPosBlack1.get(i)[1] + y) > 0 && (queenPosBlack1.get(i)[1] + y) < 10) {
+							if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)] != 0) {
+								sumOfBlackQueen++;
+							}
+						} else {
+							sumOfBlackQueen++;
+						}
+					}
+				}
+			}
+
+		}
+
+		return (sumOfBlackQueen - sumOfWhiteQueen);
+	}
 
 }
