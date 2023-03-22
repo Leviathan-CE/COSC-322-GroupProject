@@ -42,6 +42,9 @@ public class MiniMaxSearch extends MoveSequence {
 			//expand the children
 			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
 			CalcUtilityScore(chioces, root, QueenColor);
+			
+			//hueristic 2 calc
+			//parent.setGval(h2(enemyChioce,chioces));
 			//pick our worst move from opponents chioces
 			Node chosenMiniMax =  MonteTreeSearch.SearchMin(root);
 			//set root child minimax value
@@ -90,5 +93,9 @@ public class MiniMaxSearch extends MoveSequence {
 		System.out.println("------END OF STATE--------");
 		
 		return chosenOne;
+	}
+	
+	public static int h2( ArrayList<Node> enenmychioces, ArrayList<Node> ourchioces) {
+		return enenmychioces.size() - ourchioces.size();
 	}
 }

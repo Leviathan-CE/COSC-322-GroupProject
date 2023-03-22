@@ -88,15 +88,15 @@ public class MoveSequence {
 		// temporary solution
 		int count =0;
 		for (Node n : chioces) {
-			count++;
-			int[] qs = n.countQueens();
-			if(qs[0] != 4 || qs[1] !=4) {
-				throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+"; Q2;"+qs[1]+" in iteration: "+count);
-			}
+//			count++;
+//			int[] qs = n.countQueens();
+//			if(qs[0] != 4 || qs[1] !=4) {
+//				throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+"; Q2;"+qs[1]+" in iteration: "+count);
+//			}
 			n.updateQueenPoses();
-			n.C = Math.random() * 6;
-			//n.setGval(n.h1(color));
-			n.setGval(n.geth2(color));
+			//n.C = Math.random() * 6;
+			n.setH1(n.h1(color));
+			//n.setGval(n.geth2(color));
 		}
 		return root;
 	}

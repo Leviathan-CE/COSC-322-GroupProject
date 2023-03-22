@@ -486,20 +486,20 @@ public class GameBoardState implements Serializable {
 		}
 		
 		if(queenColor== 1) {
-			return (sumOfWhiteQueen- sumOfBlackQueen);
+			return (sumOfBlackQueen - sumOfWhiteQueen);
 		}else {
-			return (sumOfBlackQueen - sumOfWhiteQueen);	
+			return(sumOfWhiteQueen - sumOfBlackQueen);	
 		}
 
 }
 	
-
+//getAllPossibleMoves(2).size()- getAllPossibleMoves(1).size()- 
 //this heuristic will see all the moves the other team can make minus the move we can make 
 public int geth2(int QueenColor) {
 	if(QueenColor== 1) {
-		return getAllPossibleMoves(2).size()- getAllPossibleMoves(1).size();
+		return getAllPossibleMoves(1).size();
 	}else {
-	return getAllPossibleMoves(1).size()- getAllPossibleMoves(2).size();	
+	return getAllPossibleMoves(2).size();	
 	}
 	
 }
