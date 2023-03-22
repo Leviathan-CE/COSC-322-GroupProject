@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ActionFactory.ActionFactory;
+import ActionFactory.MiniMaxSearch;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
 import GameState.GameBoardState;
@@ -185,8 +186,10 @@ public class COSC322Test extends GamePlayer {
 					notOurColor = 1;
 				}
 
-				if (ourColor == 1) {				
-						chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+				if (ourColor == 1) {
+						chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+						
+//						chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -202,6 +205,7 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("------ENEMY TURN----------");
 				System.out.println(AmazonsGameMessage.GAME_STATE);
 				System.out.println("turn: " + turn);
+				Timer.start();
 
 				// if(turn != 1) {
 				// fetch the newest move from Opponent and store their values in x,y lists
@@ -248,7 +252,9 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("--------end of enemy turn-----------");
 				
 				//generate our move
-				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+				//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+				chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+				System.out.println("Time sec: "+ Timer.currentTime());
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				System.out.println("update local");

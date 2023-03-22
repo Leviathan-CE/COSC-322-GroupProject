@@ -15,7 +15,7 @@ public class Node extends GameBoardState  {
 		int id = 1;
 		static int count = 1;
 		
-		private int mini =0;
+		public double miniMaxvVal = -1000000000;
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
 		private double g =0; //g-val

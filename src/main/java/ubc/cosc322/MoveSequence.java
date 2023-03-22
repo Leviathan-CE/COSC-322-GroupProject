@@ -33,7 +33,7 @@ public class MoveSequence {
 		CalcUtilityScore(chioces, root);
 		if(chioces.size() == 0)
 			throw new RuntimeException("WE LOOSE");
-		Node chosenOne =  MonteTreeSearch.Search(root);
+		Node chosenOne =  MonteTreeSearch.SearchMax(root);
 		
 		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
@@ -83,7 +83,7 @@ public class MoveSequence {
 	 * @param chioces : all the children of the root
 	 * @param root    : the original state and Parent
 	 */
-	private static Node CalcUtilityScore(ArrayList<Node> chioces, Node root) {
+	protected static Node CalcUtilityScore(ArrayList<Node> chioces, Node root) {
 		// calculate the utility function for all the nodes that came from the root
 		// temporary solution
 		int count =0;
@@ -91,10 +91,10 @@ public class MoveSequence {
 			count++;
 			int[] qs = n.countQueens();
 			if(qs[0] != 4 || qs[1] !=4) {
-			//throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+"; Q2;"+qs[1]+" in iteration: "+count);
+				throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+"; Q2;"+qs[1]+" in iteration: "+count);
 			}
 			n.updateQueenPoses();
-			n.C = Math.random() * 6;
+			//n.C = Math.random() * 6;
 			n.setGval(n.h1());
 		}
 		return root;
@@ -107,7 +107,7 @@ public class MoveSequence {
 	 * @param chioces    : all the children of root
 	 * @param root       : the initial game state node
 	 */
-	private static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
+	protected static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 		chioces.remove(chosenMove);
 		//only decouples nodes that are not part of the monte carlo tree
 		for (Node n : chioces) {
@@ -116,6 +116,13 @@ public class MoveSequence {
 				root.RemoveChild(n);
 			}
 		}
+	}
+	protected static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
+				//only decouples nodes that are not part of the monte carlo tree
+		for (Node n : chioces) {			
+				root.RemoveChild(n);
+			}
+		
 	}
 	
 	

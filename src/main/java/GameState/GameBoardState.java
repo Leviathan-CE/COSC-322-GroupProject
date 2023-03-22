@@ -485,7 +485,9 @@ public class GameBoardState implements Serializable {
 			}
 
 		}
-
+		//possible that only works for black because the value is the same
+		//possible that thier should be two values on for white and black 
+		//so that the maxumuim value or the move that give the most space is chosen
 		return (sumOfBlackQueen - sumOfWhiteQueen);
 	}
 
