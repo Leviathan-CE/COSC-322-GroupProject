@@ -41,7 +41,7 @@ public class MiniMaxSearch extends MoveSequence {
 				break;
 			//expand the children
 			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
-			CalcUtilityScore(chioces, root);
+			CalcUtilityScore(chioces, root, QueenColor);
 			//pick our worst move from opponents chioces
 			Node chosenMiniMax =  MonteTreeSearch.SearchMin(root);
 			//set root child minimax value

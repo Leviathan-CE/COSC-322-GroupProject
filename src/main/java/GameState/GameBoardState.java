@@ -455,8 +455,8 @@ public class GameBoardState implements Serializable {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) {// if tile is queen tile then skip
-						if (queenPosWhite2.get(i)[0] + x > 0 && queenPosWhite2.get(i)[0] + x < 10
-								&& (queenPosWhite2.get(i)[1] + y) > 0 && (queenPosWhite2.get(i)[1] + y) < 10) {
+						if (queenPosWhite2.get(i)[0] + x >= 0 && queenPosWhite2.get(i)[0] + x < 10
+								&& (queenPosWhite2.get(i)[1] + y) >= 0 && (queenPosWhite2.get(i)[1] + y) < 10) {
 							if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)] != 0) {
 								sumOfWhiteQueen++;
 							}
@@ -471,8 +471,8 @@ public class GameBoardState implements Serializable {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-						if (queenPosBlack1.get(i)[0] + x > 0 && queenPosBlack1.get(i)[0] + x < 10
-								&& (queenPosBlack1.get(i)[1] + y) > 0 && (queenPosBlack1.get(i)[1] + y) < 10) {
+						if (queenPosBlack1.get(i)[0] + x >= 0 && queenPosBlack1.get(i)[0] + x < 10
+								&& (queenPosBlack1.get(i)[1] + y) >= 0 && (queenPosBlack1.get(i)[1] + y) < 10) {
 							if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)] != 0) {
 								sumOfBlackQueen++;
 							}
@@ -540,7 +540,7 @@ public ArrayList<int[]> getAllMoves(int x, int y){
 
 
 public ArrayList<int[]> getAllMoves(int x, int y, int IncreaseX, int IncreaseY, ArrayList<int[]> list){
-	if(x + IncreaseX>0 && x + IncreaseX <11 &&y + IncreaseY >0 &&y + IncreaseY<11 ) {//checking to see if the value is out of bounds 
+	if(x + IncreaseX>=0 && x + IncreaseX <10 &&y + IncreaseY >=0 &&y + IncreaseY<10 ) {//checking to see if the value is out of bounds 
 		list.add(new int[]{x + IncreaseX, y + IncreaseY});	//if the value isnt out of bounds continue
 		return getAllMoves(x + IncreaseX, y + IncreaseY, IncreaseX, IncreaseY, list); //recurse
 	}

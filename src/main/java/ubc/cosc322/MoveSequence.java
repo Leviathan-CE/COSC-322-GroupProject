@@ -30,7 +30,7 @@ public class MoveSequence {
 
 		// gen legal moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
-		CalcUtilityScore(chioces, root);
+		CalcUtilityScore(chioces, root, QueenColor);
 		if(chioces.size() == 0)
 			throw new RuntimeException("WE LOOSE");
 		Node chosenOne =  MonteTreeSearch.SearchMax(root);
@@ -83,7 +83,7 @@ public class MoveSequence {
 	 * @param chioces : all the children of the root
 	 * @param root    : the original state and Parent
 	 */
-	protected static Node CalcUtilityScore(ArrayList<Node> chioces, Node root) {
+	protected static Node CalcUtilityScore(ArrayList<Node> chioces, Node root, int color) {
 		// calculate the utility function for all the nodes that came from the root
 		// temporary solution
 		int count =0;
@@ -95,7 +95,7 @@ public class MoveSequence {
 			}
 			n.updateQueenPoses();
 			n.C = Math.random() * 6;
-			n.setGval(n.h1());
+			n.setGval(n.h1(color));
 		}
 		return root;
 	}
