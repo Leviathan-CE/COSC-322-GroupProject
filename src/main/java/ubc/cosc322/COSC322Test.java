@@ -190,7 +190,7 @@ public class COSC322Test extends GamePlayer {
 				if (ourColor == 1) {
 						//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 						
-chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
