@@ -401,6 +401,58 @@ public  int  h1() {
 	
 	return  (sumOfBlackQueen - sumOfWhiteQueen);
 }
+
+//this heuristic will see all the moves the other team can make minus the move we can make 
+public int geth2() {
+	return getAllPossibleMoves(1).size()- getAllPossibleMoves(2).size();
+}
+
+public ArrayList<int[]> getAllPossibleMoves(int colour){
+	ArrayList<int[]> movesList = new ArrayList<>();
+	ArrayList<int[]> QueenPosition = null;
+	if(colour == 1) {
+		 QueenPosition = queenPose1White ;
+	}else if(colour == 2) {
+		QueenPosition = queenPose2Black ;
+	}
+	for (int[] CurrentPositionOfQueen : QueenPosition) {
+		ArrayList<int[]> allMovesForCurrentQueen = getAllMoves(CurrentPositionOfQueen[0], CurrentPositionOfQueen[1]);
+		for (int[] CheckMove : allMovesForCurrentQueen) {
+			ArrayList<int[]> ArrowMove = getAllMoves(CheckMove[0], CheckMove[1]);
+			for (int[] arrow : ArrowMove)
+				movesList.add(new int[] { CurrentPositionOfQueen[0], CurrentPositionOfQueen[1], CheckMove[0], CheckMove[1], arrow[0], arrow[1] });
+		}
+	}
+	return movesList;
+}
+
+public ArrayList<int[]> getAllMoves(int x, int y){
+	ArrayList<int[]> list = new ArrayList<>();
+		list.addAll(getAllMoves(x, y, 0, -1, new ArrayList<int[]>()));	//up
+		list.addAll(getAllMoves(x, y, 1, -1, new ArrayList<int[]>()));	//topright
+		list.addAll(getAllMoves(x, y, 1, 0, new ArrayList<int[]>()));	//right
+		list.addAll(getAllMoves(x, y, 1, 1, new ArrayList<int[]>()));	//bottomright
+		list.addAll(getAllMoves(x, y, 0, 1, new ArrayList<int[]>()));	//down
+		list.addAll(getAllMoves(x, y, -1, 1, new ArrayList<int[]>()));	//downleft
+		list.addAll(getAllMoves(x, y, -1, 0, new ArrayList<int[]>()));	//left
+		list.addAll(getAllMoves(x, y, -1, -1, new ArrayList<int[]>()));	//upleft
+	return list;
+}
+
+
+public ArrayList<int[]> getAllMoves(int x, int y, int IncreaseX, int IncreaseY, ArrayList<int[]> list){
+	if(x + IncreaseX>0 && x + IncreaseX <11 &&y + IncreaseY >0 &&y + IncreaseY<11 ) {//checking to see if the value is out of bounds 
+		list.add(new int[]{x + IncreaseX, y + IncreaseY});	//if the value isnt out of bounds continue
+		return getAllMoves(x + IncreaseX, y + IncreaseY, IncreaseX, IncreaseY, list); //recurse
+	}
+	else	
+		return list;
+}
+
+
+
+
+
 	
 
 }
