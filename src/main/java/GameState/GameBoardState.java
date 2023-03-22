@@ -457,11 +457,13 @@ public class GameBoardState implements Serializable {
 					if (!(x == 0 && y == 0)) {// if tile is queen tile then skip
 						if (queenPosWhite2.get(i)[0] + x >= 0 && queenPosWhite2.get(i)[0] + x < 10
 								&& (queenPosWhite2.get(i)[1] + y) >= 0 && (queenPosWhite2.get(i)[1] + y) < 10) {
-							if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)] != 0) {
+							if (board[(queenPosWhite2.get(i)[0] + x)][(queenPosWhite2.get(i)[1] + y)] == 0) {
 								sumOfWhiteQueen++;
+							}else {
+								sumOfWhiteQueen--;
 							}
 						} else {
-							sumOfWhiteQueen++;
+							sumOfWhiteQueen--;
 						}
 					}
 				}
@@ -473,11 +475,13 @@ public class GameBoardState implements Serializable {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
 						if (queenPosBlack1.get(i)[0] + x >= 0 && queenPosBlack1.get(i)[0] + x < 10
 								&& (queenPosBlack1.get(i)[1] + y) >= 0 && (queenPosBlack1.get(i)[1] + y) < 10) {
-							if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)] != 0) {
+							if (board[(queenPosBlack1.get(i)[0] + x)][(queenPosBlack1.get(i)[1] + y)] == 0) {
 								sumOfBlackQueen++;
+							}else {
+								sumOfBlackQueen--;
 							}
 						} else {
-							sumOfBlackQueen++;
+							sumOfBlackQueen--;
 						}
 					}
 				}
@@ -485,21 +489,26 @@ public class GameBoardState implements Serializable {
 			
 		}
 		
+			
 		if(queenColor== 1) {
-			return (sumOfBlackQueen - sumOfWhiteQueen);
+			if(sumOfWhiteQueen == 0)
+				sumOfWhiteQueen = 1;
+			return (sumOfBlackQueen / sumOfWhiteQueen);
 		}else {
-			return(sumOfWhiteQueen - sumOfBlackQueen);	
+			if(sumOfBlackQueen == 0)
+				sumOfBlackQueen = 1;
+			return(sumOfWhiteQueen / sumOfBlackQueen);	
 		}
 
 }
 	
 //getAllPossibleMoves(2).size()- getAllPossibleMoves(1).size()- 
 //this heuristic will see all the moves the other team can make minus the move we can make 
-public int geth2(int QueenColor) {
+public double geth2(int QueenColor) {
 	if(QueenColor== 1) {
-		return getAllPossibleMoves(1).size();
+		return getAllPossibleMoves(1).size() /(double)getAllPossibleMoves(2).size();
 	}else {
-	return getAllPossibleMoves(2).size();	
+	return getAllPossibleMoves(2).size() / (double)getAllPossibleMoves(1).size();	
 	}
 	
 }
@@ -550,4 +559,11 @@ public ArrayList<int[]> getAllMoves(int x, int y, int IncreaseX, int IncreaseY, 
 
 
 
+public int H3() {
+	int x = moveInfo.getOldQPos()[0] - moveInfo.getNewQPos()[0];
+	int y = moveInfo.getOldQPos()[1] - moveInfo.getNewQPos()[1];
+	
+	
+	return 0;
+}
 }

@@ -96,7 +96,8 @@ public class MoveSequence {
 			n.updateQueenPoses();
 			//n.C = Math.random() * 6;
 			n.setH1(n.h1(color));
-			//n.setGval(n.geth2(color));
+			//n.setH3(n.H3());
+			//n.setH2(n.geth2(color));
 		}
 		return root;
 	}
