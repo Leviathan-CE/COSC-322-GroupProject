@@ -15,7 +15,7 @@ public class Node extends GameBoardState  {
 		int id = 1;
 		static int count = 1;
 		
-		
+		public double miniMaxvVal = -1000000000;
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
 		private double g =0; //g-val
@@ -44,6 +44,27 @@ public class Node extends GameBoardState  {
 			super(gameBoard);
 			id= count++;
 		}
+		/**
+		 * @deprecated
+		 * @param node
+		 */
+		public Node(Node node) {
+			super(node.getCurBoard());
+			g =node.g;
+			M = node.M;
+			h = node.h;
+			C = node.C;
+			id = node.id;
+			numWins = node.numWins;
+			visits = node.visits;
+			
+			parent = node.parent;
+			for(Node n : node.children)
+				children.add(n);
+			
+			moveInfo = node.moveInfo;
+			
+		}
 		
 		//---HELP ME--------------	
 		//meant to be called through backprpagation to update weather the node that it has been visited and weather it won.
@@ -52,18 +73,21 @@ public class Node extends GameBoardState  {
 				numWins++;
 			visits++;
 		}
-		
-		public String toString() {
-			return "" + id;
-		}
-		
+		public int getvisits() {return visits;}
+//		public String toString() {
+//			return "" + id;
+//		}
+//		
 		public void setParent(Node node) {
 			parent = node;
 		}
 		public void addChild(Node node) {
 			children.add(node);
-		}		
-		
+		}
+		public void RemoveChild(Node node) {
+			children.remove(node);
+		}
+		public int childCount() {return children.size();}
 
 	
 }
