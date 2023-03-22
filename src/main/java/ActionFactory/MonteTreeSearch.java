@@ -11,7 +11,7 @@ public class MonteTreeSearch {
 	private static Node BestPick;
 
 	/**
-	 * EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
+	 * @EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
 	 * 
 	 * @param root : the starting node to begin the search
 	 * @return : the highest value non leaf node.
@@ -34,7 +34,7 @@ public class MonteTreeSearch {
 
 		return BestPick;
 	}
-
+	@Deprecated
 	public static Node SearchMax(Node root, boolean miniMax) {
 		if (root == null) {
 			return null;

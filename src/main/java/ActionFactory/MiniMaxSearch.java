@@ -6,7 +6,17 @@ import GameState.Timer;
 import ubc.cosc322.MoveSequence;
 
 public class MiniMaxSearch extends MoveSequence {
-
+	
+	/**
+	 * @EFFECTS : same method signiture as its partent 
+	 * class. goes threw and genratate desired players moves 
+	 * then for each of those move generated generates and evaluates 
+	 * the miniax score which is is our best from the worst move and stores 
+	 * that value in the parent node. 
+	 * @param root : current baordstate passed by oppoent
+	 * @param QueenColor : out team colour
+	 * @return Node that has the best miniMax score
+	 */
 	public static Node MiniMax(Node root,int QueenColor) {
 		
 		System.out.println("------CHOSEN MOVE STATE--------");
@@ -15,7 +25,7 @@ public class MiniMaxSearch extends MoveSequence {
 
 		// gen legal moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
-		CalcUtilityScore(chioces, root);
+		//CalcUtilityScore(chioces, root);
 		if(chioces.size() == 0)
 			throw new RuntimeException("!!!!!!!!!!!!!WE LOOSE!!!!!!!!!!!");
 		int enemyTeamColor = 0;
@@ -25,24 +35,25 @@ public class MiniMaxSearch extends MoveSequence {
 			enemyTeamColor = 1;
 		
 		Node chosenOne = null;
-		for( Node child : chioces) {
+		for( Node parent : chioces) {
+			//if run out of time give 1 second to send it.
 			if(Timer.currentTime() > 29)
 				break;
 			//expand the children
-			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(child, enemyTeamColor); 
+			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
 			CalcUtilityScore(chioces, root);
 			//pick our worst move from opponents chioces
 			Node chosenMiniMax =  MonteTreeSearch.SearchMin(root);
 			//set root child minimax value
-			child.miniMaxvVal = chosenMiniMax.getValue();
+			parent.miniMaxvVal = chosenMiniMax.getValue();
 			//get best node to pick form oppenent worst
 			if(chosenOne == null)
-				chosenOne = child;
-			else if(chosenOne.miniMaxvVal < child.miniMaxvVal)
-				chosenOne = child;
+				chosenOne = parent;
+			else if(chosenOne.miniMaxvVal < parent.miniMaxvVal)
+				chosenOne = parent;
 			
 			//decouple all enemy moves so they are not in the tree
-			decoupleAllChildren(enemyChioce, child);
+			decoupleAllChildren(enemyChioce, parent);
 		}
 		for(Node child : chioces) {
 			if(child.childCount() > 0)
@@ -54,7 +65,7 @@ public class MiniMaxSearch extends MoveSequence {
 		decoupleUnusedChildren(chosenOne, chioces,root);
 		
 		System.out.println("children in root: "+root.childCount());
-		chosenOne.updateQueenPoses();
+		//chosenOne.updateQueenPoses(); not needed
 
 		//decoupleUnusedChildren(chosenOne, chioces, root);
 		
@@ -69,12 +80,12 @@ public class MiniMaxSearch extends MoveSequence {
 		chosenOne.printQPoses();
 		
 		chosenOne.print();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try { lso not needed as it take about 20 sec on average to calc first move
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		System.out.println("------END OF STATE--------");
 		

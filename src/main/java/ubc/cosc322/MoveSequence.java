@@ -94,7 +94,7 @@ public class MoveSequence {
 				throw new IndexOutOfBoundsException("Queen count not accurate: Q1: "+qs[0]+"; Q2;"+qs[1]+" in iteration: "+count);
 			}
 			n.updateQueenPoses();
-			//n.C = Math.random() * 6;
+			n.C = Math.random() * 6;
 			n.setGval(n.h1());
 		}
 		return root;
