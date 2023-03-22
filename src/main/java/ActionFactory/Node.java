@@ -19,12 +19,13 @@ public class Node extends GameBoardState  {
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
 		private double g =0; //g-val
-		public double C = 1; //carlo constant
+		public double C = 1.5; //carlo constant
 		
 		private int wins = 0;
 		private int visits = 1; 
 		private boolean expanded = false;
 		private double ucb;
+		private int playerNo;
 		
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
@@ -123,6 +124,12 @@ public class Node extends GameBoardState  {
 		}
 		public int childCount() {return children.size();}
 		public double getValue() {return Math.abs((g+h)/visits + C*Math.sqrt(Math.log(parent.visits)/visits));}
+		public int getPlayerNo() {
+			return this.playerNo;
+		}
+		public void setPlayerNo(int playerNo) {
+			this.playerNo = playerNo;
+		}
 
 	
 }

@@ -43,7 +43,7 @@ public class mcts {
 				System.out.println("result backpropagated");
 			}
 			else { // if node has been visited, expand then simulate
-				expand(current, player);
+				expand(current);
 				simulate(current.getChildren().get(0), player); // all children have infinite ucb, simulate first child 
 				System.out.println("simulation 2 ran, sim value: " + current.getWins());
 				backprop(current); 
@@ -86,8 +86,9 @@ public class mcts {
 			node.incrWins(1);
 		}
 	}
-	public static void expand(Node parent, int player) {
-		parent.setChildren(ActionFactory.getLegalMoves(parent, player)); 
+	public static void expand(Node parent) {
+		int team = parent.getPlayerNo();
+		parent.setChildren(ActionFactory.getLegalMoves(parent, team)); // ADD : expand based on playerNo and assign opponentNo to children
 		parent.setExpanded(true);
 		System.out.println("expanded!");
 	}

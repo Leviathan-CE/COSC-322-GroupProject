@@ -7,6 +7,7 @@ import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
 import monteCarlo.mcts;
+import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 
@@ -31,12 +32,14 @@ public class MoveSequence {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
 		CalcUtilityScore(chioces, root);
 		
-		Node chosenOne =  mcts.getMonteMove(root, QueenColor);
+		Node chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);
+//		Node chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);
+
 		
 		System.out.println("children in root: "+root.childCount());
 		chosenOne.updateQueenPoses();
 
-		decoupleUnusedChildren(chosenOne, chioces, root);
+	//	decoupleUnusedChildren(chosenOne, chioces, root);
 		
 		// get move package		
 		int[] oldQ = chosenOne.moveInfo.getOldQPos();

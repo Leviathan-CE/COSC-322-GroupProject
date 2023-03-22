@@ -122,8 +122,8 @@ public class ActionFactory {
 			}
 		}
 		// add all children to parent
-		for (Node n : legalMoves)
-			node.addChild(n);
+		//for (Node n : legalMoves)
+		//	node.addChild(n);
 
 		// Return the list of legal moves.
 		return legalMoves;
