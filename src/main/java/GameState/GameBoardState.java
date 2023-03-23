@@ -337,15 +337,22 @@ public class GameBoardState implements Serializable {
 		}
 	}
 
-	public boolean getIfMoveIsValid(int qx1, int qy1, int qx2, int qy2, int ax, int ay) {
-		if (ifMoveIsValid(qx1, qy1, qx2, qy2)) { // check if it is valid to move from (qx1,qy1) to (qx2, qy2)
-			if (ifMoveIsValid(qx2, qy2, ax, ay)) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
-													// ay)
-				return true;
+	public boolean getIfMoveIsValid(int[] oldQ, int[] newQ, int[] arrw) {
+			if(checkIfPathIsClear(oldQ,newQ)) {
+				if(checkIfPathIsClear(newQ,arrw)) {
+					return true;
+				}
 			}
-		}
-
-		return false;
+			return false;
+		
+//				if (ifMoveIsValid(oldQ[0],oldQ[1],newQ[0], newQ[1])) { // check if it is valid to move from (qx1,qy1) to (qx2, qy2)
+//			if (ifMoveIsValid(newQ[0], newQ[1], arrw[0], arrw[1])) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
+//													// ay)
+//				return true;
+//			}
+//		}
+//
+//		return false;
 	}
 
 	public boolean ifMoveIsValid(int qx1, int qy1, int qx2, int qy2) {
@@ -371,8 +378,8 @@ public class GameBoardState implements Serializable {
 				}
 			}
 
-			isValid = true;
-			return isValid;
+//			isValid = true;
+//			return isValid;
 		}
 
 		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
@@ -393,8 +400,8 @@ public class GameBoardState implements Serializable {
 				}
 
 			}
-			isValid = true;
-			return isValid;
+//			isValid = true;
+//			return isValid;
 		}
 
 		// diagonal checks
@@ -427,11 +434,11 @@ public class GameBoardState implements Serializable {
 				}
 
 			}
-			isValid = true;
-			return isValid;
+//			isValid = true;
+//			return isValid;
 		}
 
-		return isValid;
+		return isValid == true;
 	}
 	
 

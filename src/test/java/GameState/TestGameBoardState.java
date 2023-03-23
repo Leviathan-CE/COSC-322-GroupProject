@@ -108,8 +108,9 @@ public class TestGameBoardState {
 		ArrayList<Integer> newQ = board.setPosValue(2,3, 2);
 		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
 		
-		assertTrue(board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
-		assertTrue(board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
+		assertTrue(board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
+				new int[] {newQ.get(0),newQ.get(1)},
+				new int[] {arrw.get(0),arrw.get(1)}));
 	}
 	@Test
 	public void testillegalQueenmove() {
@@ -118,7 +119,9 @@ public class TestGameBoardState {
 		ArrayList<Integer> newQ = board.setPosValue(2,4, 3);
 		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
 	
-		assertTrue(!board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
+		assertTrue(!board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
+										new int[] {newQ.get(0),newQ.get(1)},
+										new int[] {arrw.get(0),arrw.get(1)}));
 		//assertTrue(board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
 	}
 	@Test
@@ -129,7 +132,9 @@ public class TestGameBoardState {
 		ArrayList<Integer> arrw = board.setPosValue(3,9, 1);
 	
 		//assertTrue(board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
-		assertTrue(!board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
+		assertTrue(!board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
+				new int[] {newQ.get(0),newQ.get(1)},
+				new int[] {arrw.get(0),arrw.get(1)}));
 	}
 	
 	
