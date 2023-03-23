@@ -35,4 +35,9 @@ public class Vector2 {
 	public Vector2 add(int x,int y) {
 		return new Vector2(xy[0]+x,xy[1]+y);
 	}
+	public boolean equals(Vector2 v) {
+		if(xy[0] ==v.getx() && xy[1] == v.gety())
+			return true;
+		return false;
+	}
 }
