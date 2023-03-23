@@ -37,13 +37,13 @@ public class MiniMaxSearch extends MoveSequence {
 		Node chosenOne = null;
 		for( Node parent : chioces) {
 			//if run out of time give 1 second to send it.
-			if(Timer.currentTime() > 29)
+			if(Timer.currentTime() > 10)
 				break;
 			//expand the children
 			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
 			CalcUtilityScore(chioces, root, QueenColor);
 			
-			//hueristic 2 calc
+			//----hueristic 2 calc
 			//parent.setGval(h2(enemyChioce,chioces));
 			//pick our worst move from opponents chioces
 			Node chosenMiniMax =  MonteTreeSearch.SearchMin(root);

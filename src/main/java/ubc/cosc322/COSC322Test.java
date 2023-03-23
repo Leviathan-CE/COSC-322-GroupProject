@@ -166,8 +166,8 @@ public class COSC322Test extends GamePlayer {
 				chessBoard.printQPoses();
 
 				System.out.println(chessBoard.toString());
-				System.out.println("h1 = " + chessBoard.geth1(ourColor));
-				System.out.println("h2 = " + chessBoard.geth2(ourColor));
+//				System.out.println("h1 = " + chessBoard.getH1(ourColor));
+//				System.out.println("h2 = " + chessBoard.getH2(ourColor));
 				break;
 
 			case GameMessage.GAME_ACTION_START:
@@ -188,9 +188,9 @@ public class COSC322Test extends GamePlayer {
 				}
 
 				if (ourColor == 1) {
-						//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+						chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 						
-					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+					//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -229,18 +229,18 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
 				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
 				
-//				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
-//				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
-//				if (!isValid) {
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("OPPONENT made a INVALID move");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					throw new RuntimeException("ENEMY LOOSE");
-//				}
+				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
+				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
+				if (isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("OPPONENT made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					throw new RuntimeException("ENEMY LOOSE");
+				}
 							
 
 				//apply opponent move
@@ -270,18 +270,18 @@ public class COSC322Test extends GamePlayer {
 				
 //				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
 //						chessBoard.moveInfo.getNewQPos());
-//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
-//						chessBoard.moveInfo.getArrow());
-//				if (!isValid) {
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					System.out.println("---------------------------------------");
-//					throw new RuntimeException("WE LOOSE");
-//				}
+				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
+						chessBoard.moveInfo.getArrow());
+				if (isValid) {
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					System.out.println("---------------------------------------");
+					throw new RuntimeException("WE LOOSE");
+				}
 
 				turn++;
 				break;

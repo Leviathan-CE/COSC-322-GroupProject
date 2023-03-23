@@ -33,10 +33,12 @@ public class Node extends GameBoardState  {
 		
 		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
 		public double getValue() {
-			System.out.println(h1+h2+h3);
+			//System.out.println(h1+h2+h3);
 			return (h1+h2+h3);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
 		
-
+		public double getH1() {return h1;}
+		public double getH2() {return h2;}
+		public double getH3() {return h3;}
 		public void setH1(double h1) {
 			this.h1 = h1;
 		}
@@ -102,9 +104,7 @@ public class Node extends GameBoardState  {
 			children.remove(node);
 		}
 		public int childCount() {return children.size();}
-		public double getH2() {
-			return h2;
-		}
+		
 		
 	
 }
