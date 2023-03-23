@@ -19,7 +19,7 @@ public class Node extends GameBoardState  {
 		private double M =0; //monte-carlo value
 		private double h =0; //hueristic
 		private double g =0; //g-val
-		public double C = 1.5; //carlo constant
+		public double C = 1; //carlo constant
 		
 		private int wins = 0;
 		private int visits = 1; 

@@ -3,14 +3,18 @@ package monteCarlo;
 import java.util.ArrayList;
 import ActionFactory.ActionFactory;
 import ActionFactory.Node;
+import GameState.Timer;
 
 public class mctsUpgraded {
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
+		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
-		double startTime = (System.currentTimeMillis() / 1000);	
-		double currentTime = (System.currentTimeMillis() / 1000);
-		double timeLimit = 10; // alloted time to make best choice
-		while ((currentTime - startTime) < timeLimit) {
+		root.incrVisits(); // no need to simulate root
+		double startTime;
+		double timeLimit = 5;
+		startTime = (System.currentTimeMillis() / 1000);	// snatched from ejohn, implement our timer instead?
+		
+		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
 			// selection
 			Node leaf = traverse(root);
 			// expansion
@@ -28,7 +32,7 @@ public class mctsUpgraded {
 	}
 	
 	//	traverses through tree using UCB, returns leaf
-	public static Node traverse(Node root) {
+	private static Node traverse(Node root) {
 		Node node = root;
 		while(node.getChildren().size() > 0) {
 			node = findBestChild(node);
@@ -37,7 +41,7 @@ public class mctsUpgraded {
 	}
 	
 	//	returns parent's best child based on UCB
-	public static Node findBestChild(Node parent) {
+	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
 		double largestUCB = 0;
 		double tempUCB;
@@ -53,7 +57,7 @@ public class mctsUpgraded {
 	}
 	
 	//	assigns all possible gamestates to a node as children
-	public static void expand(Node parent) {
+	private static void expand(Node parent) {
 		int team = parent.getPlayerNo();
 		ArrayList<Node> children = ActionFactory.getLegalMoves(parent, team);
 		for (Node c : children) {
@@ -64,7 +68,7 @@ public class mctsUpgraded {
 	}
 	
 	// simulates random game from input node, look into possibly fixing up ?
-	public static void simulate(Node node, int ourTeam) {
+	private static void simulate(Node node, int ourTeam) {
 		int index;
 		Node tempNode = node;
 		int tempNodeTeam = node.getPlayerNo(); 
@@ -83,7 +87,7 @@ public class mctsUpgraded {
 	}
 	
 	//	back propagates win value to all parents + updates visits for node and parents
-	public static void backprop(Node node) {
+	private static void backprop(Node node) {
 		node.incrVisits();
 		int simResult = node.getWins();	// 1 if game won, 0 if lost
 		while(node.getParent() != null) {

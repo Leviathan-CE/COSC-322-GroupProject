@@ -33,7 +33,7 @@ public class ActionFactory {
 	// function assumes player will be an int of value 1 or 2
 	// takes a 2d array as its input value and returns a array list of 2d arrays
 	// that represent possible child states.
-	// TODO Modify to work with our gameboardstate and Node - consult with team
+	// TODO Modify to work with our gameboardstate and Node - cons fult with team
 	// members
 	public static ArrayList<Node> getLegalMoves(Node node, int player) {
 		// Initialize an empty ArrayList to store the legal moves.
@@ -42,7 +42,7 @@ public class ActionFactory {
 		int[][] gameboard = node.getCurBoard();
 		// Node games = new Node(newGameboard);
 		int[] queens = node.countQueens();
-		System.out.println("queen count" + queens[0] + ";" + queens[1]);
+	//	System.out.println("queen count" + queens[0] + ";" + queens[1]);
 		// Iterate over each cell on the gameboard.
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -50,7 +50,7 @@ public class ActionFactory {
 				// this if statement should only be triggered 4 times
 
 				if (gameboard[i][j] == player) {
-					System.out.println("i " + i + ";" + j);
+//					System.out.println("i " + i + ";" + j);
 					// Iterate over each possible direction that the piece can move in.
 					for (int dx = -1; dx <= 1; dx++) {
 						for (int dy = -1; dy <= 1; dy++) {
