@@ -325,15 +325,15 @@ public class GameBoardState implements Serializable {
 					}
 					if (currentBoard[x][y] != 0) {
 						// There's a piece in the way
-						return false;
+						return true;
 					}
 				}
 			}
 			// The path is clear
-			return true;
+			return false;
 		} else {
 			// The queen is not moving along a valid path
-			return false;
+			return true;
 		}
 	}
 

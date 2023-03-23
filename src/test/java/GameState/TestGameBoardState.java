@@ -1,10 +1,12 @@
 package GameState;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestGameBoardState {
@@ -12,20 +14,20 @@ public class TestGameBoardState {
 	static GameBoardState board;
 	static  GameBoardState board10x10;
 	static GameBoardState boardOrientation;
-    int[][] gameboard = {{1, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 1, 0, 0, 1, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 1, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 22, 0, 0, 0, 0, 0, 0, 0, 0,},
-			             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}};
+	static int[][] gameboard = {{ 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
+								{ 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, } };
 	
 	//Initialize a game board with no queens
-	@BeforeAll
-	public static void setup() {
+	@BeforeEach
+	public void setup() {
 		ArrayList<Integer> startState = new ArrayList<>();
 		for(int x =0; x < GameBoardState.BORAD_DEMENSIONS;x++) {
 			for(int y = 0; y < GameBoardState.BORAD_DEMENSIONS;y++) {
@@ -73,15 +75,16 @@ public class TestGameBoardState {
 	}
 	@Test
 	public void TestUpdateQueens() {
-		board.setPosValue(2,2, 2);
+		board = new GameBoardState(gameboard);
+		//board.setPosValue(2,2, 2);
 		board.updateQueenPoses();
-		assertTrue(board.getQueenPosition2().size() == 1);
-		board.setPosValue(1, 3, 4);
+		assertEquals(board.getQueenPosition2().size(), 4);
+		//board.setPosValue(1, 3, 4);
 		board.updateQueenPoses();
-		assertTrue(board.getQueenPosition1().size() == 1);
+		assertEquals(board.getQueenPosition1().size() ,4);
 		board.setPosValue(3, 1, 3);
 		board.updateQueenPoses();
-		assertTrue(board.getArrowPositions().size() == 1);
+		assertEquals(board.getArrowPositions().size() , 1);
 	}
 	@Test
 	public void testOrietation() {
@@ -90,8 +93,44 @@ public class TestGameBoardState {
 		System.out.println("oreintation state");
 		state.print();
 		assertTrue(true);		
-		assertTrue(state.getCurBoard()[0][0] == 1);
+		assertEquals(state.getCurBoard()[3][0], 1);
 
 	}
+	
+	
+	/*
+	 * test invalid move 
+	 */
+	@Test
+	public void testLegalMove() {
+		ArrayList<Integer> old = board.setPosValue(2,2, 2);
+		ArrayList<Integer> oldRm = board.setPosValue(0,2, 2);
+		ArrayList<Integer> newQ = board.setPosValue(2,3, 2);
+		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
+		
+		assertTrue(board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
+		assertTrue(board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
+	}
+	@Test
+	public void testillegalQueenmove() {
+		ArrayList<Integer> old = board.setPosValue(2,2, 2);
+		ArrayList<Integer> oldRm = board.setPosValue(0,2, 2);
+		ArrayList<Integer> newQ = board.setPosValue(2,4, 3);
+		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
+	
+		assertTrue(!board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
+		//assertTrue(board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
+	}
+	@Test
+	public void testIlllegalArrw() {
+		ArrayList<Integer> old = board.setPosValue(2,4, 4);
+		ArrayList<Integer> oldRm = board.setPosValue(0,4, 4);
+		ArrayList<Integer> newQ = board.setPosValue(2,5, 4);
+		ArrayList<Integer> arrw = board.setPosValue(3,9, 1);
+	
+		//assertTrue(board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
+		assertTrue(!board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
+	}
+	
 	
 }
