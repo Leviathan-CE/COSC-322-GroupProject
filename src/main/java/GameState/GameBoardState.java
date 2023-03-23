@@ -552,54 +552,39 @@ public class GameBoardState implements Serializable {
 	}
 
 	public int H3(int color, int wieght) {
+		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {
-			for (int[] qnWhite : queenPosWhite2) {
-				int arrwAroundqueen = 0;
+			QueenPos = queenPosBlack1; 
+		}else {
+			QueenPos = queenPosWhite2; 
+		}
+			for (int[] qn : QueenPos) {
+				int AreaAroundQueen = 0;
 				boolean ourArrow = false;
 				for (int x = -1; x <= 1; x++) {
 					for (int y = -1; y <= 1; y++) {
-						if (qnWhite[0] + x >= 0 && qnWhite[0] + x < 10 && qnWhite[1] + y >= 0 && qnWhite[1] + y < 10) {
-							if (currentBoard[qnWhite[0] + x][qnWhite[1] + y] == 3) {
-								arrwAroundqueen++;
+						if(!(x==0 & y ==0)) {
+							
+						
+						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
+							if (currentBoard[qn[0] + x][qn[1] + y] == 3) {
+								AreaAroundQueen++;
 							}
-							if (qnWhite[0] + x == moveInfo.getArrow()[0] && qnWhite[1] + y == moveInfo.getArrow()[1]) {
+							if (qn[0] + x == moveInfo.getArrow()[0] && qn[1] + y == moveInfo.getArrow()[1]) {
 								ourArrow = true;
 							}
 						} else {
-							arrwAroundqueen++;
+							AreaAroundQueen++;
 						}
 
 					}
-				}
-				if (arrwAroundqueen == 8 && ourArrow) {
-					return wieght;
-				}
-			}
-		}
-		if (color == 2) {
-			for (int[] qnBlack : queenPosBlack1) {
-				int arrwAroundqueen = 0;
-				boolean ourArrow = false;
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						if (qnBlack[0] + x >= 0 && qnBlack[0] + x < 10 && qnBlack[1] + y >= 0 && qnBlack[1] + y < 10) {
-							if (currentBoard[qnBlack[0] + x][qnBlack[1] + y] != 0) {
-								arrwAroundqueen++;
-							}
-							if (qnBlack[0] + x == moveInfo.getArrow()[0] && qnBlack[1] + y == moveInfo.getArrow()[1]) {
-								ourArrow = true;
-							}
-						} else {
-							arrwAroundqueen++;
-						}
-
 					}
 				}
-				if (arrwAroundqueen == 8 && ourArrow) {
+				if (AreaAroundQueen == 8 && ourArrow) {
 					return wieght;
 				}
 			}
-		}
+		
 		return 0;
 	}
 }
