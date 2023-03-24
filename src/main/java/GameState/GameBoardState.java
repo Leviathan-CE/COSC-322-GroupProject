@@ -605,7 +605,11 @@ public class GameBoardState implements Serializable {
 
 		return 0;
 	}
-
+	/**
+	 * 
+	 * @param color
+	 * @return
+	 */
 	public double H5(int color) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {

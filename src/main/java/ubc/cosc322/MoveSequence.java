@@ -129,7 +129,7 @@ public class MoveSequence {
 		}
 	}
 	protected static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
-				//only decouples nodes that are not part of the monte carlo tree
+		//decouple all children including choice
 		for (Node n : chioces) {			
 				root.RemoveChild(n);
 			}
