@@ -760,4 +760,20 @@ public class GameBoardState implements Serializable {
 //
 //		}
 //	}
+//	public  ArrayList<Vector2> getTilesAround(Vector2 vector2) {
+//	ArrayList<Vector2> proxmateTiles = new ArrayList<>();
+//		for (int x = -1; x <= 1; x++) {
+//			for (int y = -1; y <= 1; y++) {
+//				if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
+//					if (vector2.getx() + x >= 0 && vector2.gety() + x < 10
+//							&& vector2.getx() + y >= 0 &&vector2.gety() + y < 10) {
+//							proxmateTiles.add(new Vector2 (vector2.getx() + x, vector2.gety() + y));
+//					}
+//				}
+//			}
+//		}
+//	
+//	return proxmateTiles;
+//	}
+
 }
