@@ -97,9 +97,14 @@ public class MoveSequence {
 			//n.C = Math.random() * 6;
 			n.setH1(n.H1(color)* .1f);
 			n.setH3(n.H3(color, 10));
+
 			n.setH2(n.H2(color)* 5f);
-			//n.setH4(n.H4(color));
+			n.setH4(n.H4()*.5f);
 			n.setH5(n.H5(color)*.35f);
+
+//			n.setH2(n.H2(color)* 7f);
+//			n.setH4(n.H4()*.5f);
+
 			
 			System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 		}

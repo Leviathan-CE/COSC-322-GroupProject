@@ -1,6 +1,7 @@
 package GameState;
 
 import java.io.Serializable;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -202,11 +203,12 @@ public class GameBoardState implements Serializable {
 		ArrayList<Integer> posVal = new ArrayList<Integer>((Arrays.asList(x, y)));
 		return posVal;
 	}
+
 	public int[] setPos(int newvalue, int x, int y) {
 		if (x < 0 || y < 0 || x > 9 || y > 9)
 			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
 		currentBoard[x][y] = newvalue;
-		return new int[] {x,y};
+		return new int[] { x, y };
 	}
 
 	/**
@@ -333,7 +335,8 @@ public class GameBoardState implements Serializable {
 					}
 					if (currentBoard[x][y] != 0) {
 						// There's a piece in the way
-						isValid = false;;
+						isValid = false;
+						;
 					}
 				}
 			}
@@ -344,7 +347,6 @@ public class GameBoardState implements Serializable {
 		}
 		return isValid;
 
-		
 	}
 
 //	public boolean getIfMoveIsValid(int[] oldQ, int[] newQ, int[] arrw) {
@@ -451,7 +453,6 @@ public class GameBoardState implements Serializable {
 //
 //		return isValid;
 //	}
-	
 
 	/*
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
@@ -464,30 +465,28 @@ public class GameBoardState implements Serializable {
 		int[][] board = currentBoard;
 		// get WHite queeen value
 
-		for(int [] queen: queenPosWhite2) {
+		for (int[] queen : queenPosWhite2) {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-						if (queen[0] + x >= 0 && queen[0] + x < 10
-								&& queen[1] + y >= 0 && queen[1] + y < 10) {
-							if (board[queen [0] + x][queen[1] + y ] == 0) {
+						if (queen[0] + x >= 0 && queen[0] + x < 10 && queen[1] + y >= 0 && queen[1] + y < 10) {
+							if (board[queen[0] + x][queen[1] + y] == 0) {
 								sumOfWhiteQueen++;
-							} 
+							}
 						}
 					}
 				}
 			}
 
 		}
-		for(int [] queen: queenPosBlack1) {
+		for (int[] queen : queenPosBlack1) {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-						if (queen[0] + x >= 0 && queen[0] + x < 10
-								&& queen[1] + y >= 0 && queen[1] + y < 10) {
-							if (board[queen [0] + x][queen[1] + y ] == 0) {
+						if (queen[0] + x >= 0 && queen[0] + x < 10 && queen[1] + y >= 0 && queen[1] + y < 10) {
+							if (board[queen[0] + x][queen[1] + y] == 0) {
 								sumOfBlackQueen++;
-							} 
+							}
 						}
 					}
 				}
@@ -561,30 +560,30 @@ public class GameBoardState implements Serializable {
 		} else
 			return list;
 	}
-	
+
 	/**
-	 * heuristic 3 is a kill heuristic that only triggers when an emeny queen is surrounded 
-	 * by arrow except a single tile which is the 8 tile and is the move this board represents
-	 * if it does apply the wieghted value to the Node
-	 * @param color : out team color
+	 * heuristic 3 is a kill heuristic that only triggers when an emeny queen is
+	 * surrounded by arrow except a single tile which is the 8 tile and is the move
+	 * this board represents if it does apply the wieghted value to the Node
+	 * 
+	 * @param color  : out team color
 	 * @param wieght : how much priority this move will have over others
 	 * @return
 	 */
 	public double H3(int color, double wieght) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {
-			QueenPos = queenPosWhite2; 
-		}else {
-			QueenPos = queenPosBlack1; 
+			QueenPos = queenPosWhite2;
+		} else {
+			QueenPos = queenPosBlack1;
 		}
-			for (int[] qn : QueenPos) {
-				int AreaAroundQueen = 0;
-				boolean ourArrow = false;
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						if(!(x==0 & y ==0)) {
-							
-						
+		for (int[] qn : QueenPos) {
+			int AreaAroundQueen = 0;
+			boolean ourArrow = false;
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					if (!(x == 0 & y == 0)) {
+
 						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
 							if (currentBoard[qn[0] + x][qn[1] + y] == 3) {
 								AreaAroundQueen++;
@@ -597,36 +596,36 @@ public class GameBoardState implements Serializable {
 						}
 
 					}
-					}
-				}
-				if (AreaAroundQueen == 8 && ourArrow) {
-					return wieght;
 				}
 			}
-		
+			if (AreaAroundQueen == 8 && ourArrow) {
+				return wieght;
+			}
+		}
+
 		return 0;
 	}
 
 	public double H5(int color) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {
-			QueenPos = queenPosWhite2; 
-		}else {
-			QueenPos = queenPosBlack1 ; 
+			QueenPos = queenPosWhite2;
+		} else {
+			QueenPos = queenPosBlack1;
 		}
-			for (int[] qn : QueenPos) {
-				int AreaAroundQueen = 0;
-				boolean ourArrow = false;
-				for (int x = -1; x <= 1; x++) {
-					for (int y = -1; y <= 1; y++) {
-						if(!(x==0 & y ==0)) {
-							
-						//if inside bounds and position around queen is not empty
+		for (int[] qn : QueenPos) {
+			int AreaAroundQueen = 0;
+			boolean ourArrow = false;
+			for (int x = -1; x <= 1; x++) {
+				for (int y = -1; y <= 1; y++) {
+					if (!(x == 0 & y == 0)) {
+
+						// if inside bounds and position around queen is not empty
 						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
 							if (currentBoard[qn[0] + x][qn[1] + y] != 3) {
 								AreaAroundQueen++;
 							}
-							//if our arrow is adjacent to the queen
+							// if our arrow is adjacent to the queen
 							if (qn[0] + x == moveInfo.getArrow()[0] && qn[1] + y == moveInfo.getArrow()[1]) {
 								ourArrow = true;
 							}
@@ -635,106 +634,130 @@ public class GameBoardState implements Serializable {
 						}
 
 					}
-					}
-				}
-				if (ourArrow) {
-					return AreaAroundQueen;
 				}
 			}
-		
+			if (ourArrow) {
+				return AreaAroundQueen;
+			}
+		}
+
 		return 0;
 	}
-
-	public double H4(int team) {
+	
+	public double H4() {
+		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
+		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0],moveInfo.getOldQPos()[1]);
 		
-		ArrayList<Vector2> allQueenCoordsWhite = new ArrayList<>(); 
-		ArrayList<Vector2> allQueenCoordsBlack = new ArrayList<>(); 
-		ArrayList<Vector2> queensToSkipWhite = new ArrayList<>();
-		ArrayList<Vector2> queensToSkipBlack = new ArrayList<>();//Queens will be added to list if they are to be prevented from having BFS performed on them.
-		int spaceAvailableToQueensWhite = 0;
-		int spaceAvailableToQueensBlack = 0; 
-		int[][] board = currentBoard;
-		for(int [] transfer: queenPosWhite2) {
-			allQueenCoordsWhite.add(new Vector2 (transfer));
-		}
-		for(int [] transfer: queenPosBlack1) {
-				allQueenCoordsBlack.add(new Vector2 (transfer));
-			}
-		
-		
-		for (Vector2 queenCoords :allQueenCoordsWhite ) {
-			if (queensToSkipWhite.contains(new Vector2(queenCoords)))
-				continue;
-			
-			LinkedList<Vector2> tileQueue = new LinkedList<>();
-			HashSet<Vector2> tilesVisited = new HashSet<>();
-			tileQueue.add(queenCoords);
-			
-			//Breadth-first search
-			while (!tileQueue.isEmpty()) {
-				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-				
-				System.out.println(tileQueue.size());
-				tilesToAdd.addAll(getTilesAround(tileQueue.poll()));		//Dequeue current tile, add its children to shortlist of tiles to expand upon
-				for (Vector2 tile : tilesToAdd)		
-					//for each shortlisted tile,
-					if(tile.getx() >=0 && tile.getx()<10&& tile.gety()>=0&& tile.gety() <10) {
-					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) {	//if it is empty and has not been visited,
-						tileQueue.add(tile);										//add tile to queue
-						tilesVisited.add(new Vector2(tile));									//mark tile as visited
-						spaceAvailableToQueensWhite++;								//Now, if the current tile is empty, add it to list of available free tiles.	
-					}
-
-			}
-			}
-		}
-		for (Vector2 queenCoords :allQueenCoordsBlack ) {
-			if (queensToSkipBlack.contains(new Vector2(queenCoords)))
-				continue;
-			
-			LinkedList<Vector2> tileQueue = new LinkedList<>();
-			HashSet<Vector2> tilesVisited = new HashSet<>();
-			tileQueue.add(queenCoords);
-			System.out.println("doingthis");
-			//Breadth-first search
-			while (!tileQueue.isEmpty()) {
-				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-				System.out.println("begining of while loop");
-				tilesToAdd.addAll(getTilesAround(tileQueue.poll()));		//Dequeue current tile, add its children to shortlist of tiles to expand upon
-				for (Vector2 tile : tilesToAdd)									//for each shortlisted tile,
-					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) {	//if it is empty and has not been visited,
-						tileQueue.add(tile);										//add tile to queue
-						tilesVisited.add(new Vector2(tile));									//mark tile as visited
-						spaceAvailableToQueensBlack++;								//Now, if the current tile is empty, add it to list of available free tiles.	
-					}
-				System.out.println(tileQueue.size());
-			}
-		}
-		
-		if(team == 1) {
-			return spaceAvailableToQueensBlack;
+		if(AllMovesNew.size() - AllMovesOld.size() <-1 ) {
+			return 0;
+		}else if(AllMovesNew.size() - AllMovesOld.size() ==0){
+			return 1;
 		}else {
-			return spaceAvailableToQueensWhite;
+			return AllMovesNew.size() - AllMovesOld.size(); 
 		}
-		
-	}
-	
-	public  ArrayList<Vector2> getTilesAround(Vector2 vector2) {
-	ArrayList<Vector2> proxmateTiles = new ArrayList<>();
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-					if (vector2.getx() + x >= 0 && vector2.gety() + x < 10
-							&& vector2.getx() + y >= 0 &&vector2.gety() + y < 10) {
-							proxmateTiles.add(new Vector2 (vector2.getx() + x, vector2.gety() + y));
-					}
-				}
-			}
-		}
-	
-	return proxmateTiles;
-	}
-
 
 	
+	}
+
+//	public double H4(int team) {
+//		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0], moveInfo.getNewQPos()[1]);
+//		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0], moveInfo.getOldQPos()[1]);
+//
+//		ArrayList<Vector2> allQueenCoordsWhite = new ArrayList<>();
+//		ArrayList<Vector2> allQueenCoordsBlack = new ArrayList<>();
+//		ArrayList<Vector2> queensToSkipWhite = new ArrayList<>();
+//		ArrayList<Vector2> queensToSkipBlack = new ArrayList<>();// Queens will be added to list if they are to be
+//																	// prevented from having BFS performed on them.
+//		int spaceAvailableToQueensWhite = 0;
+//		int spaceAvailableToQueensBlack = 0;
+//		int[][] board = currentBoard;
+//		for (int[] transfer : queenPosWhite2) {
+//			allQueenCoordsWhite.add(new Vector2(transfer));
+//		}
+//		for (int[] transfer : queenPosBlack1) {
+//			allQueenCoordsBlack.add(new Vector2(transfer));
+//		}
+//
+//		for (Vector2 queenCoords : allQueenCoordsWhite) {
+//			if (queensToSkipWhite.contains(new Vector2(queenCoords)))
+//				continue;
+//
+//			LinkedList<Vector2> tileQueue = new LinkedList<>();
+//			HashSet<Vector2> tilesVisited = new HashSet<>();
+//			tileQueue.add(queenCoords);
+//
+//			// Breadth-first search
+//			while (!tileQueue.isEmpty()) {
+//				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
+//
+//				System.out.println(tileQueue.size());
+//				tilesToAdd.addAll(getTilesAround(tileQueue.poll())); // Dequeue current tile, add its children to
+//																		// shortlist of tiles to expand upon
+//				for (Vector2 tile : tilesToAdd)
+//					// for each shortlisted tile,
+//					if (tile.getx() >= 0 && tile.getx() < 10 && tile.gety() >= 0 && tile.gety() < 10) {
+//						if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) { // if
+//																													// it
+//																													// is
+//																													// empty
+//																													// and
+//																													// has
+//																													// not
+//																													// been
+//																													// visited,
+//							tileQueue.add(tile); // add tile to queue
+//							tilesVisited.add(new Vector2(tile)); // mark tile as visited
+//							spaceAvailableToQueensWhite++; // Now, if the current tile is empty, add it to list of
+//															// available free tiles.
+//						}
+//
+//					}
+//			}
+//		}
+//		for (Vector2 queenCoords : allQueenCoordsBlack) {
+//			if (queensToSkipBlack.contains(new Vector2(queenCoords)))
+//				continue;
+//
+//			LinkedList<Vector2> tileQueue = new LinkedList<>();
+//			HashSet<Vector2> tilesVisited = new HashSet<>();
+//			tileQueue.add(queenCoords);
+//			System.out.println("doingthis");
+//			// Breadth-first search
+//			while (!tileQueue.isEmpty()) {
+//				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
+//				System.out.println("begining of while loop");
+//				tilesToAdd.addAll(getTilesAround(tileQueue.poll())); // Dequeue current tile, add its children to
+//																		// shortlist of tiles to expand upon
+//				for (Vector2 tile : tilesToAdd) // for each shortlisted tile,
+//					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) { // if it is
+//																												// empty
+//																												// and
+//																												// has
+//																												// not
+//																												// been
+//																												// visited,
+//						tileQueue.add(tile); // add tile to queue
+//						tilesVisited.add(new Vector2(tile)); // mark tile as visited
+//						spaceAvailableToQueensBlack++; // Now, if the current tile is empty, add it to list of available
+//														// free tiles.
+//					}
+//				System.out.println(tileQueue.size());
+//			}
+//		}
+//		return spaceAvailableToQueensBlack;
+//
+//		if (team == 1) {
+//			return spaceAvailableToQueensBlack;
+//
+//			if (AllMovesNew.size() - AllMovesOld.size() < -1) {
+//				return 0;
+//			} else if (AllMovesNew.size() - AllMovesOld.size() == 0) {
+//				return 1;
+//
+//			} else {
+//				return AllMovesNew.size() - AllMovesOld.size();
+//			}
+//
+//		}
+//	}
 }
