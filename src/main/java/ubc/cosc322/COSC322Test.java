@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ActionFactory.ActionFactory;
+import ActionFactory.MiniMaxSearch;
 import ActionFactory.MonteTreeSearch;
 import ActionFactory.Node;
 import GameState.GameBoardState;
@@ -65,14 +66,15 @@ public class COSC322Test extends GamePlayer {
 	}
 
 	/**
-	 * The main method
-	 * 
+	 * The main method 
 	 * @param args for name and passwd (current, any string would work)
 	 */
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		KEY = args[0];
+
 	//	HumanPlayer player = new HumanPlayer();
+
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -166,7 +168,8 @@ public class COSC322Test extends GamePlayer {
 				chessBoard.printQPoses();
 
 				System.out.println(chessBoard.toString());
-				System.out.println("h1 = " + chessBoard.geth1());
+//				System.out.println("h1 = " + chessBoard.getH1(ourColor));
+//				System.out.println("h2 = " + chessBoard.getH2(ourColor));
 				break;
 
 			case GameMessage.GAME_ACTION_START:
@@ -186,8 +189,10 @@ public class COSC322Test extends GamePlayer {
 					notOurColor = 1;
 				}
 
-				if (ourColor == 1) {				
-						chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+				if (ourColor == 1) {
+						//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+						
+					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -200,9 +205,10 @@ public class COSC322Test extends GamePlayer {
 			 */
 			case GameMessage.GAME_ACTION_MOVE:
 				this.gamegui.updateGameState(msgDetails);
-				System.out.println("MY MOVE TURRRNRNRRNRNRNNRNR");
+				System.out.println("------ENEMY TURN----------");
 				System.out.println(AmazonsGameMessage.GAME_STATE);
 				System.out.println("turn: " + turn);
+				Timer.start();
 
 				// if(turn != 1) {
 				// fetch the newest move from Opponent and store their values in x,y lists
@@ -221,9 +227,12 @@ public class COSC322Test extends GamePlayer {
 				int[] QnPos = new int[] { queenPos.get(0) - 1, queenPos.get(1) - 1 };
 				int[] newQnPos = new int[] { newQueenPos.get(0) - 1, newQueenPos.get(1) - 1 };
 				int[] arrw = new int[] { arrowPos.get(0) - 1, arrowPos.get(1) - 1 };
-
-//				boolean isValid = chessBoard[0].getIfMoveIsValid(QnPos[0],QnPos[1],
-//						newQnPos[0],newQnPos[1],arrw[0],arrw[1]);
+				System.out.println("old Q pos; "+QnPos[0]+";"+QnPos[1]);
+				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
+				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
+				
+//				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
+//				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
 //				if (!isValid) {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
@@ -232,14 +241,9 @@ public class COSC322Test extends GamePlayer {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
+//					throw new RuntimeException("ENEMY LOOSE");
 //				}
-				// update baord so our move is in it before enemy make move
-//				if (MoveSequence.ChosenMove != null) {
-//					chessBoard[0] = new Node(MoveSequence.ChosenMove.getCurBoard());
-//					chessBoard[0].updateQueenPoses();
-//					chessBoard[0].printQPoses();
-//				}
-				
+//							
 
 				//apply opponent move
 				chessBoard.setPosValue(0, QnPos[0], QnPos[1]);
@@ -248,16 +252,15 @@ public class COSC322Test extends GamePlayer {
 				chessBoard.updateQueenPoses();
 				chessBoard.countQueens();
 				chessBoard.print();
-
+				System.out.println("--------end of enemy turn-----------");
+				
+				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
-				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
-						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
-				System.out.println("update local");
-//				chessBoard.setPosValue(0, info.oldQPos[0], info.oldQPos[1]);
-//				chessBoard.setPosValue(notOurColor, info.newQPos[0], info.newQPos[1]);
-//				chessBoard.setPosValue(3, info.arrow[0], info.arrow[1]);
-//				isValid = MoveSequence.ChosenMove.getIfMoveIsValid(info.oldQPos[0],info.oldQPos[1],
-//						info.newQPos[0],info.newQPos[1],info.arrow[0],info.arrow[1]);
+//				chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
+//						chessBoard.moveInfo.getNewQPos());
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
+//						chessBoard.moveInfo.getArrow());
 //				if (!isValid) {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
@@ -266,7 +269,24 @@ public class COSC322Test extends GamePlayer {
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
 //					System.out.println("---------------------------------------");
+//					throw new RuntimeException("WE LOOSE");
 //				}
+				
+				System.out.println("Time sec: "+ Timer.currentTime());
+				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
+						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
+				System.out.println("update local");
+
+				//check our move is valid
+//			   boolean isValid2 = chessBoard.getIfMoveIsValid(chessBoard.moveInfo.getOldQPos()[0]
+//					   ,chessBoard.moveInfo.getOldQPos()[1]
+//							   ,chessBoard.moveInfo.getNewQPos()[0]
+//									   ,chessBoard.moveInfo.getNewQPos()[1]
+//											   ,chessBoard.moveInfo.getArrow()[0]
+//													   ,chessBoard.moveInfo.getArrow()[1]);
+				
+//				
+				
 
 				turn++;
 				break;

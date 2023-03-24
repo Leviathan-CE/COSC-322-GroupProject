@@ -15,26 +15,60 @@ public class Node extends GameBoardState  {
 		int id = 1;
 		static int count = 1;
 		
-		private int mini =0;
+		public double miniMaxvVal = -1000000000;
+		
 		private double M =0; //monte-carlo value
-		private double h =0; //hueristic
-		private double g =0; //g-val
+		
+		private double h1 = -1; //hueristic vals
+		private double h2 = -1;
+		private double h3 = -1;
+		private double h4 = -1;
+		private double h5 = -1;
 		public double C = 1; //carlo constant
 		
+
 		private int wins = 0;
 		private int visits = 1; 
 		private boolean expanded = false;
 		private double ucb;
 		private int playerNo;
 		
+
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
 		
 		
 		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
+
 		public double getUCB() {return Math.abs( wins/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
-		public void setHueristicScore(double newVal) {h = newVal;}
-		public void setGval(double newVal){g=newVal;}
+
+		public double getValue() {
+			//System.out.println(h1+h2+h3);
+
+			return (h1+h2+h3+h4+h5);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+
+		
+		public double getH1() {return h1;}
+		public double getH2() {return h2;}
+		public double getH3() {return h3;}
+		public double getH4() {return h4;}
+		public double getH5() {return h5;}
+		public void setH1(double h1) {
+			this.h1 = h1;
+		}
+		public void setH2(double h2) {
+			this.h2 = h2;
+		}		
+		public void setH3(double h3) {
+			this.h3 = h3;
+		}
+		public void setH4(double h4) {
+			this.h4= h4; 
+		}
+		public void setH5(double h5) {
+			this.h5 = h5;
+		}
+
 
 		
 		//-----CONSTRUCTORS-----------
@@ -58,9 +92,9 @@ public class Node extends GameBoardState  {
 		 */
 		public Node(Node node) {
 			super(node.getCurBoard());
-			g =node.g;
+			
 			M = node.M;
-			h = node.h;
+			h1 = node.h1;
 			C = node.C;
 			id = node.id;
 			wins = node.wins;
@@ -123,7 +157,7 @@ public class Node extends GameBoardState  {
 			children.remove(node);
 		}
 		public int childCount() {return children.size();}
-		public double getValue() {return Math.abs((g+h)/visits + C*Math.sqrt(Math.log(parent.visits)/visits));}
+
 		public int getPlayerNo() {
 			return this.playerNo;
 		}

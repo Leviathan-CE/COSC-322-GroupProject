@@ -42,7 +42,7 @@ public class ActionFactory {
 		int[][] gameboard = node.getCurBoard();
 		// Node games = new Node(newGameboard);
 		int[] queens = node.countQueens();
-	//	System.out.println("queen count" + queens[0] + ";" + queens[1]);
+
 		// Iterate over each cell on the gameboard.
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -50,7 +50,7 @@ public class ActionFactory {
 				// this if statement should only be triggered 4 times
 
 				if (gameboard[i][j] == player) {
-//					System.out.println("i " + i + ";" + j);
+
 					// Iterate over each possible direction that the piece can move in.
 					for (int dx = -1; dx <= 1; dx++) {
 						for (int dy = -1; dy <= 1; dy++) {
@@ -103,7 +103,7 @@ public class ActionFactory {
 												//store the move made in a info data class
 												game.moveInfo = new MoveInfo(new int[] { i, j }, new int[] { x, y },
 														new int[] { bx, by }, player);
-												game.parent = node;
+												game.setParent(node);
 
 												// Add the new gameboard to the list of legal moves.
 												legalMoves.add(game);
