@@ -31,20 +31,21 @@ public class MoveSequence {
 
 		// gen legal moves
 		Node chosenOne = null;
+		ArrayList<Node> chioces;
 		if (turn > 150) {
-			ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
+				chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 		}else {
-			ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
+			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 			CalcUtilityScore(chioces, root, QueenColor);
 			chosenOne = MonteTreeSearch.SearchMax(root);
 		}
 		// Node chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
 // old stuff
 //		CalcUtilityScore(chioces, root, QueenColor);
-//		if(chioces.size() == 0)
-//			throw new RuntimeException("WE LOOSE");
-//		Node chosenOne =  MonteTreeSearch.SearchMax(root);
+		if(chioces.size() == 0)
+			throw new RuntimeException("WE LOOSE");
+		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
 
 		System.out.println("children in root: " + root.childCount());
 		chosenOne.updateQueenPoses();
@@ -106,11 +107,11 @@ public class MoveSequence {
 			n.updateQueenPoses();
 
 			//n.C = Math.random() * 6;
-			n.setH1(n.H1(color)* 1f);
-			n.setH3(n.H3(color, 10));
-			n.setH2(n.H2(color)* 5f);
-			n.setH4(n.H4()*.5f);
-			n.setH5(n.H5(color)*.35f);
+			n.setH1(n.H1(color)* 1f); //v1:
+			n.setH3(n.H3(color, 10)); //v1: 
+			n.setH2(n.H2(color)* 5f);// v1:
+			n.setH4(n.H4()*.5f);	//v1:
+			n.setH5(n.H5(color)*.35f); //v1:
 
 			// n.C = Math.random() * 6;
 //			n.setH1(n.H1(color) * .12f);
