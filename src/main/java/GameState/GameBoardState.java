@@ -498,9 +498,16 @@ public class GameBoardState implements Serializable {
 		}
 
 		if (queenColor == 1) {
-			double sum =(double) sumOfBlackQueen-(double)sumOfWhiteQueen;
-			if(sum <0 ) {
-				sum =0;
+			double sum;
+			if(sumOfWhiteQueen ==0 ) {
+				sumOfWhiteQueen=1;
+			}
+			if(sumOfBlackQueen>sumOfWhiteQueen ) {
+				System.out.println("black is bigger");
+				sum =((double) sumOfBlackQueen/(double)sumOfWhiteQueen) ;
+			}else {
+				sum =((double) sumOfBlackQueen/(double)sumOfWhiteQueen *10);
+				System.out.println("white is bigger");
 			}
 			return sum;
 		} else if(queenColor == 2) {
