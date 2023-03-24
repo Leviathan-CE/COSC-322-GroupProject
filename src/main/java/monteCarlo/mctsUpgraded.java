@@ -11,7 +11,7 @@ public class mctsUpgraded {
 		root.setPlayerNo(ourPlayer);
 		root.incrVisits(); // no need to simulate root
 		double startTime;
-		double timeLimit = 5;
+		double timeLimit = 25;
 		startTime = (System.currentTimeMillis() / 1000);	// snatched from ejohn, implement our timer instead?
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
@@ -59,7 +59,7 @@ public class mctsUpgraded {
 	//	assigns all possible gamestates to a node as children
 	private static void expand(Node parent) {
 		int team = parent.getPlayerNo();
-		ArrayList<Node> children = ActionFactory.getLegalMoves(parent, team);
+		ArrayList<Node> children = ActionFactory.getLegalMoves(parent, team, true);
 		for (Node c : children) {
 			c.setParent(parent);
 			c.setPlayerNo(3 - team); // set children nodes as opponent team
@@ -72,14 +72,14 @@ public class mctsUpgraded {
 		int index;
 		Node tempNode = node;
 		int tempNodeTeam = node.getPlayerNo(); 
-		ArrayList<Node> possibleMoves = ActionFactory.getLegalMoves(tempNode, tempNodeTeam);
+		ArrayList<Node> possibleMoves = ActionFactory.getLegalMoves(tempNode, tempNodeTeam, true);
 		
 		while(possibleMoves.size() > 0) {
             index = (int)(Math.random() * possibleMoves.size());
             tempNode = possibleMoves.get(index); 
             tempNode.setPlayerNo(3 - tempNodeTeam);
             tempNodeTeam = tempNode.getPlayerNo();
-			possibleMoves = ActionFactory.getLegalMoves(tempNode, tempNodeTeam); 
+			possibleMoves = ActionFactory.getLegalMoves(tempNode, tempNodeTeam, true); 
 		}
 		if (tempNodeTeam == (3 - ourTeam)) {  // if their team have no moves left, we win
 			node.incrWins(1);

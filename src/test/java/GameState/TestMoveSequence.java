@@ -33,19 +33,19 @@ public class TestMoveSequence {
 		System.out.println(node.getID() +"\n "+node.hashCode());
 		//System.out.println(node.moveInfo.getPlayerID());
 		
-		node2 = MoveSequence.GenerateMove(node, 1);	
+		node2 = MoveSequence.GenerateMove(node, 1, 1);	
 		System.out.println(node2.getID() +"\n "+node2.hashCode());
 		System.out.println(node2.moveInfo.getPlayerID());
 		//int[] move = node.moveInfo.getOldQPos();
 		//assertTrue(gameboard[move[0]][move[1]] == 1);
 
-		node3 = MoveSequence.GenerateMove(node2, 2);		
+		node3 = MoveSequence.GenerateMove(node2, 2,2);		
 		System.out.println(node3.getID() +"\n "+node3.hashCode());
 		System.out.println(node3.moveInfo.getPlayerID());
 		//move = node.moveInfo.getOldQPos();
 		//assertTrue(gameboard[move[0]][move[1]] == 2);
 		
-		node4 = MoveSequence.GenerateMove(node3, 1);		
+		node4 = MoveSequence.GenerateMove(node3, 1,3);		
 		System.out.println(node4.getID() +"\n "+node4.hashCode());
 		System.out.println(node4.moveInfo.getPlayerID());
 

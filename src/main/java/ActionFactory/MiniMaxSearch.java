@@ -24,7 +24,7 @@ public class MiniMaxSearch extends MoveSequence {
 		System.out.println("Who's Turn :"+QueenColor);
 
 		// gen legal moves
-		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
+		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 		//CalcUtilityScore(chioces, root);
 		if(chioces.size() == 0)
 			throw new RuntimeException("!!!!!!!!!!!!!WE LOOSE!!!!!!!!!!!");
@@ -40,7 +40,7 @@ public class MiniMaxSearch extends MoveSequence {
 			if(Timer.currentTime() > 10)
 				break;
 			//expand the children
-			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
+			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor, false); 
 			CalcUtilityScore(chioces, root, QueenColor);
 			
 			//----hueristic 2 calc
