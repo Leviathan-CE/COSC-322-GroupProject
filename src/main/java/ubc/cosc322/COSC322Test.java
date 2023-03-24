@@ -190,9 +190,9 @@ public class COSC322Test extends GamePlayer {
 				}
 
 				if (ourColor == 1) {
-						//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+					chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 						
-					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
+					//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -256,7 +256,7 @@ public class COSC322Test extends GamePlayer {
 				turn++;
 				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor, turn);
-//				chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+				//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
 						chessBoard.moveInfo.getNewQPos());
 				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),

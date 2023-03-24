@@ -27,10 +27,11 @@ public class MoveSequence {
 	public static Node GenerateMove(Node root, int QueenColor, int turn) {
 		System.out.println("------CHOSEN MOVE STATE--------");
 		System.out.println("Who's Turn :" + QueenColor);
+		System.out.println("TURN NUM: "+ turn);
 
 		// gen legal moves
 		Node chosenOne = null;
-		if (turn > 20) {
+		if (turn > 150) {
 			ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
 		}else {
@@ -104,7 +105,7 @@ public class MoveSequence {
 			}
 			n.updateQueenPoses();
 			// n.C = Math.random() * 6;
-			n.setH1(n.H1(color) * .1f);
+			n.setH1(n.H1(color) * .12f);
 			n.setH3(n.H3(color, 10));
 
 			n.setH2(n.H2(color) * 5f);
