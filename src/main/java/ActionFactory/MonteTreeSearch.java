@@ -11,26 +11,69 @@ public class MonteTreeSearch {
 	private static Node BestPick;
 
 	/**
-	 * EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
+	 * @EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
 	 * 
 	 * @param root : the starting node to begin the search
 	 * @return : the highest value non leaf node.
 	 */
-	public static Node Search(Node root) {
+	public static Node SearchMax(Node root) {
 		if (root == null) {
 			return null;
 		}
-		
-			for (Node child : root.children) {
-				// child.setParent(root);
-				
-				deepestChild = child;
-				if (BestPick == null || BestPick == root)
+
+		for (Node child : root.children) {
+			// child.setParent(root);
+
+			deepestChild = child;
+			if (BestPick == null || BestPick == root)
+				BestPick = child;
+			if (BestPick.getValue() < child.getValue())
+				BestPick = child;
+			SearchMax(child);
+		}
+
+		return BestPick;
+	}
+	@Deprecated
+	public static Node SearchMax(Node root, boolean miniMax) {
+		if (root == null) {
+			return null;
+		}
+
+		for (Node child : root.children) {
+			// child.setParent(root);
+
+			deepestChild = child;
+			if (BestPick == null || BestPick == root)
+				BestPick = child;
+			if (miniMax) { //
+				if (BestPick.getValue() < child.miniMaxvVal && child.children.isEmpty())
 					BestPick = child;
+			} else {
 				if (BestPick.getValue() < child.getValue() && child.children.isEmpty())
 					BestPick = child;
-				Search(child);
 			}
+			SearchMax(child);
+		}
+
+		return BestPick;
+	}
+
+	public static Node SearchMin(Node root) {
+		if (root == null) {
+			return null;
+		}
+
+		for (Node child : root.children) {
+			// child.setParent(root);
+
+			deepestChild = child;
+			if (BestPick == null || BestPick == root)
+				BestPick = child;
+			if (BestPick.getValue() > child.getValue())
+				BestPick = child;
+			SearchMax(child);
+		}
 
 		return BestPick;
 	}
