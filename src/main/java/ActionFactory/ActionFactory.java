@@ -35,7 +35,7 @@ public class ActionFactory {
 	// that represent possible child states.
 	// TODO Modify to work with our gameboardstate and Node - cons fult with team
 	// members
-	public static ArrayList<Node> getLegalMoves(Node node, int player) {
+	public static ArrayList<Node> getLegalMoves(Node node, int player, boolean monte) {
 		// Initialize an empty ArrayList to store the legal moves.
 		ArrayList<Node> legalMoves = new ArrayList<>();
 
@@ -122,9 +122,10 @@ public class ActionFactory {
 			}
 		}
 		// add all children to parent
-		//for (Node n : legalMoves)
-		//	node.addChild(n);
-
+		if (!monte) {
+			for (Node n : legalMoves)
+				node.addChild(n);
+		}
 		// Return the list of legal moves.
 		return legalMoves;
 	}

@@ -31,7 +31,7 @@ public class MoveSequence {
 		System.out.println("Who's Turn :"+QueenColor);
 
 		// gen legal moves
-		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
+		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 		CalcUtilityScore(chioces, root, QueenColor);
 		if(chioces.size() == 0)
 			throw new RuntimeException("WE LOOSE");
