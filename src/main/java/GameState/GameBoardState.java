@@ -458,7 +458,7 @@ public class GameBoardState implements Serializable {
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
 	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
 	 */
-	public int H1(int queenColor) {
+	public double H1(int queenColor) {
 
 		int sumOfWhiteQueen = 1;
 		int sumOfBlackQueen = 1;
@@ -469,10 +469,13 @@ public class GameBoardState implements Serializable {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-						if (queen[0] + x >= 0 && queen[0] + x < 10 && queen[1] + y >= 0 && queen[1] + y < 10) {
-							if (board[queen[0] + x][queen[1] + y] == 0) {
+
+						if (queen[0] + x >= 0 && queen[0] + x < 10
+								&& queen[1] + y >= 0 && queen[1] + y < 10) {
+							if (board[queen [0] + x][queen[1] + y ] == 0) {
 								sumOfWhiteQueen++;
-							}
+							} 
+
 						}
 					}
 				}
@@ -495,14 +498,19 @@ public class GameBoardState implements Serializable {
 		}
 
 		if (queenColor == 1) {
-			if (sumOfWhiteQueen == 0 || sumOfWhiteQueen < 0)
-				sumOfWhiteQueen = 1;
-			return (sumOfBlackQueen / sumOfWhiteQueen);
-		} else {
-			if (sumOfBlackQueen == 0 || sumOfBlackQueen < 0)
-				sumOfBlackQueen = 1;
-			return (sumOfWhiteQueen / sumOfBlackQueen);
+			double sum =(double) sumOfBlackQueen-(double)sumOfWhiteQueen;
+			if(sum <0 ) {
+				sum =0;
+			}
+			return sum;
+		} else if(queenColor == 2) {
+			double sum =  (double)sumOfWhiteQueen- (double) sumOfBlackQueen;
+			if(sum <0 ) {
+				sum =0;
+			}
+			return sum;
 		}
+		return 0;
 
 	}
 
