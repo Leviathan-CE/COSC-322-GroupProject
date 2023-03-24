@@ -24,7 +24,7 @@ public class MiniMaxSearch extends MoveSequence {
 		System.out.println("Who's Turn :"+QueenColor);
 
 		// gen legal moves
-		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor);
+		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 		//CalcUtilityScore(chioces, root);
 		if(chioces.size() == 0)
 			throw new RuntimeException("!!!!!!!!!!!!!WE LOOSE!!!!!!!!!!!");
@@ -35,12 +35,12 @@ public class MiniMaxSearch extends MoveSequence {
 			enemyTeamColor = 1;
 		
 		Node chosenOne = null;
-		for( Node parent : chioces) {
+		for( Node ourMove : chioces) {
 			//if run out of time give 1 second to send it.
 			if(Timer.currentTime() > 10)
 				break;
 			//expand the children
-			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(parent, enemyTeamColor); 
+			ArrayList<Node> enemyChioce = ActionFactory.getLegalMoves(ourMove, enemyTeamColor, false); 
 			CalcUtilityScore(chioces, root, QueenColor);
 			
 			//----hueristic 2 calc
@@ -48,15 +48,15 @@ public class MiniMaxSearch extends MoveSequence {
 			//pick our worst move from opponents chioces
 			Node chosenMiniMax =  MonteTreeSearch.SearchMin(root);
 			//set root child minimax value
-			parent.miniMaxvVal = chosenMiniMax.getValue();
+			ourMove.miniMaxvVal = chosenMiniMax.getValue();
 			//get best node to pick form oppenent worst
 			if(chosenOne == null)
-				chosenOne = parent;
-			else if(chosenOne.miniMaxvVal < parent.miniMaxvVal)
-				chosenOne = parent;
+				chosenOne = ourMove;
+			else if(chosenOne.miniMaxvVal+chosenOne.getValue() < ourMove.miniMaxvVal+chosenOne.getValue())
+				chosenOne = ourMove;
 			
 			//decouple all enemy moves so they are not in the tree
-			decoupleAllChildren(enemyChioce, parent);
+			decoupleAllChildren(enemyChioce, ourMove);
 		}
 		for(Node child : chioces) {
 			if(child.childCount() > 0)

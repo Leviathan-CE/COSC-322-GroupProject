@@ -29,7 +29,7 @@ public class TestActionFactory {
 	static ArrayList<Node> possibilities;
 	@BeforeAll
 	public static void setUp() {
-		possibilities= ActionFactory.getLegalMoves(new Node(gameboard), 1);
+		possibilities= ActionFactory.getLegalMoves(new Node(gameboard), 1, false);
 	}
 	@Test
 	public void testMaxMoveGen() {
