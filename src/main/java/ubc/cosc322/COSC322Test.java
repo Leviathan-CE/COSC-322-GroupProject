@@ -229,19 +229,19 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
 				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
 				
-				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
-				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
-				if (!isValid) {
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("OPPONENT made a INVALID move");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					throw new RuntimeException("ENEMY LOOSE");
-				}
-							
+//				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
+//				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
+//				if (!isValid) {
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("OPPONENT made a INVALID move");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					throw new RuntimeException("ENEMY LOOSE");
+//				}
+//							
 
 				//apply opponent move
 				chessBoard.setPosValue(0, QnPos[0], QnPos[1]);
@@ -254,21 +254,22 @@ public class COSC322Test extends GamePlayer {
 				
 				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
-				//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
-				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
-						chessBoard.moveInfo.getNewQPos());
-				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
-						chessBoard.moveInfo.getArrow());
-				if (!isValid) {
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					System.out.println("---------------------------------------");
-					throw new RuntimeException("WE LOOSE");
-				}
+//				chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
+//						chessBoard.moveInfo.getNewQPos());
+//				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
+//						chessBoard.moveInfo.getArrow());
+//				if (!isValid) {
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("WE HAD DONE A OOPS and made a INVALID move");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					System.out.println("---------------------------------------");
+//					throw new RuntimeException("WE LOOSE");
+//				}
+				
 				System.out.println("Time sec: "+ Timer.currentTime());
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );

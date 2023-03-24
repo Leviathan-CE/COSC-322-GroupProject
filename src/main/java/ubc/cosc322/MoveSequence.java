@@ -98,8 +98,9 @@ public class MoveSequence {
 			n.setH1(n.H1(color)* .1f);
 			n.setH3(n.H3(color, 10));
 			n.setH2(n.H2(color)* 5f);
+			n.setH4(n.H4(color));
 			
-			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3());
+			System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4());
 		}
 		return root;
 	}

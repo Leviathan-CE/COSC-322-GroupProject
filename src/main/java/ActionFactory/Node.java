@@ -22,7 +22,7 @@ public class Node extends GameBoardState  {
 		private double h1 = -1; //hueristic vals
 		private double h2 = -1;
 		private double h3 = -1;
-		
+		private double h4 = -1;
 		public double C = 1; //carlo constant
 		
 		private int numWins=0;
@@ -39,6 +39,7 @@ public class Node extends GameBoardState  {
 		public double getH1() {return h1;}
 		public double getH2() {return h2;}
 		public double getH3() {return h3;}
+		public double getH4() {return h4;}
 		public void setH1(double h1) {
 			this.h1 = h1;
 		}
@@ -47,6 +48,9 @@ public class Node extends GameBoardState  {
 		}		
 		public void setH3(double h3) {
 			this.h3 = h3;
+		}
+		public void setH4(double h4) {
+			this.h4= h4; 
 		}
 
 		
