@@ -1,6 +1,7 @@
 package GameState;
 
 import java.io.Serializable;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -620,7 +621,7 @@ public class GameBoardState implements Serializable {
 //				for (int x = -1; x <= 1; x++) {
 //					for (int y = -1; y <= 1; y++) {
 //						if(!(x==0 & y ==0)) {
-//							
+//					m		
 //						
 //						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
 //							if (currentBoard[qn[0] + x][qn[1] + y] != 3) {
@@ -644,95 +645,18 @@ public class GameBoardState implements Serializable {
 //		return 0;
 //	}
 
-	public double H4(int team) {
+	public double H4() {
+		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
+		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0],moveInfo.getOldQPos()[1]);
 		
-		ArrayList<Vector2> allQueenCoordsWhite = new ArrayList<>(); 
-		ArrayList<Vector2> allQueenCoordsBlack = new ArrayList<>(); 
-		ArrayList<Vector2> queensToSkipWhite = new ArrayList<>();
-		ArrayList<Vector2> queensToSkipBlack = new ArrayList<>();//Queens will be added to list if they are to be prevented from having BFS performed on them.
-		int spaceAvailableToQueensWhite = 0;
-		int spaceAvailableToQueensBlack = 0; 
-		int[][] board = currentBoard;
-		for(int [] transfer: queenPosWhite2) {
-			allQueenCoordsWhite.add(new Vector2 (transfer));
-		}
-		for(int [] transfer: queenPosBlack1) {
-				allQueenCoordsBlack.add(new Vector2 (transfer));
-			}
-		
-		
-		for (Vector2 queenCoords :allQueenCoordsWhite ) {
-			if (queensToSkipWhite.contains(new Vector2(queenCoords)))
-				continue;
-			
-			LinkedList<Vector2> tileQueue = new LinkedList<>();
-			HashSet<Vector2> tilesVisited = new HashSet<>();
-			tileQueue.add(queenCoords);
-			
-			//Breadth-first search
-			while (!tileQueue.isEmpty()) {
-				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-				
-				tilesToAdd.addAll(getTilesAround(tileQueue.poll()));		//Dequeue current tile, add its children to shortlist of tiles to expand upon
-				for (Vector2 tile : tilesToAdd)		
-					//for each shortlisted tile,
-					if(tile.getx() >=0 && tile.getx()<10&& tile.gety()>=0&& tile.gety() <10) {
-					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) {	//if it is empty and has not been visited,
-						tileQueue.add(tile);										//add tile to queue
-						tilesVisited.add(new Vector2(tile));									//mark tile as visited
-						spaceAvailableToQueensWhite++;								//Now, if the current tile is empty, add it to list of available free tiles.	
-					}
-
-			}
-			}
-		}
-		for (Vector2 queenCoords :allQueenCoordsBlack ) {
-			if (queensToSkipBlack.contains(new Vector2(queenCoords)))
-				continue;
-			
-			LinkedList<Vector2> tileQueue = new LinkedList<>();
-			HashSet<Vector2> tilesVisited = new HashSet<>();
-			tileQueue.add(queenCoords);
-			System.out.println("doingthis");
-			//Breadth-first search
-			while (!tileQueue.isEmpty()) {
-				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-				System.out.println("begining of while loop");
-				tilesToAdd.addAll(getTilesAround(tileQueue.poll()));		//Dequeue current tile, add its children to shortlist of tiles to expand upon
-				for (Vector2 tile : tilesToAdd)									//for each shortlisted tile,
-					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) {	//if it is empty and has not been visited,
-						tileQueue.add(tile);										//add tile to queue
-						tilesVisited.add(new Vector2(tile));									//mark tile as visited
-						spaceAvailableToQueensBlack++;								//Now, if the current tile is empty, add it to list of available free tiles.	
-					}
-				System.out.println(tileQueue.size());
-			}
-		}
-		
-		if(team == 1) {
-			return spaceAvailableToQueensBlack;
+		if(AllMovesNew.size() - AllMovesOld.size() <-1 ) {
+			return 0;
+		}else if(AllMovesNew.size() - AllMovesOld.size() ==0){
+			return 1;
 		}else {
-			return spaceAvailableToQueensWhite;
+			return AllMovesNew.size() - AllMovesOld.size(); 
 		}
-		
-	}
-	
-	public  ArrayList<Vector2> getTilesAround(Vector2 vector2) {
-	ArrayList<Vector2> proxmateTiles = new ArrayList<>();
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-					if (vector2.getx() + x >= 0 && vector2.gety() + x < 10
-							&& vector2.getx() + y >= 0 &&vector2.gety() + y < 10) {
-							proxmateTiles.add(new Vector2 (vector2.getx() + x, vector2.gety() + y));
-					}
-				}
-			}
-		}
-	
-	return proxmateTiles;
-	}
-
 
 	
+	}
 }
