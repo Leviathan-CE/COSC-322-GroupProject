@@ -72,7 +72,9 @@ public class COSC322Test extends GamePlayer {
 	public static void main(String[] args) {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		KEY = args[0];
-		//HumanPlayer player = new HumanPlayer();
+
+	//	HumanPlayer player = new HumanPlayer();
+
 		if (player.getGameGUI() == null) {
 			player.Go();
 
@@ -188,9 +190,9 @@ public class COSC322Test extends GamePlayer {
 				}
 
 				if (ourColor == 1) {
-						chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+					chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 						
-					//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+					//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -241,7 +243,7 @@ public class COSC322Test extends GamePlayer {
 					System.out.println("---------------------------------------");
 					throw new RuntimeException("ENEMY LOOSE");
 				}
-							
+//							
 
 				//apply opponent move
 				chessBoard.setPosValue(0, QnPos[0], QnPos[1]);
@@ -251,9 +253,9 @@ public class COSC322Test extends GamePlayer {
 				chessBoard.countQueens();
 				chessBoard.print();
 				System.out.println("--------end of enemy turn-----------");
-				
+				turn++;
 				//generate our move
-				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor);
+				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor, turn);
 				//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
 						chessBoard.moveInfo.getNewQPos());
@@ -269,23 +271,12 @@ public class COSC322Test extends GamePlayer {
 					System.out.println("---------------------------------------");
 					throw new RuntimeException("WE LOOSE");
 				}
+				
 				System.out.println("Time sec: "+ Timer.currentTime());
 				MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 						MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				System.out.println("update local");
 
-				//check our move is valid
-//			   boolean isValid2 = chessBoard.getIfMoveIsValid(chessBoard.moveInfo.getOldQPos()[0]
-//					   ,chessBoard.moveInfo.getOldQPos()[1]
-//							   ,chessBoard.moveInfo.getNewQPos()[0]
-//									   ,chessBoard.moveInfo.getNewQPos()[1]
-//											   ,chessBoard.moveInfo.getArrow()[0]
-//													   ,chessBoard.moveInfo.getArrow()[1]);
-				
-//				
-				
-
-				turn++;
 				break;
 			default:
 				assert (false);

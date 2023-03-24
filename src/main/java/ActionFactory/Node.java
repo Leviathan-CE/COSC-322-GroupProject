@@ -22,23 +22,37 @@ public class Node extends GameBoardState  {
 		private double h1 = -1; //hueristic vals
 		private double h2 = -1;
 		private double h3 = -1;
-		
+		private double h4 = -1;
+		private double h5 = -1;
 		public double C = 1; //carlo constant
 		
-		private int numWins=0;
-		private int visits=1; 
+
+		private int wins = 0;
+		private int visits = 1; 
+		private boolean expanded = false;
+		private double ucb;
+		private int playerNo;
+		
+
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
 		
 		
 		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
+
+		public double getUCB() {return Math.abs( wins/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+
 		public double getValue() {
 			//System.out.println(h1+h2+h3);
-			return (h1+h2+h3);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+
+			return (h1+h2+h3+h4+h5);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+
 		
 		public double getH1() {return h1;}
 		public double getH2() {return h2;}
 		public double getH3() {return h3;}
+		public double getH4() {return h4;}
+		public double getH5() {return h5;}
 		public void setH1(double h1) {
 			this.h1 = h1;
 		}
@@ -48,6 +62,13 @@ public class Node extends GameBoardState  {
 		public void setH3(double h3) {
 			this.h3 = h3;
 		}
+		public void setH4(double h4) {
+			this.h4= h4; 
+		}
+		public void setH5(double h5) {
+			this.h5 = h5;
+		}
+
 
 		
 		//-----CONSTRUCTORS-----------
@@ -58,6 +79,11 @@ public class Node extends GameBoardState  {
 		}
 		public Node(int[][] gameBoard) {
 			super(gameBoard);
+			id= count++;
+		}
+		public Node(int[][] gameBoard, Node parent) {
+			super(gameBoard);
+			this.setParent(parent);
 			id= count++;
 		}
 		/**
@@ -71,7 +97,7 @@ public class Node extends GameBoardState  {
 			h1 = node.h1;
 			C = node.C;
 			id = node.id;
-			numWins = node.numWins;
+			wins = node.wins;
 			visits = node.visits;
 			
 			parent = node.parent;
@@ -86,7 +112,7 @@ public class Node extends GameBoardState  {
 		//meant to be called through backprpagation to update weather the node that it has been visited and weather it won.
 		public void updateNode(boolean didWin) {
 			if(didWin)
-				numWins++;
+				wins++;
 			visits++;
 		}
 		public int getvisits() {return visits;}
@@ -97,14 +123,47 @@ public class Node extends GameBoardState  {
 		public void setParent(Node node) {
 			parent = node;
 		}
+		public Node getParent() {
+			return this.parent;
+		}
 		public void addChild(Node node) {
 			children.add(node);
+		}		
+		public void setChildren(ArrayList<Node> children) {
+			this.children = children;
+		}	
+		public ArrayList<Node> getChildren() {
+			return this.children;
+		}	
+		public boolean isExpanded() {
+			return this.expanded;
+		}
+		public void setExpanded(boolean expanded) {
+			this.expanded = expanded;
+		}
+		public int getVisits() {
+			return this.visits;
+		}
+		public void incrVisits() {
+			this.visits++;
+		}
+		public int getWins() {
+			return this.wins;
+		}
+		public void incrWins(int simResult) {
+			this.wins = this.wins + simResult;
 		}
 		public void RemoveChild(Node node) {
 			children.remove(node);
 		}
 		public int childCount() {return children.size();}
-		
-		
+
+		public int getPlayerNo() {
+			return this.playerNo;
+		}
+		public void setPlayerNo(int playerNo) {
+			this.playerNo = playerNo;
+		}
+
 	
 }

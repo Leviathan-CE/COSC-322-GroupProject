@@ -33,16 +33,16 @@ public class ActionFactory {
 	// function assumes player will be an int of value 1 or 2
 	// takes a 2d array as its input value and returns a array list of 2d arrays
 	// that represent possible child states.
-	// TODO Modify to work with our gameboardstate and Node - consult with team
+	// TODO Modify to work with our gameboardstate and Node - cons fult with team
 	// members
-	public static ArrayList<Node> getLegalMoves(Node node, int player) {
+	public static ArrayList<Node> getLegalMoves(Node node, int player, boolean monte) {
 		// Initialize an empty ArrayList to store the legal moves.
 		ArrayList<Node> legalMoves = new ArrayList<>();
 
 		int[][] gameboard = node.getCurBoard();
 		// Node games = new Node(newGameboard);
 		int[] queens = node.countQueens();
-		//System.out.println("queen count" + queens[0] + ";" + queens[1]);
+
 		// Iterate over each cell on the gameboard.
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
@@ -50,7 +50,7 @@ public class ActionFactory {
 				// this if statement should only be triggered 4 times
 
 				if (gameboard[i][j] == player) {
-					//System.out.println("i " + i + ";" + j);
+
 					// Iterate over each possible direction that the piece can move in.
 					for (int dx = -1; dx <= 1; dx++) {
 						for (int dy = -1; dy <= 1; dy++) {
@@ -103,7 +103,7 @@ public class ActionFactory {
 												//store the move made in a info data class
 												game.moveInfo = new MoveInfo(new int[] { i, j }, new int[] { x, y },
 														new int[] { bx, by }, player);
-												game.parent = node;
+												game.setParent(node);
 
 												// Add the new gameboard to the list of legal moves.
 												legalMoves.add(game);
@@ -121,10 +121,11 @@ public class ActionFactory {
 				}
 			}
 		}
-		// add all children to parent
+		if(!monte) {
+		 //add all children to parent
 		for (Node n : legalMoves)
 			node.addChild(n);
-
+		}
 		// Return the list of legal moves.
 		return legalMoves;
 	}

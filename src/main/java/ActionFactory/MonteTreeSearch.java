@@ -87,9 +87,9 @@ public class MonteTreeSearch {
 	 */
 	public static ArrayList<Node> getMoves(Node node) {
 		ArrayList<Node> moves = new ArrayList<>();
-		while (node.parent != null) {
+		while (node.getParent() != null) {
 			moves.add(node);
-			node = node.parent;
+			node = node.getParent();
 		}
 		moves.add(node);
 		return moves;
