@@ -1,5 +1,10 @@
 package GameState;
 
+/**
+ * 
+ * Vector representation with length 2. has operation for add sub and equals
+ *
+ */
 public class Vector2 {
 	
 	private int[] xy;
@@ -20,6 +25,7 @@ public class Vector2 {
 
 	public int getx() {return xy[0];}
 	public int gety() {return xy[1];}
+	
 	
 	public Vector2 sub(Vector2 v) {
 		return new Vector2(xy[0]-v.getx(),xy[1]-v.gety());

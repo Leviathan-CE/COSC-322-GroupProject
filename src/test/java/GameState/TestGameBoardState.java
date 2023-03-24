@@ -103,39 +103,47 @@ public class TestGameBoardState {
 	 */
 	@Test
 	public void testLegalMove() {
-		ArrayList<Integer> old = board.setPosValue(2,2, 2);
-		ArrayList<Integer> oldRm = board.setPosValue(0,2, 2);
-		ArrayList<Integer> newQ = board.setPosValue(2,3, 2);
-		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
+	    int[] old = board.setPos(2,2, 2);
+		int[] oldRm = board.setPos(0,2, 2);
+		int[]  newQ = board.setPos(2,3, 2);
+		int[] arrw = board.setPos(3,4, 2);
 		
-		assertTrue(board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
-				new int[] {newQ.get(0),newQ.get(1)},
-				new int[] {arrw.get(0),arrw.get(1)}));
-	}
+		boolean b = board.checkIfPathIsClear(old, newQ);
+		assertTrue(b);
+		b = board.checkIfPathIsClear(newQ, arrw);
+		assertTrue(b);
+//		assertTrue(board.getIfMoveIsValid(new int[] {old.ge;t(0),old.get(1)},
+//				new int[] {newQ.get(0),newQ.get(1)},
+//				new int[] {arrw.get(0),arrw.get(1)}));
+ 	}
 	@Test
 	public void testillegalQueenmove() {
-		ArrayList<Integer> old = board.setPosValue(2,2, 2);
-		ArrayList<Integer> oldRm = board.setPosValue(0,2, 2);
-		ArrayList<Integer> newQ = board.setPosValue(2,4, 3);
-		ArrayList<Integer> arrw = board.setPosValue(3,4, 2);
+		int[] old = board.setPos(2,2, 2);
+		int[] oldRm = board.setPos(0,2, 2);
+		int[]newQ = board.setPos(2,4, 1);
+		int[] arrw = board.setPos(3,4, 2);
 	
-		assertTrue(!board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
-										new int[] {newQ.get(0),newQ.get(1)},
-										new int[] {arrw.get(0),arrw.get(1)}));
+		boolean b = board.checkIfPathIsClear(old, newQ);
+		assertTrue(!b);
+		b = board.checkIfPathIsClear(newQ, arrw);
+		assertTrue(b);
+//		assertTrue(!board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
+//										new int[] {newQ.get(0),newQ.get(1)},
+//										new int[] {arrw.get(0),arrw.get(1)}));
 		//assertTrue(board.checkIfPathIsClear( new int[] {newQ.get(0),newQ.get(1)}, new int[] {arrw.get(0),arrw.get(1)}));
 	}
 	@Test
 	public void testIlllegalArrw() {
-		ArrayList<Integer> old = board.setPosValue(2,4, 4);
-		ArrayList<Integer> oldRm = board.setPosValue(0,4, 4);
-		ArrayList<Integer> newQ = board.setPosValue(2,5, 4);
-		ArrayList<Integer> arrw = board.setPosValue(3,9, 1);
+		int[] old = board.setPos(2,2, 2);
+		int[] oldRm = board.setPos(0,2, 2);
+		int[] newQ = board.setPos(2,3, 2);
+		int[] arrw = board.setPos(3,9, 1);
 	
-		//assertTrue(board.checkIfPathIsClear(new int[] {old.get(0),old.get(1)}, new int[] {newQ.get(0),newQ.get(1)}));
-		assertTrue(!board.getIfMoveIsValid(new int[] {old.get(0),old.get(1)},
-				new int[] {newQ.get(0),newQ.get(1)},
-				new int[] {arrw.get(0),arrw.get(1)}));
-	}
+		boolean b = board.checkIfPathIsClear(old, newQ);
+		assertTrue(b);
+		b = board.checkIfPathIsClear(newQ, arrw);
+		assertTrue(!b);
+		}
 	
 	
 }

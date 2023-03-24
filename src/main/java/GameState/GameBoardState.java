@@ -201,6 +201,12 @@ public class GameBoardState implements Serializable {
 		ArrayList<Integer> posVal = new ArrayList<Integer>((Arrays.asList(x, y)));
 		return posVal;
 	}
+	public int[] setPos(int newvalue, int x, int y) {
+		if (x < 0 || y < 0 || x > 9 || y > 9)
+			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
+		currentBoard[x][y] = newvalue;
+		return new int[] {x,y};
+	}
 
 	/**
 	 * @deprecated To be Removed
@@ -310,6 +316,7 @@ public class GameBoardState implements Serializable {
 	}
 
 	public boolean checkIfPathIsClear(int[] pos1, int[] pos2) {
+		boolean isValid = false;
 		// Check if both positions are on the same row, column, or diagonal
 		if (pos1[0] == pos2[0] || pos1[1] == pos2[1] || Math.abs(pos1[0] - pos2[0]) == Math.abs(pos1[1] - pos2[1])) {
 			// Check if there are any pieces in the way
@@ -325,121 +332,124 @@ public class GameBoardState implements Serializable {
 					}
 					if (currentBoard[x][y] != 0) {
 						// There's a piece in the way
-						return true;
+						isValid = false;;
 					}
 				}
 			}
 			// The path is clear
-			return false;
+			isValid = true;
 		} else {
-			// The queen is not moving along a valid path
-			return true;
+			isValid = false;
 		}
+		return isValid;
+
+		
 	}
 
-	public boolean getIfMoveIsValid(int[] oldQ, int[] newQ, int[] arrw) {
-			if(checkIfPathIsClear(oldQ,newQ)) {
-				if(checkIfPathIsClear(newQ,arrw)) {
-					return true;
-				}
-			}
-			return false;
-		
-//				if (ifMoveIsValid(oldQ[0],oldQ[1],newQ[0], newQ[1])) { // check if it is valid to move from (qx1,qy1) to (qx2, qy2)
-//			if (ifMoveIsValid(newQ[0], newQ[1], arrw[0], arrw[1])) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
+//	public boolean getIfMoveIsValid(int[] oldQ, int[] newQ, int[] arrw) {
+////			if(checkIfPathIsClear(oldQ,newQ)) {
+////				if(checkIfPathIsClear(newQ,arrw)) {
+////					return true;
+////				}
+////			}
+////			return false;
+//		
+//				if (ifMoveIsValid(oldQ[0],oldQ[1],newQ[0], newQ[1]) && /// check if it is valid to move from (qx1,qy1) to (qx2, qy2)
+//			ifMoveIsValid(newQ[0], newQ[1], arrw[0], arrw[1])) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
 //													// ay)
 //				return true;
 //			}
-//		}
+//		
 //
 //		return false;
-	}
-
-	public boolean ifMoveIsValid(int qx1, int qy1, int qx2, int qy2) {
-		boolean isValid = false;
-		int[][] board = currentBoard;
-		if ((qy1 == qy2) && (qx1 == qx2)) { // when it is located at the same coordinate.
-			return isValid;
-		}
-
-		if (qy1 == qy2) { // when coordinates of y is same, check vertically
-
-			if (qx1 < qx2) {
-				for (int i = qx1 + 1; i <= qx2; i++) { // this for loop checks the vertical path of the queen from start
-					// to end and checks to make sure that path is clear
-					if (board[i][qy1] != 0)
-						return isValid;
-				}
-			} else if (qx1 > qx2) {
-				for (int i = qx1 - 1; i >= qx2; i--) { // this for loop checks the vertical path of the queen from start
-					// to end and checks to make sure that path is clear
-					if (board[i][qy1] != 0)
-						return isValid;
-				}
-			}
-
-//			isValid = true;
+//	}
+//
+//	public boolean ifMoveIsValid(int qx1, int qy1, int qx2, int qy2) {
+//		boolean isValid = false;
+//		int[][] board = currentBoard;
+//		if ((qy1 == qy2) && (qx1 == qx2)) { // when it is located at the same coordinate.
 //			return isValid;
-		}
-
-		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
-
-			if (qy1 < qy2) {
-				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from
-														// start
-					// to end and checks to make sure that path is clear
-					if (board[qx1][i] != 0)
-						return isValid;
-				}
-			} else if (qy1 > qy2) {
-				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from
-														// start
-					// to end and checks to make sure that path is clear
-					if (board[qx1][i] != 0)
-						return isValid;
-				}
-
-			}
+//		}
+//
+//		if (qy1 == qy2) { // when coordinates of y is same, check vertically
+//
+//			if (qx1 < qx2) {
+//				for (int i = qx1 + 1; i <= qx2; i++) { // this for loop checks the vertical path of the queen from start
+//					// to end and checks to make sure that path is clear
+//					if (board[i][qy1] != 0)
+//						return false;
+//				}
+//			} else if (qx1 > qx2) {
+//				for (int i = qx1 - 1; i >= qx2; i--) { // this for loop checks the vertical path of the queen from start
+//					// to end and checks to make sure that path is clear
+//					if (board[i][qy1] != 0)
+//						return false;
+//				}
+//			}
+//			System.out.println("is not true");
 //			isValid = true;
-//			return isValid;
-		}
-
-		// diagonal checks
-		if (Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) { // when coordinates on the y= 1*x + c, check diagonally
-			if ((qx1 < qx2) && (qy1 < qy2)) {
-				for (int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <= qy2; i++, j++) { // q1 to q2(from left to right,
-																						// bottom to top)
-					if (board[i][j] != 0)
-						return isValid;
-				}
-			} else if ((qx1 < qx2) && (qy1 > qy2)) {
-				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j >= qy2; i++, j--) { // q1 to q2(from left to right, top
-																						// to bottom)
-					if (board[i][j] != 0)
-						return isValid;
-				}
-
-			} else if ((qx1 > qx2) && (qy1 < qy2)) {
-				for (int i = qx1 - 1, j = qy1 + 1; i >= qx2 && j <= qy2; i--, j++) { // q2 to q1(from left to right,
-																						// bottom to top)
-					if (board[i][j] != 0)
-						return isValid;
-				}
-
-			} else if ((qx1 > qx2) && (qy1 > qy2)) {
-				for (int i = qx1 - 1, j = qy1 - 1; i >= qx2 && j >= qy2; i--, j--) { // q2 to q1(from left to right, top
-																						// to bottom)
-					if (board[i][j] != 0)
-						return isValid;
-				}
-
-			}
+////			return isValid;
+//		}
+//
+//		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
+//
+//			if (qy1 < qy2) {
+//				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from
+//														// start
+//					// to end and checks to make sure that path is clear
+//					if (board[qx1][i] != 0)
+//						return false;
+//				}
+//			} else if (qy1 > qy2) {
+//				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from
+//														// start
+//					// to end and checks to make sure that path is clear
+//					if (board[qx1][i] != 0)
+//						return false;
+//				}
+//
+//			}
+//			System.out.println("is not true");
 //			isValid = true;
-//			return isValid;
-		}
-
-		return isValid == true;
-	}
+////			return isValid;
+//		}
+//
+//		// diagonal checks
+//		if (Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) { // when coordinates on the y= 1*x + c, check diagonally
+//			if ((qx1 < qx2) && (qy1 < qy2)) {
+//				for (int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <= qy2; i++, j++) { // q1 to q2(from left to right,
+//																						// bottom to top)
+//					if (board[i][j] != 0)
+//						return false;
+//				}
+//			} else if ((qx1 < qx2) && (qy1 > qy2)) {
+//				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j >= qy2; i++, j--) { // q1 to q2(from left to right, top
+//																						// to bottom)
+//					if (board[i][j] != 0)
+//						return false;
+//				}
+//
+//			} else if ((qx1 > qx2) && (qy1 < qy2)) {
+//				for (int i = qx1 - 1, j = qy1 + 1; i >= qx2 && j <= qy2; i--, j++) { // q2 to q1(from left to right,
+//																						// bottom to top)
+//					if (board[i][j] != 0)
+//						return false;
+//				}
+//
+//			} else if ((qx1 > qx2) && (qy1 > qy2)) {
+//				for (int i = qx1 - 1, j = qy1 - 1; i >= qx2 && j >= qy2; i--, j--) { // q2 to q1(from left to right, top
+//																						// to bottom)
+//					if (board[i][j] != 0)
+//						return false;
+//				}
+//
+//			}
+////			isValid = true;
+////			return isValid;
+//		}
+//
+//		return isValid;
+//	}
 	
 
 	/*
@@ -550,7 +560,15 @@ public class GameBoardState implements Serializable {
 		} else
 			return list;
 	}
-
+	
+	/**
+	 * heuristic 3 is a kill heuristic that only triggers when an emeny queen is surrounded 
+	 * by arrow except a single tile which is the 8 tile and is the move this board represents
+	 * if it does apply the wieghted value to the Node
+	 * @param color : out team color
+	 * @param wieght : how much priority this move will have over others
+	 * @return
+	 */
 	public int H3(int color, int wieght) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {
@@ -587,4 +605,41 @@ public class GameBoardState implements Serializable {
 		
 		return 0;
 	}
+	
+//	public int H5(int color, int wieght) {
+//		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
+//		if (color == 1) {
+//			QueenPos = queenPosBlack1; 
+//		}else {
+//			QueenPos = queenPosWhite2; 
+//		}
+//			for (int[] qn : QueenPos) {
+//				int AreaAroundQueen = 0;
+//				boolean ourArrow = false;
+//				for (int x = -1; x <= 1; x++) {
+//					for (int y = -1; y <= 1; y++) {
+//						if(!(x==0 & y ==0)) {
+//							
+//						
+//						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
+//							if (currentBoard[qn[0] + x][qn[1] + y] != 3) {
+//								AreaAroundQueen++;
+//							}
+//							if (qn[0] + x == moveInfo.getArrow()[0] && qn[1] + y == moveInfo.getArrow()[1]) {
+//								ourArrow = true;
+//							}
+//						} else {
+//							AreaAroundQueen++;
+//						}
+//
+//					}
+//					}
+//				}
+//				if (AreaAroundQueen == 8 && ourArrow) {
+//					return wieght;
+//				}
+//			}
+//		
+//		return 0;
+//	}
 }
