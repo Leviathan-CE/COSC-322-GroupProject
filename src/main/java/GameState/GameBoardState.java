@@ -471,7 +471,7 @@ public class GameBoardState implements Serializable {
 						if (queen[0] + x >= 0 && queen[0] + x < 10
 								&& queen[1] + y >= 0 && queen[1] + y < 10) {
 							if (board[queen [0] + x][queen[1] + y ] == 0) {
-								sumOfBlackQueen++;
+								sumOfWhiteQueen++;
 							} 
 						}
 					}
@@ -570,7 +570,7 @@ public class GameBoardState implements Serializable {
 	 * @param wieght : how much priority this move will have over others
 	 * @return
 	 */
-	public int H3(int color, int wieght) {
+	public double H3(int color, double wieght) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
 		if (color == 1) {
 			QueenPos = queenPosWhite2; 
@@ -607,42 +607,43 @@ public class GameBoardState implements Serializable {
 		return 0;
 	}
 
-//	public int H5(int color, int wieght) {
-//		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
-//		if (color == 1) {
-//			QueenPos = queenPosBlack1; 
-//		}else {
-//			QueenPos = queenPosWhite2; 
-//		}
-//			for (int[] qn : QueenPos) {
-//				int AreaAroundQueen = 0;
-//				boolean ourArrow = false;
-//				for (int x = -1; x <= 1; x++) {
-//					for (int y = -1; y <= 1; y++) {
-//						if(!(x==0 & y ==0)) {
-//							
-//						
-//						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
-//							if (currentBoard[qn[0] + x][qn[1] + y] != 3) {
-//								AreaAroundQueen++;
-//							}
-//							if (qn[0] + x == moveInfo.getArrow()[0] && qn[1] + y == moveInfo.getArrow()[1]) {
-//								ourArrow = true;
-//							}
-//						} else {
-//							AreaAroundQueen++;
-//						}
-//
-//					}
-//					}
-//				}
-//				if (AreaAroundQueen == 8 && ourArrow) {
-//					return wieght;
-//				}
-//			}
-//		
-//		return 0;
-//	}
+	public double H5(int color) {
+		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
+		if (color == 1) {
+			QueenPos = queenPosWhite2; 
+		}else {
+			QueenPos = queenPosBlack1 ; 
+		}
+			for (int[] qn : QueenPos) {
+				int AreaAroundQueen = 0;
+				boolean ourArrow = false;
+				for (int x = -1; x <= 1; x++) {
+					for (int y = -1; y <= 1; y++) {
+						if(!(x==0 & y ==0)) {
+							
+						//if inside bounds and position around queen is not empty
+						if (qn[0] + x >= 0 && qn[0] + x < 10 && qn[1] + y >= 0 && qn[1] + y < 10) {
+							if (currentBoard[qn[0] + x][qn[1] + y] != 3) {
+								AreaAroundQueen++;
+							}
+							//if our arrow is adjacent to the queen
+							if (qn[0] + x == moveInfo.getArrow()[0] && qn[1] + y == moveInfo.getArrow()[1]) {
+								ourArrow = true;
+							}
+						} else {
+							AreaAroundQueen++;
+						}
+
+					}
+					}
+				}
+				if (ourArrow) {
+					return AreaAroundQueen;
+				}
+			}
+		
+		return 0;
+	}
 
 	public double H4(int team) {
 		
@@ -673,6 +674,7 @@ public class GameBoardState implements Serializable {
 			while (!tileQueue.isEmpty()) {
 				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
 				
+				System.out.println(tileQueue.size());
 				tilesToAdd.addAll(getTilesAround(tileQueue.poll()));		//Dequeue current tile, add its children to shortlist of tiles to expand upon
 				for (Vector2 tile : tilesToAdd)		
 					//for each shortlisted tile,
