@@ -103,8 +103,9 @@ public class ActionFactory {
 												//store the move made in a info data class
 												game.moveInfo = new MoveInfo(new int[] { i, j }, new int[] { x, y },
 														new int[] { bx, by }, player);
-												game.setParent(node);
-
+												if(!monte) {
+													game.setParent(node);
+												}
 												// Add the new gameboard to the list of legal moves.
 												legalMoves.add(game);
 											}
