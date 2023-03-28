@@ -12,7 +12,17 @@ import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 
 public class MoveSequence {
-
+	
+	private static int curturn;
+	public static double[] C = new double[] {1f,10,5f,.5f,.35,.5f};
+	public static double[] C2 = new double[] {1f,10,5f,.5f,.35,.5f};
+//	n.setH1(n.H1(color)* 1f); //v1:
+//	n.setH3(n.H3(color, 10)); //v1: 
+//	n.setH2(n.H2(color)* 5f);// v1:
+//	n.setH4(n.H4()*.5f);	//v1:
+//	n.setH5(n.H5(color)*.35f); //v1:
+//	if(curturn >30)
+//		n.setH6(n.H6() * .5f);
 	/**
 	 * @EFFECTS : generates all possible legal actions from action factory and then
 	 *          calculates the utility score for each. then chooses the maxuim from
@@ -25,6 +35,7 @@ public class MoveSequence {
 	 * @return Node that is chsen and filled with move infomation
 	 */
 	public static Node GenerateMove(Node root, int QueenColor, int turn) {
+		curturn = turn;
 		System.out.println("------CHOSEN MOVE STATE--------");
 		System.out.println("Who's Turn :" + QueenColor);
 		System.out.println("TURN NUM: "+ turn);
@@ -92,7 +103,7 @@ public class MoveSequence {
 	 * @param chioces : all the children of the root
 	 * @param root    : the original state and Parent
 	 */
-	protected static Node CalcUtilityScore(ArrayList<Node> chioces, Node root, int color) {
+	 public static Node CalcUtilityScore(ArrayList<Node> chioces, Node root, int color) {
 		// calculate the utility function for all the nodes that came from the root
 		// temporary solution
 		int count = 0;
@@ -107,12 +118,20 @@ public class MoveSequence {
 			n.updateQueenPoses();
 
 			//n.C = Math.random() * 6;
-			n.setH1(n.H1(color)* 1f); //v1:
-			n.setH3(n.H3(color, 10)); //v1: 
-			n.setH2(n.H2(color)* 5f);// v1:
-			n.setH4(n.H4()*.5f);	//v1:
-			n.setH5(n.H5(color)*.35f); //v1:
-
+//			n.setH1(n.H1(color)* 1f); //v1:
+//			n.setH3(n.H3(color, 10)); //v1: 
+//			n.setH2(n.H2(color)* 5f);// v1:
+//			n.setH4(n.H4()*.5f);	//v1:
+//			n.setH5(n.H5(color)*.35f); //v1:
+//			if(curturn >30)
+//				n.setH6(n.H6() * .5f);
+			n.setH1(n.H1(color)* C[0]); //v1:
+			n.setH3(n.H3(color, C[1])); //v1: 
+			n.setH2(n.H2(color)* C[2]);// v1:
+			n.setH4(n.H4()*C[3]);	//v1:
+			n.setH5(n.H5(color)*C[4]); //v1:
+			if(curturn >30)
+				n.setH6(n.H6() * C[5]);
 			// n.C = Math.random() * 6;
 //			n.setH1(n.H1(color) * .12f);
 //			n.setH3(n.H3(color, 10));
@@ -123,7 +142,7 @@ public class MoveSequence {
 
 
 			
-			System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
+			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 
 		}
 		return root;
