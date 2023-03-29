@@ -2,7 +2,10 @@ package Serailization;
 
 import java.util.ArrayList;
 
-import ActionFactory.Node;import java.io.*;
+import ActionFactory.Node;
+import Simulation.Nueron;
+
+import java.io.*;
 
 /**
  * MonteTree serailizer write to data folder and read from data folder 
@@ -16,10 +19,76 @@ import ActionFactory.Node;import java.io.*;
  */
 public class MonteTreeSerailizer {
 	 private static final String filepath= "src\\main\\java\\Serailization\\Data\\";
-	 private static String fileName ="test.txt";
+	 public static String fileName ="test.txt";
 	 
 	 public String getFileName() {return fileName;}
 	 public void setFileName(String newFile) {fileName = newFile;}
+	 
+	 /**
+	  * save Nueron Hueristic values
+	  * @param node
+	  */
+	 public static void saveNueron(Nueron node, String fileName) {
+		 File data = new File(filepath+fileName);
+			if(!data.exists())
+				try {
+					data.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			try {
+				FileOutputStream write = new FileOutputStream(data);
+				ObjectOutputStream objOut = new ObjectOutputStream(write);
+				objOut.writeObject(node);
+				objOut.close();
+				System.out.println("saved");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(data.exists() +";"+ data.getAbsolutePath());
+	 }
+	 /**
+	  * load hueristic Constants from nueron
+	  * @return
+	  */
+	 public static Nueron LoadNueron(String fileName){
+			File data = new File(filepath+fileName);
+			Nueron tree = null;
+			if(!data.exists())
+				try {
+					data.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			try {
+				FileInputStream write = new FileInputStream(data);
+				ObjectInputStream objOut = new ObjectInputStream(write);
+				Object obj =  objOut.readObject();
+				if(obj instanceof Nueron)
+					tree = (Nueron) obj;
+				objOut.close();
+				System.out.println("Loaded");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(data.exists() +";"+ data.getAbsolutePath());
+			
+			return tree;
+			
+		}
 	 
 	 /**
 	  * serailzies and saves to file list of nodes

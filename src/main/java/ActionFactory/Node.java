@@ -24,6 +24,7 @@ public class Node extends GameBoardState  {
 		private double h3 = -1;
 		private double h4 = -1;
 		private double h5 = -1;
+		private double h6 = -1;
 		public double C = 1; //carlo constant
 		
 
@@ -32,6 +33,7 @@ public class Node extends GameBoardState  {
 		private boolean expanded = false;
 		private double ucb;
 		private int playerNo;
+		
 		
 
 		Node parent;
@@ -51,7 +53,7 @@ public class Node extends GameBoardState  {
 		public double getValue() {
 			//System.out.println(h1+h2+h3);
 
-			return (h1+h2+h3+h4+h5);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+			return (h1+h2+h3+h4+h5+h6);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
 
 		
 		public double getH1() {return h1;}
@@ -59,6 +61,8 @@ public class Node extends GameBoardState  {
 		public double getH3() {return h3;}
 		public double getH4() {return h4;}
 		public double getH5() {return h5;}
+		public double getH6() {return h6;}
+		
 		public void setH1(double h1) {
 			this.h1 = h1;
 		}
@@ -73,6 +77,9 @@ public class Node extends GameBoardState  {
 		}
 		public void setH5(double h5) {
 			this.h5 = h5;
+		}
+		public void setH6(double h6) {
+			this.h6 = h6;
 		}
 
 

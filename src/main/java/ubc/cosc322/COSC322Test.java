@@ -14,7 +14,8 @@ import ActionFactory.Node;
 import GameState.GameBoardState;
 import GameState.MoveInfo;
 import GameState.Timer;
-
+import Serailization.MonteTreeSerailizer;
+import Simulation.Nueron;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -158,16 +159,15 @@ public class COSC322Test extends GamePlayer {
 			switch (messageType) {
 
 			case GameMessage.GAME_STATE_BOARD:
-				System.out.println("ENEMY MOVE GET THINGY");
+				//System.out.println("ENEMY MOVE GET THINGY");
 				this.getGameGUI().setGameState((ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE)));
-				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails
-						.get(AmazonsGameMessage.GAME_STATE));
+				ArrayList<Integer> GottenGameState = (ArrayList<Integer>) (msgDetails.get(AmazonsGameMessage.GAME_STATE));
 				// set initial local state of GameBoard
 				chessBoard = new Node(GottenGameState);
 				chessBoard.updateQueenPoses();
 				chessBoard.printQPoses();
 
-				System.out.println(chessBoard.toString());
+				//System.out.println(chessBoard.toString());
 //				System.out.println("h1 = " + chessBoard.getH1(ourColor));
 //				System.out.println("h2 = " + chessBoard.getH2(ourColor));
 				break;
@@ -183,6 +183,24 @@ public class COSC322Test extends GamePlayer {
 					ourColor = 1;
 					notOurColor = 2;
 					System.out.println("ourColor : "+ourColor);
+					
+					//load constraints frmo file
+					Nueron Constants = null;
+					Constants = new Nueron(new double[] {1f,10,5f,.5f,.35,.5f});
+//					try {
+//						
+//						Constants = MonteTreeSerailizer.LoadNueron("constants.txt");
+//						System.out.println("stuff");
+//					}catch(Exception e) {
+//						System.out.println("file not found not being created yet");
+//						Constants = new Nueron(MoveSequence.C);
+//					}
+					//apply constraints to heuristics
+					MoveSequence.C = Constants.getWieghts();
+					MoveSequence.C2 = Constants.getWieghts();
+					for(int i = 0; i < MoveSequence.C.length;i++) {
+						System.out.print(MoveSequence.C[i]+" : ");
+					}
 				
 				} else {
 					ourColor = 2;
@@ -190,9 +208,9 @@ public class COSC322Test extends GamePlayer {
 				}
 
 				if (ourColor == 1) {
-					chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
+					//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 						
-					//chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
+					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
 				}
@@ -231,9 +249,9 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
 				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
 				
-				boolean isValid = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
-				isValid = chessBoard.checkIfPathIsClear(newQnPos,arrw);
-				if (!isValid) {
+				boolean isValidQueen = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
+				boolean isValidArrow = chessBoard.checkIfPathIsClear(newQnPos,arrw);
+				if (!isValidQueen || !isValidArrow ) {
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
@@ -241,7 +259,7 @@ public class COSC322Test extends GamePlayer {
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
-					throw new RuntimeException("ENEMY LOOSE");
+					throw new RuntimeException("ENEMY LOSE");
 				}
 //							
 
@@ -257,11 +275,11 @@ public class COSC322Test extends GamePlayer {
 				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor, turn);
 				//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
-				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
+				isValidQueen = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
 						chessBoard.moveInfo.getNewQPos());
-				isValid = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
+				isValidArrow = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
 						chessBoard.moveInfo.getArrow());
-				if (!isValid) {
+				if (!isValidQueen || !isValidArrow ) {
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");

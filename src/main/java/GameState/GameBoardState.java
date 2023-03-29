@@ -317,7 +317,13 @@ public class GameBoardState implements Serializable {
 		queenPosWhite2 = q2b;
 		arrowsPos = arrw;
 	}
-
+	/**
+	 * @TODO: horizontal paths are not checked only does diagnol
+	 * 
+	 * @param pos1
+	 * @param pos2
+	 * @return
+	 */
 	public boolean checkIfPathIsClear(int[] pos1, int[] pos2) {
 		boolean isValid = false;
 		// Check if both positions are on the same row, column, or diagonal
@@ -458,7 +464,7 @@ public class GameBoardState implements Serializable {
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
 	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
 	 */
-	public int H1(int queenColor) {
+	public double H1(int queenColor) {
 
 		int sumOfWhiteQueen = 1;
 		int sumOfBlackQueen = 1;
@@ -469,10 +475,13 @@ public class GameBoardState implements Serializable {
 			for (int x = -1; x <= 1; x++) {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-						if (queen[0] + x >= 0 && queen[0] + x < 10 && queen[1] + y >= 0 && queen[1] + y < 10) {
-							if (board[queen[0] + x][queen[1] + y] == 0) {
+
+						if (queen[0] + x >= 0 && queen[0] + x < 10
+								&& queen[1] + y >= 0 && queen[1] + y < 10) {
+							if (board[queen [0] + x][queen[1] + y ] == 0) {
 								sumOfWhiteQueen++;
-							}
+							} 
+
 						}
 					}
 				}
@@ -495,14 +504,26 @@ public class GameBoardState implements Serializable {
 		}
 
 		if (queenColor == 1) {
-			if (sumOfWhiteQueen == 0 || sumOfWhiteQueen < 0)
-				sumOfWhiteQueen = 1;
-			return (sumOfBlackQueen );
-		} else {
-			if (sumOfBlackQueen == 0 || sumOfBlackQueen < 0)
-				sumOfBlackQueen = 1;
-			return (sumOfWhiteQueen );
+			double sum;
+			if(sumOfWhiteQueen ==0 ) {
+				sumOfWhiteQueen=1;
+			}
+			if(sumOfBlackQueen>sumOfWhiteQueen ) {
+				//System.out.println("black is bigger");
+				sum =((double) sumOfBlackQueen) ;
+			}else {
+				sum =((double) sumOfBlackQueen);
+				//System.out.println("white is bigger");
+			}
+			return sum;
+		} else if(queenColor == 2) {
+			double sum =  (double)sumOfWhiteQueen;
+			if(sum <0 ) {
+				sum =0;
+			}
+			return sum;
 		}
+		return 0;
 
 	}
 
@@ -606,9 +627,10 @@ public class GameBoardState implements Serializable {
 		return 0;
 	}
 	/**
-	 * 
+	 * Arrow placer hueristic that give priority to moves that place
+	 * an arrow adjacent to a enemy queen
 	 * @param color
-	 * @return
+	 * @return number blocked tiles around enemy queen
 	 */
 	public double H5(int color) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
@@ -647,7 +669,10 @@ public class GameBoardState implements Serializable {
 
 		return 0;
 	}
-	
+	/**
+	 * escape heuristic that determines how much free space is around the current move vs its old move
+	 * @return
+	 */
 	public double H4() {
 		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
 		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0],moveInfo.getOldQPos()[1]);
@@ -661,6 +686,55 @@ public class GameBoardState implements Serializable {
 		}
 
 	
+	}
+	private int countA = 0; // for use in getArea only
+	/**
+	 * counts the number of space it can possibly go to
+	 * @return total space it can go
+	 */
+	public double H6() {
+		int[][] copy = new int[10][10];
+		for(int x =0; x< 9; x++) {
+			for( int y=0; y < 9; y++){
+				copy[x][y] = currentBoard[x][y];
+			}
+		}
+		   countA = 0;
+	  	  return getArea(moveInfo.getNewQPos(),copy);
+	}
+	
+	/**
+	 * @EFFECTS recursively counts all empty tiles a position can reach
+	 * @REQUIRES a deep copy of the board to avoid changing its state
+	 * 
+	 * @param Pos the starting location
+	 * @param board  copy of the board 
+	 * @param empties empty array
+	 * @return count of the empty tiles that position can reach
+	 */
+	private int getArea(int[] Pos, int[][] board) {
+		
+		// if out of bounds return
+		if(Pos[0] < 0 || Pos[1] < 0 || Pos[0] > 9 || Pos[1] > 9)
+			return countA;
+		
+		
+		//if not empty return
+	    if (board[Pos[0]][Pos[1]] != 0) {
+	        return countA;
+	    }
+	    board[Pos[0]][Pos[1]] = -1;	    
+	    countA++;
+	    //go threw adjacent squares and count them
+		for(int x = -1; x <= 1; x++) {
+			for(int y = -1; y <= 1; y++) {	
+						//exclude center square
+						if(x != 0 || y != 0) {							
+							getArea(new int[] {Pos[0]+x,Pos[1]+y}, board);					
+						}
+				}
+			}
+		return countA;
 	}
 
 //	public double H4(int team) {

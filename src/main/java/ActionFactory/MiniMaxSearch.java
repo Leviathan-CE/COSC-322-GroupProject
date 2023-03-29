@@ -27,7 +27,7 @@ public class MiniMaxSearch extends MoveSequence {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 		//CalcUtilityScore(chioces, root);
 		if(chioces.size() == 0)
-			throw new RuntimeException("!!!!!!!!!!!!!WE LOOSE!!!!!!!!!!!");
+			throw new RuntimeException("!!!!!!!!!!!!!WE LOSE!!!!!!!!!!!");
 		int enemyTeamColor = 0;
 		if(QueenColor == 1)
 			enemyTeamColor = 2;
