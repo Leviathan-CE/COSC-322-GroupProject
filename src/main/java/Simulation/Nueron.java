@@ -41,4 +41,7 @@ public class Nueron implements Serializable{
 	public Nueron prevoius() {
 		return parent;
 	}
+	public double[] getWieghts() {
+		return Wieghts;
+	}
 }

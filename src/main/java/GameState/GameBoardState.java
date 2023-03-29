@@ -669,7 +669,10 @@ public class GameBoardState implements Serializable {
 
 		return 0;
 	}
-	
+	/**
+	 * escape heuristic that determines how much free space is around the current move vs its old move
+	 * @return
+	 */
 	public double H4() {
 		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
 		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0],moveInfo.getOldQPos()[1]);
