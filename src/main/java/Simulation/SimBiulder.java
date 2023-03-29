@@ -86,11 +86,11 @@ public class SimBiulder {
 		if (color == 1) {
 			if (e.getMessage().contains("LOOSE")) {
 				// aaply small neg change to all
-//				for (int i = 0; i < MoveSequence.C.length; i++) {
-//					double v = Math.random()/2;
-//					MoveSequence.C[i] -= v;
-//					
-//				}
+				for (int i = 0; i < MoveSequence.C.length; i++) {
+					double v = Math.random()/2;
+					MoveSequence.C[i] -= v;
+					
+				}
 
 				MoveSequence.C[getLargestWieght()] -= .5f;
 			}
@@ -98,7 +98,7 @@ public class SimBiulder {
 				// apply small positive change to all
 				for (int i = 0; i < MoveSequence.C.length; i++) {
 					
-					double v = Math.random()/2;
+					double v = Math.random()*2;
 					MoveSequence.C[i] += v;
 				}
 				MoveSequence.C[getLargestWieght()] += .5f;
@@ -108,7 +108,7 @@ public class SimBiulder {
 			if (e.getMessage().contains("LOOSE")) {
 				// aaply small neg change to all
 				for (int i = 0; i < MoveSequence.C.length; i++) {
-					double v = Math.random()/2;
+					double v = Math.random()*2;
 					MoveSequence.C[i] += v;
 					
 				}
@@ -117,16 +117,15 @@ public class SimBiulder {
 			}
 			if (e.getMessage().contains("WIN")) {
 				// apply small positive change to all
-//				for (int i = 0; i < MoveSequence.C.length; i++) {
-//					
-//					double v = Math.random()/2;
-//					MoveSequence.C[i] -= v;
-//				}
+				for (int i = 0; i < MoveSequence.C.length; i++) {
+					
+					double v = Math.random()/2;
+					MoveSequence.C[i] -= v;
+				}
 				MoveSequence.C[getLargestWieght()] -= .5f;
 			}
 		}
-		for (int i = 0; i < MoveSequence.C.length; i++) {
-			
+		for (int i = 0; i < MoveSequence.C.length; i++) {			
 			if(MoveSequence.C[i] < 0)
 				MoveSequence.C[i] = 0;
 		}

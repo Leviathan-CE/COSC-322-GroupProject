@@ -15,8 +15,8 @@ public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
-	public static double[] C = new double[] {10,50,1,.5f,20,.5f} ;
-	public static double[] C2 = new double[] {10,50,1,.5f,20,.5f};
+	public static double[] C = new double[] {10,1,50,.5f,20,.5f} ;
+	public static double[] C2 = new double[] {10,1,50,.5f,20,.5f};
 //	n.setH1(n.H1(color)* 1f); //v1:
 //	n.setH3(n.H3(color, 10)); //v1: 
 //	n.setH2(n.H2(color)* 5f);// v1:
@@ -46,7 +46,7 @@ public class MoveSequence {
 		ArrayList<Node> chioces;
 		if (turn > 150) {
 			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
-				chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 		}else {
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 			CalcUtilityScore(chioces, root, QueenColor);
@@ -58,7 +58,12 @@ public class MoveSequence {
 		if(chioces.size() == 0)
 			throw new RuntimeException("WE LOOSE");
 		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
-
+		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, false);
+		// if enen has no moves
+		if (Echioces.size() == 0)
+			throw new RuntimeException("WIN");
+		
+		decoupleAllChildren(chioces,root);
 		System.out.println("children in root: " + root.childCount());
 		chosenOne.updateQueenPoses();
 
