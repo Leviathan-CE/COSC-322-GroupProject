@@ -29,7 +29,7 @@ public class Node extends GameBoardState  {
 		
 
 		private int wins = 0;
-		private int visits = 1; 
+		private int visits = 0; 
 		private boolean expanded = false;
 		private double ucb;
 		private int playerNo;
@@ -42,7 +42,13 @@ public class Node extends GameBoardState  {
 		
 		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
 
-		public double getUCB() {return Math.abs( wins/visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+	//	public double getUCB() {return Math.abs( this.wins/this.visits + C*Math.sqrt(Math.log(this.parent.visits)/this.visits));} //UCBI Score
+		public double getUCB() {
+			if (this.visits == 0) {
+				return Integer.MAX_VALUE;
+			}
+			return (this.wins/(double)this.visits) + C*Math.sqrt(Math.log(this.parent.visits)/this.visits);
+			}
 
 		public double getValue() {
 			//System.out.println(h1+h2+h3);
@@ -122,11 +128,6 @@ public class Node extends GameBoardState  {
 				wins++;
 			visits++;
 		}
-		public int getvisits() {return visits;}
-//		public String toString() {
-//			return "" + id;
-//		}
-//		
 		public void setParent(Node node) {
 			parent = node;
 		}

@@ -9,10 +9,10 @@ public class mctsUpgraded {
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
 		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
-		root.incrVisits(); // no need to simulate root
+		expand(root); 
 		double startTime;
-		double timeLimit = 25;
-		startTime = (System.currentTimeMillis() / 1000);	// snatched from ejohn, implement our timer instead?
+		double timeLimit = 10;
+		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
 			// selection
@@ -20,7 +20,9 @@ public class mctsUpgraded {
 			// expansion
 			if(leaf.getVisits() != 1) { // only expand if you have already simulated the node
 				expand(leaf);
-				leaf = leaf.getChildren().get(0); 
+				if (leaf.getChildren().size() > 0) {
+					leaf = leaf.getChildren().get(0);   // !!!FIX FOR ENDGAME CONDITION "Index 0 out of bounds for length 0"
+				}
 			}
 			// simulation
 			simulate(leaf, ourPlayer);
@@ -28,6 +30,10 @@ public class mctsUpgraded {
 			backprop(leaf);
 		}
 		System.out.println("TIMES UP! ");
+		for (Node c : root.getChildren()) {
+			System.out.printf("UCB: %.6f" + ", wins: " + c.getWins() + ", visits: " + c.getVisits() + "\n", c.getUCB() );
+			}
+		System.out.println("root visits: " + root.getVisits() );
 		return findBestChild(root);
 	}
 	
@@ -36,6 +42,7 @@ public class mctsUpgraded {
 		Node node = root;
 		while(node.getChildren().size() > 0) {
 			node = findBestChild(node);
+			if (node == null) {System.out.println("node is null");}
 		}
 		return node;
 	}
@@ -43,19 +50,18 @@ public class mctsUpgraded {
 	//	returns parent's best child based on UCB
 	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
-		double largestUCB = 0;
+		double largestUCB = -1;
 		double tempUCB;
 		Node bestChild = null;
-		for (int c = 0; c < children.size(); c++) {	 //iterate through children and select child with highest UCB
-			tempUCB = children.get(c).getUCB();
+		for (Node c : children) {	 //iterate through children and select child with highest UCB
+			tempUCB = c.getUCB();
 			if(tempUCB > largestUCB) {
 				largestUCB = tempUCB;
-				bestChild = children.get(c);
+				bestChild = c;
 			}
 		}
 		return bestChild;
-	}
-	
+	}	
 	//	assigns all possible gamestates to a node as children
 	private static void expand(Node parent) {
 		int team = parent.getPlayerNo();
@@ -64,7 +70,7 @@ public class mctsUpgraded {
 			c.setParent(parent);
 			c.setPlayerNo(3 - team); // set children nodes as opponent team
 		}
-		parent.setChildren(children); // ADD : expand based on playerNo and assign opponentNo to children
+		parent.setChildren(children); 
 	}
 	
 	// simulates random game from input node, look into possibly fixing up ?
