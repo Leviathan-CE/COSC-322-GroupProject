@@ -510,14 +510,14 @@ public class GameBoardState implements Serializable {
 			}
 			if(sumOfBlackQueen>sumOfWhiteQueen ) {
 				//System.out.println("black is bigger");
-				sum =((double) sumOfBlackQueen/(double)sumOfWhiteQueen) ;
+				sum =((double) sumOfBlackQueen) ;
 			}else {
-				sum =((double) sumOfBlackQueen/(double)sumOfWhiteQueen *10);
+				sum =((double) sumOfBlackQueen);
 				//System.out.println("white is bigger");
 			}
 			return sum;
 		} else if(queenColor == 2) {
-			double sum =  (double)sumOfWhiteQueen- (double) sumOfBlackQueen;
+			double sum =  (double)sumOfWhiteQueen;
 			if(sum <0 ) {
 				sum =0;
 			}

@@ -118,20 +118,20 @@ public class MoveSequence {
 			n.updateQueenPoses();
 
 			//n.C = Math.random() * 6;
-//			n.setH1(n.H1(color)* 1f); //v1:
-//			n.setH3(n.H3(color, 10)); //v1: 
-//			n.setH2(n.H2(color)* 5f);// v1:
-//			n.setH4(n.H4()*.5f);	//v1:
-//			n.setH5(n.H5(color)*.35f); //v1:
-//			if(curturn >30)
-//				n.setH6(n.H6() * .5f);
-			n.setH1(n.H1(color)* C[0]); //v1:
-			n.setH3(n.H3(color, C[1])); //v1: 
-			n.setH2(n.H2(color)* C[2]);// v1:
-			n.setH4(n.H4()*C[3]);	//v1:
-			n.setH5(n.H5(color)*C[4]); //v1:
+			n.setH1(n.H1(color)* 10f); //v1:
+			n.setH3(n.H3(color, 50)); //v1: 
+			n.setH2(n.H2(color)* 1f);// v1:
+			n.setH4(n.H4()*.5f);	//v1:
+			n.setH5(n.H5(color)* 20f); //v1:
 			if(curturn >30)
-				n.setH6(n.H6() * C[5]);
+				n.setH6(n.H6() * .5f);
+//			n.setH1(n.H1(color)* C[0]); //v1:
+//			n.setH3(n.H3(color, C[1])); //v1: 
+//			n.setH2(n.H2(color)* C[2]);// v1:
+//			n.setH4(n.H4()*C[3]);	//v1:
+//			n.setH5(n.H5(color)*C[4]); //v1:
+//			if(curturn >30)
+//				n.setH6(n.H6() * C[5]);
 			// n.C = Math.random() * 6;
 //			n.setH1(n.H1(color) * .12f);
 //			n.setH3(n.H3(color, 10));
