@@ -497,11 +497,11 @@ public class GameBoardState implements Serializable {
 		if (queenColor == 1) {
 			if (sumOfWhiteQueen == 0 || sumOfWhiteQueen < 0)
 				sumOfWhiteQueen = 1;
-			return (sumOfBlackQueen / sumOfWhiteQueen);
+			return (sumOfBlackQueen );
 		} else {
 			if (sumOfBlackQueen == 0 || sumOfBlackQueen < 0)
 				sumOfBlackQueen = 1;
-			return (sumOfWhiteQueen / sumOfBlackQueen);
+			return (sumOfWhiteQueen );
 		}
 
 	}

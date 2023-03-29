@@ -31,7 +31,7 @@ public class MoveSequence {
 
 		// gen legal moves
 		Node chosenOne = null;
-		if (turn > 150) {
+		if (turn > 20) {
 			ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
 		}else {
@@ -133,7 +133,7 @@ public class MoveSequence {
 		chioces.remove(chosenMove);
 		// only decouples nodes that are not part of the monte carlo tree
 		for (Node n : chioces) {
-			if (n.getvisits() > 1) {
+			if (n.getVisits() > 0) {
 				n.setParent(null);
 				root.RemoveChild(n);
 			}
