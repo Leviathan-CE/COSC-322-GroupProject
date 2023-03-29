@@ -14,7 +14,8 @@ import ActionFactory.Node;
 import GameState.GameBoardState;
 import GameState.MoveInfo;
 import GameState.Timer;
-
+import Serailization.MonteTreeSerailizer;
+import Simulation.Nueron;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -182,6 +183,24 @@ public class COSC322Test extends GamePlayer {
 					ourColor = 1;
 					notOurColor = 2;
 					System.out.println("ourColor : "+ourColor);
+					
+					//load constraints frmo file
+					Nueron Constants = null;
+					Constants = new Nueron(new double[] {1f,10,5f,.5f,.35,.5f});
+//					try {
+//						
+//						Constants = MonteTreeSerailizer.LoadNueron("constants.txt");
+//						System.out.println("stuff");
+//					}catch(Exception e) {
+//						System.out.println("file not found not being created yet");
+//						Constants = new Nueron(MoveSequence.C);
+//					}
+					//apply constraints to heuristics
+					MoveSequence.C = Constants.getWieghts();
+					MoveSequence.C2 = Constants.getWieghts();
+					for(int i = 0; i < MoveSequence.C.length;i++) {
+						System.out.print(MoveSequence.C[i]+" : ");
+					}
 				
 				} else {
 					ourColor = 2;

@@ -23,8 +23,10 @@ public class ActionFactory {
 	 * EFFECTS: takes in the Board state and then returns the branch factor of all
 	 * possible actions based off of what actions can be taken.
 	 * 
-	 * @param rootState is the root for which we calculate the branch factor based
+	 * @param node is the root for which we calculate the branch factor based
 	 *                  from a move set.
+	 * @param player the players color
+	 * @param monte if true then void all coupling                 
 	 * @return all possible game states from the root
 	 * 
 	 */
