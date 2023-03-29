@@ -12,10 +12,11 @@ import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 
 public class MoveSequence {
-	
+	//{1f,10,5f,.5f,.35,.5f} v1
+	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
-	public static double[] C = new double[] {1f,10,5f,.5f,.35,.5f};
-	public static double[] C2 = new double[] {1f,10,5f,.5f,.35,.5f};
+	public static double[] C = new double[] {10,50,1,.5f,20,.5f} ;
+	public static double[] C2 = new double[] {10,50,1,.5f,20,.5f};
 //	n.setH1(n.H1(color)* 1f); //v1:
 //	n.setH3(n.H3(color, 10)); //v1: 
 //	n.setH2(n.H2(color)* 5f);// v1:
@@ -118,6 +119,7 @@ public class MoveSequence {
 			n.updateQueenPoses();
 
 			//n.C = Math.random() * 6;
+
 //			n.setH1(n.H1(color)* 1f); //v1:
 //			n.setH3(n.H3(color, 10)); //v1: 
 //			n.setH2(n.H2(color)* 5f);// v1:
@@ -143,17 +145,7 @@ public class MoveSequence {
 				if(curturn >30)
 					n.setH6(n.H6() * C2[5]);
 				
-			}
-			// n.C = Math.random() * 6;
-//			n.setH1(n.H1(color) * .12f);
-//			n.setH3(n.H3(color, 10));
-//
-//			n.setH2(n.H2(color) * 5f);
-//			n.setH4(n.H4() * .5f);
-//			n.setH5(n.H5(color) * .35f);
-
-
-			
+			}			
 			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 
 		}
