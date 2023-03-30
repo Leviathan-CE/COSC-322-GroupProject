@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import ActionFactory.ActionFactory;
 import ActionFactory.Node;
 import GameState.Timer;
+import ubc.cosc322.MoveSequence;
 
 public class mctsUpgraded {
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
@@ -34,7 +35,7 @@ public class mctsUpgraded {
 			System.out.printf("UCB: %.6f" + ", wins: " + c.getWins() + ", visits: " + c.getVisits() + "\n", c.getUCB() );
 			}
 		System.out.println("root visits: " + root.getVisits() );
-		return findBestChild(root);
+		return findBestChildWUtil(root, ourPlayer);
 	}
 	
 	//	traverses through tree using UCB, returns leaf
@@ -50,6 +51,7 @@ public class mctsUpgraded {
 	//	returns parent's best child based on UCB
 	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
+		
 		double largestUCB = -1;
 		double tempUCB;
 		Node bestChild = null;
@@ -60,6 +62,28 @@ public class mctsUpgraded {
 				bestChild = c;
 			}
 		}
+		return bestChild;
+	}	
+	/**
+	 * Find best child with H+UBC
+	 * @param parent
+	 * @param color
+	 * @return best node
+	 */
+	private static Node findBestChildWUtil(Node parent, int color) {
+		ArrayList<Node> children = parent.getChildren();
+		MoveSequence.CalcUtilityScore(children, parent, color);
+		double largestUCB = -1;
+		double tempUCB;
+		Node bestChild = null;
+		for (Node c : children) {	 //iterate through children and select child with highest UCB
+			tempUCB = c.getValue();
+			if(tempUCB > largestUCB) {
+				largestUCB = tempUCB;
+				bestChild = c;
+			}
+		}
+		//MoveSequence.decoupleUnusedChildren(bestChild, children,parent);
 		return bestChild;
 	}	
 	//	assigns all possible gamestates to a node as children
@@ -101,6 +125,13 @@ public class mctsUpgraded {
 			node.incrVisits();
 			node.incrWins(simResult);
 		}
+	}
+	private static ArrayList<Node> getchildrenUCB(Node parent) {
+		ArrayList<Node> children = parent.getChildren();
+		for (Node c : children) {	 //iterate through children and select child with highest UCB
+			c.setUCB();
+		}
+		return children;
 	}
 	
 }

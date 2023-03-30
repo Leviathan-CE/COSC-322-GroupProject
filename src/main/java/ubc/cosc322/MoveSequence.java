@@ -43,27 +43,31 @@ public class MoveSequence {
 
 		// gen legal moves
 		Node chosenOne = null;
-		if (turn > 20) {
-			ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
-			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
+		ArrayList<Node> chioces= null;
+		if (turn > 10) {			
+			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+			
 		}else {
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 			CalcUtilityScore(chioces, root, QueenColor);
 			chosenOne = MonteTreeSearch.SearchMax(root);
 		}
+		
+		
+		System.out.println("is null " +chosenOne !=null);
 		// Node chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
 // old stuff
 //		CalcUtilityScore(chioces, root, QueenColor);
 		if(chioces.size() == 0)
 			throw new RuntimeException("WE LOOSE");
 		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
-		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, false);
+		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, true);
 		// if enen has no moves
 		if (Echioces.size() == 0)
 			throw new RuntimeException("WIN");
 		
-		decoupleAllChildren(chioces,root);
+		
 		System.out.println("children in root: " + root.childCount());
 		chosenOne.updateQueenPoses();
 
@@ -85,7 +89,8 @@ public class MoveSequence {
 		}
 
 		System.out.println("------END OF STATE--------");
-
+		
+	
 		return chosenOne;
 	}
 
@@ -138,6 +143,7 @@ public class MoveSequence {
 			n.setH3(n.H3(color, C[2])); //v1: 			
 			n.setH4(n.H4()*C[3]);	//v1:
 			n.setH5(n.H5(color)*C[4]); //v1:
+			n.setUCB(n.getUCB() * C[6]);
 			if(curturn >30)
 				n.setH6(n.H6() * C[5]);
 			}
@@ -147,6 +153,7 @@ public class MoveSequence {
 				n.setH3(n.H3(color, C2[2])); //v1: 				
 				n.setH4(n.H4()*C2[3]);		//v1:
 				n.setH5(n.H5(color)*C2[4]); //v1:
+				n.setUCB(n.getUCB() * C[6]);
 				if(curturn >30)
 					n.setH6(n.H6() * C2[5]);
 				
@@ -164,7 +171,7 @@ public class MoveSequence {
 	 * @param chioces    : all the children of root
 	 * @param root       : the initial game state node
 	 */
-	protected static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
+	public static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 
 		chioces.remove(chosenMove);
 		// only decouples nodes that are not part of the monte carlo tree
@@ -176,7 +183,7 @@ public class MoveSequence {
 		}
 	}
 
-	protected static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
+	public static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
 		// decouple all children including choice
 		for (Node n : chioces) {
 			root.RemoveChild(n);
