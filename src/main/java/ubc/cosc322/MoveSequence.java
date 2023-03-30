@@ -15,8 +15,8 @@ public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
-	public static double[] C = new double[] {10,1,50,.5f,20,.5f} ;
-	public static double[] C2 = new double[] {10,1,50,.5f,20,.5f};
+	public static double[] C = new double[] {10,1,50,.5f,20,.5f,10} ;
+	public static double[] C2 = new double[] {10,1,50,.5f,20,.5f,10};
 //	n.setH1(n.H1(color)* 1f); //v1:
 //	n.setH3(n.H3(color, 10)); //v1: 
 //	n.setH2(n.H2(color)* 5f);// v1:
@@ -146,6 +146,7 @@ public class MoveSequence {
 			n.setUCB(n.getUCB() * C[6]);
 			if(curturn >30)
 				n.setH6(n.H6() * C[5]);
+			n.setUCB(n.getUCB() * C2[6]);
 			}
 			else if(color ==2) {
 				n.setH1(n.H1(color)* C2[0]); //v1:
@@ -153,10 +154,10 @@ public class MoveSequence {
 				n.setH3(n.H3(color, C2[2])); //v1: 				
 				n.setH4(n.H4()*C2[3]);		//v1:
 				n.setH5(n.H5(color)*C2[4]); //v1:
-				n.setUCB(n.getUCB() * C[6]);
+			
 				if(curturn >30)
 					n.setH6(n.H6() * C2[5]);
-				
+				n.setUCB(n.getUCB() * C2[6]);
 			}			
 			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 

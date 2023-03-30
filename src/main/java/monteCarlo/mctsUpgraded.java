@@ -49,21 +49,34 @@ public class mctsUpgraded {
 	}
 	
 	//	returns parent's best child based on UCB
+//	private static Node findBestChild(Node parent) {
+//		ArrayList<Node> children = parent.getChildren();
+//		
+//		double largestUCB = -1;
+//		double tempUCB;
+//		Node bestChild = null;
+//		for (Node c : children) {	 //iterate through children and select child with highest UCB
+//			tempUCB = c.getUCB();
+//			if(tempUCB > largestUCB) {
+//				largestUCB = tempUCB;
+//				bestChild = c;
+//			}
+//		}
+//		return bestChild;
+//	}	
+	//	returns parent's best child based on UCB
 	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
-		
-		double largestUCB = -1;
-		double tempUCB;
-		Node bestChild = null;
-		for (Node c : children) {	 //iterate through children and select child with highest UCB
-			tempUCB = c.getUCB();
-			if(tempUCB > largestUCB) {
-				largestUCB = tempUCB;
-				bestChild = c;
-			}
+	
+		Node chosen = null;
+		for( Node n : children) {
+			if(chosen == null)
+				chosen = n;
+			if(chosen.getUCB() < n.getUCB())
+				chosen = n;
 		}
-		return bestChild;
-	}	
+		return chosen;
+	}
 	/**
 	 * Find best child with H+UBC
 	 * @param parent
