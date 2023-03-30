@@ -144,9 +144,9 @@ public class MoveSequence {
 			n.setH4(n.H4()*C[3]);	//v1:
 			n.setH5(n.H5(color)*C[4]); //v1:
 			n.setUCB(n.getUCB() * C[6]);
-			if(curturn >30)
+			if(curturn >25)
 				n.setH6(n.H6() * C[5]);
-			n.setUCB(n.getUCB() * C2[6]);
+			n.setUCB(n.getValueUCB() * C2[6]);
 			}
 			else if(color ==2) {
 				n.setH1(n.H1(color)* C2[0]); //v1:
@@ -155,9 +155,9 @@ public class MoveSequence {
 				n.setH4(n.H4()*C2[3]);		//v1:
 				n.setH5(n.H5(color)*C2[4]); //v1:
 			
-				if(curturn >30)
+				if(curturn >25)
 					n.setH6(n.H6() * C2[5]);
-				n.setUCB(n.getUCB() * C2[6]);
+				n.setUCB(n.getValueUCB() * C2[6]);
 			}			
 			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 
@@ -184,11 +184,10 @@ public class MoveSequence {
 		}
 	}
 
-	public static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
-		// decouple all children including choice
-		for (Node n : chioces) {
-			root.RemoveChild(n);
-		}
+	public static void decoupleAllChildren(Node root) {
+		// decouple all children including choice		
+			root.setChildren(null);
+		
 
 	}
 

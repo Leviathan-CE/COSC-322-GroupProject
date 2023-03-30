@@ -35,7 +35,9 @@ public class mctsUpgraded {
 			System.out.printf("UCB: %.6f" + ", wins: " + c.getWins() + ", visits: " + c.getVisits() + "\n", c.getUCB() );
 			}
 		System.out.println("root visits: " + root.getVisits() );
-		return findBestChildWUtil(root, ourPlayer);
+		Node chosen = findBestChildWUtil(root, ourPlayer);
+		MoveSequence.decoupleAllChildren(root);
+		return chosen;
 	}
 	
 	//	traverses through tree using UCB, returns leaf
@@ -86,18 +88,16 @@ public class mctsUpgraded {
 	private static Node findBestChildWUtil(Node parent, int color) {
 		ArrayList<Node> children = parent.getChildren();
 		MoveSequence.CalcUtilityScore(children, parent, color);
-		double largestUCB = -1;
-		double tempUCB;
-		Node bestChild = null;
-		for (Node c : children) {	 //iterate through children and select child with highest UCB
-			tempUCB = c.getValue();
-			if(tempUCB > largestUCB) {
-				largestUCB = tempUCB;
-				bestChild = c;
-			}
+		Node chosen = null;
+		for( Node n : children) {
+			if(chosen == null)
+				chosen = n;
+			if(chosen.getValue() < n.getValue())
+				chosen = n;
 		}
+		
 		//MoveSequence.decoupleUnusedChildren(bestChild, children,parent);
-		return bestChild;
+		return chosen;
 	}	
 	//	assigns all possible gamestates to a node as children
 	private static void expand(Node parent) {

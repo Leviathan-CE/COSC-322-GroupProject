@@ -56,7 +56,7 @@ public class MiniMaxSearch extends MoveSequence {
 				chosenOne = ourMove;
 			
 			//decouple all enemy moves so they are not in the tree
-			decoupleAllChildren(enemyChioce, ourMove);
+			//decoupleAllChildren(enemyChioce, ourMove);
 		}
 		for(Node child : chioces) {
 			if(child.childCount() > 0)

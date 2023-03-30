@@ -49,6 +49,12 @@ public class Node extends GameBoardState  {
 			}
 			return (this.wins/(double)this.visits) + C*Math.sqrt(Math.log(this.parent.visits)/this.visits);
 			}
+		public double getValueUCB() {
+			if (this.visits == 0) {
+				return 0;
+			}
+			return (this.wins/(double)this.visits) + C*Math.sqrt(Math.log(this.parent.visits)/this.visits);
+			}
 		public void setUCB(double n) {
 			this.ucb = n;
 		}
@@ -171,7 +177,10 @@ public class Node extends GameBoardState  {
 		public void RemoveChild(Node node) {
 			children.remove(node);
 		}
-		public int childCount() {return children.size();}
+		public int childCount() {
+			if(children != null)
+				return children.size(); 
+			return -1;}
 
 		public int getPlayerNo() {
 			return this.playerNo;

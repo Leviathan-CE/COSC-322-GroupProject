@@ -39,7 +39,7 @@ public class SimBiulder {
 		int color = 1; // starting color
 		Node cur = null; // current games state
 		boolean gameEnd = false; // weather a game has ended
-		while (games < 50) {
+		while (games < 100) {
 
 			// stating move
 			System.out.println("games" + games);
