@@ -18,7 +18,9 @@ import java.io.*;
  *
  */
 public class MonteTreeSerailizer {
-	 private static final String filepath= "src\\main\\java\\Serailization\\Data\\";
+	 //private static final String filepath= "src\\main\\java\\Serailization\\Data\\";
+		//to run on mac uncomment below
+	 private static final String filepath= "src/main/java/Serailization/Data/";
 	 public static String fileName ="test.txt";
 	 
 	 public String getFileName() {return fileName;}
