@@ -197,8 +197,8 @@ public class COSC322Test extends GamePlayer {
 						Constants = new Nueron(MoveSequence.C);
 					}
 					//apply constraints to heuristics
-					MoveSequence.C = Constants.getWieghts();
-					MoveSequence.C2 = Constants.getWieghts();
+					MoveSequence.C = Constants.getWieghts(); //balck 
+					MoveSequence.C2 = Constants.getWieghts(); //white
 					for(int i = 0; i < MoveSequence.C.length;i++) {
 						System.out.print(MoveSequence.C[i]+" : ");
 					}
