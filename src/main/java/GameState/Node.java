@@ -1,10 +1,9 @@
-package ActionFactory;
+package GameState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import GameState.GameBoardState;
 import Search.TreeSearch.node;
 
 

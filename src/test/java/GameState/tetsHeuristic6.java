@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import ActionFactory.Node;
-
 public class tetsHeuristic6 {
 
 	

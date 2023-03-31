@@ -2,7 +2,7 @@ package monteCarlo;
 import java.util.ArrayList;
 
 import ActionFactory.ActionFactory;
-import ActionFactory.Node;
+import GameState.Node;
 import ubc.cosc322.MoveSequence;
 
 // selection, expansion, simulation, backpropagation

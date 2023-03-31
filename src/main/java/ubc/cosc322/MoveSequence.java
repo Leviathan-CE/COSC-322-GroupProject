@@ -5,7 +5,9 @@ import java.util.Arrays;
 
 import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
-import ActionFactory.Node;
+import Exceptions.GameLossException;
+import Exceptions.GameWinException;
+import GameState.Node;
 import monteCarlo.mcts;
 import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
@@ -44,7 +46,7 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if (turn > 10) {			
+		if (turn > 20) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
@@ -60,12 +62,12 @@ public class MoveSequence {
 // old stuff
 //		CalcUtilityScore(chioces, root, QueenColor);
 		if(chioces.size() == 0)
-			throw new RuntimeException("WE LOOSE");
+			throw new GameLossException("WE LOOSE");
 		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
 		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, true);
 		// if enen has no moves
 		if (Echioces.size() == 0)
-			throw new RuntimeException("WIN");
+			throw new GameWinException("WIN");
 		
 		
 		System.out.println("children in root: " + root.childCount());
@@ -144,7 +146,7 @@ public class MoveSequence {
 			n.setH4(n.H4()*C[3]);	//v1:
 			n.setH5(n.H5(color)*C[4]); //v1:
 			n.setUCB(n.getUCB() * C[6]);
-			if(curturn >25)
+			if(curturn >20)
 				n.setH6(n.H6() * C[5]);
 			n.setUCB(n.getValueUCB() * C2[6]);
 			}
@@ -155,7 +157,7 @@ public class MoveSequence {
 				n.setH4(n.H4()*C2[3]);		//v1:
 				n.setH5(n.H5(color)*C2[4]); //v1:
 			
-				if(curturn >25)
+				if(curturn >20)
 					n.setH6(n.H6() * C2[5]);
 				n.setUCB(n.getValueUCB() * C2[6]);
 			}			

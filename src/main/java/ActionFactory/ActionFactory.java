@@ -7,6 +7,7 @@ import java.util.List;
 
 import GameState.GameBoardState;
 import GameState.MoveInfo;
+import GameState.Node;
 import Search.TreeSearch;
 import Search.TreeSearch.node;
 

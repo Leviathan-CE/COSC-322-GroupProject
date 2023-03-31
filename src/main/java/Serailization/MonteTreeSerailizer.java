@@ -2,7 +2,7 @@ package Serailization;
 
 import java.util.ArrayList;
 
-import ActionFactory.Node;
+import GameState.Node;
 import Simulation.Nueron;
 
 import java.io.*;

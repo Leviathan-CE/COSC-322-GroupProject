@@ -3,7 +3,7 @@ package Serailization;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import ActionFactory.Node;
+import GameState.Node;
 
 /**
  * instance of a monte-carlo tree which will be saved and loaded to
