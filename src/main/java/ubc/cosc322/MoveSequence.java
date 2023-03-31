@@ -81,12 +81,12 @@ public class MoveSequence {
 		chosenOne.printQPoses();
 
 		chosenOne.print();
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		System.out.println("------END OF STATE--------");
 		
