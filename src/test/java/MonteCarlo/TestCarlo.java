@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
-import ActionFactory.Node;
+import GameState.Node;
 import monteCarlo.mctsUpgraded;
 
 public class TestCarlo {

@@ -5,7 +5,7 @@ import java.util.Random;
 
 import ActionFactory.ActionFactory;
 import ActionFactory.MonteTreeSearch;
-import ActionFactory.Node;
+import GameState.Node;
 import Serailization.MonteTreeSerailizer;
 import ubc.cosc322.MoveSequence;
 /**
@@ -15,7 +15,7 @@ import ubc.cosc322.MoveSequence;
  *
  */
 public class SimBiulder {
-	static String fileName = "constant2.txt";
+	static String fileName = "constants2.txt";
 	static int[][] gameboard = { { 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },

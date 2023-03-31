@@ -2,6 +2,7 @@ package ActionFactory;
 
 import java.util.ArrayList;
 
+import GameState.Node;
 import Search.TreeSearch.node;
 
 public class MonteTreeSearch {
@@ -21,7 +22,7 @@ public class MonteTreeSearch {
 			return null;
 		}
 
-		for (Node child : root.children) {
+		for (Node child : root.getChildren()) {
 			// child.setParent(root);
 
 			deepestChild = child;
@@ -40,17 +41,17 @@ public class MonteTreeSearch {
 			return null;
 		}
 
-		for (Node child : root.children) {
+		for (Node child : root.getChildren()) {
 			// child.setParent(root);
 
 			deepestChild = child;
 			if (BestPick == null || BestPick == root)
 				BestPick = child;
 			if (miniMax) { //
-				if (BestPick.getValue() < child.miniMaxvVal && child.children.isEmpty())
+				if (BestPick.getValue() < child.miniMaxvVal && child.getChildren().isEmpty())
 					BestPick = child;
 			} else {
-				if (BestPick.getValue() < child.getValue() && child.children.isEmpty())
+				if (BestPick.getValue() < child.getValue() && child.getChildren().isEmpty())
 					BestPick = child;
 			}
 			SearchMax(child);
@@ -64,7 +65,7 @@ public class MonteTreeSearch {
 			return null;
 		}
 
-		for (Node child : root.children) {
+		for (Node child : root.getChildren()) {
 			// child.setParent(root);
 
 			deepestChild = child;

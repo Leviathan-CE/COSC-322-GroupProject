@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.Test;
 
-import ActionFactory.Node;
 import ubc.cosc322.MoveSequence;
 
 public class TestMoveSequence {

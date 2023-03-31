@@ -10,9 +10,9 @@ import java.util.Map;
 import ActionFactory.ActionFactory;
 import ActionFactory.MiniMaxSearch;
 import ActionFactory.MonteTreeSearch;
-import ActionFactory.Node;
 import GameState.GameBoardState;
 import GameState.MoveInfo;
+import GameState.Node;
 import GameState.Timer;
 import Serailization.MonteTreeSerailizer;
 import Simulation.Nueron;
@@ -74,7 +74,7 @@ public class COSC322Test extends GamePlayer {
 		COSC322Test player = new COSC322Test(args[0], args[1]);
 		KEY = args[0];
 
-	//	HumanPlayer player = new HumanPlayer();
+		//HumanPlayer player = new HumanPlayer();
 
 		if (player.getGameGUI() == null) {
 			player.Go();

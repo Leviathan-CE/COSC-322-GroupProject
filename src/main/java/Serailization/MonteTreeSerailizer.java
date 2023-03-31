@@ -2,7 +2,7 @@ package Serailization;
 
 import java.util.ArrayList;
 
-import ActionFactory.Node;
+import GameState.Node;
 import Simulation.Nueron;
 
 import java.io.*;
@@ -19,6 +19,7 @@ import java.io.*;
  */
 public class MonteTreeSerailizer {
 	 private static final String filepath= "src\\main\\java\\Serailization\\Data\\";
+	 private static final String filepathMac= "src/main/java/Serailization/Data/";
 	 public static String fileName ="test.txt";
 	 
 	 public String getFileName() {return fileName;}
