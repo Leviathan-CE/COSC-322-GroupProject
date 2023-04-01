@@ -1,11 +1,11 @@
-package ActionFactory;
+package Search;
 
 import java.util.ArrayList;
 
 import GameState.Node;
-import Search.TreeSearch.node;
 
-public class MonteTreeSearch {
+
+public class DepthFirstSearch {
 
 	@SuppressWarnings("unused") // used only in search
 	private static Node deepestChild;
@@ -28,7 +28,7 @@ public class MonteTreeSearch {
 			deepestChild = child;
 			if (BestPick == null || BestPick == root)
 				BestPick = child;
-			if (BestPick.getValue() < child.getValue())
+			if (BestPick.getTotalValue() < child.getTotalValue())
 				BestPick = child;
 			SearchMax(child);
 		}
@@ -48,10 +48,10 @@ public class MonteTreeSearch {
 			if (BestPick == null || BestPick == root)
 				BestPick = child;
 			if (miniMax) { //
-				if (BestPick.getValue() < child.miniMaxvVal && child.getChildren().isEmpty())
+				if (BestPick.getTotalValue() < child.getMiniMax() && child.getChildren().isEmpty())
 					BestPick = child;
 			} else {
-				if (BestPick.getValue() < child.getValue() && child.getChildren().isEmpty())
+				if (BestPick.getTotalValue() < child.getTotalValue() && child.getChildren().isEmpty())
 					BestPick = child;
 			}
 			SearchMax(child);
@@ -71,7 +71,7 @@ public class MonteTreeSearch {
 			deepestChild = child;
 			if (BestPick == null || BestPick == root)
 				BestPick = child;
-			if (BestPick.getValue() > child.getValue())
+			if (BestPick.getTotalValue() > child.getTotalValue())
 				BestPick = child;
 			SearchMax(child);
 		}

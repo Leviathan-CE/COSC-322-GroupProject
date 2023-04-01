@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ActionFactory.ActionFactory;
-import ActionFactory.MonteTreeSearch;
 import Exceptions.GameLossException;
 import Exceptions.GameWinException;
 import GameState.Node;
+import MiniMax.MiniMaxSearch;
+import Search.DepthFirstSearch;
 import monteCarlo.mcts;
 import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
@@ -46,14 +47,18 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if (turn > 20) {			
+		if(turn < 15) {
+			chosenOne = MiniMaxSearch.MiniMax(root, QueenColor);
+			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+		}
+		if (turn > 15) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
 		}else {
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
 			CalcUtilityScore(chioces, root, QueenColor);
-			chosenOne = MonteTreeSearch.SearchMax(root);
+			chosenOne = DepthFirstSearch.SearchMax(root);
 		}
 		
 		
@@ -129,18 +134,15 @@ public class MoveSequence {
 
 			}
 			n.updateQueenPoses();
+			calcUtil(n,color);
+			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 
-			//n.C = Math.random() * 6;
-
-//			n.setH1(n.H1(color)* 1f); //v1:
-//			n.setH3(n.H3(color, 10)); //v1: 
-//			n.setH2(n.H2(color)* 5f);// v1:
-//			n.setH4(n.H4()*.5f);	//v1:
-//			n.setH5(n.H5(color)*.35f); //v1:
-//			if(curturn >30)
-//				n.setH6(n.H6() * .5f);
-			if(color ==1) {
-			n.setH1(n.H1(color)* C[0]); //v1:
+		}
+		return root;
+	}
+	 public static double calcUtil(Node n, int color){
+		 if(color ==1) {	
+		 n.setH1(n.H1(color)* C[0]); //v1:
 			n.setH2(n.H2(color)* C[1]);// v1:
 			n.setH3(n.H3(color, C[2])); //v1: 			
 			n.setH4(n.H4()*C[3]);	//v1:
@@ -160,12 +162,9 @@ public class MoveSequence {
 				if(curturn >20)
 					n.setH6(n.H6() * C2[5]);
 				n.setUCB(n.getValueUCB() * C2[6]);
-			}			
-			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
-
-		}
-		return root;
-	}
+			}
+		 return n.getTotalValue();
+	 }
 
 	/**
 	 * @EFFECTS : decouples all choices from root that were not the chosen node to

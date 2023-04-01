@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import ActionFactory.ActionFactory;
-import ActionFactory.MiniMaxSearch;
-import ActionFactory.MonteTreeSearch;
 import GameState.GameBoardState;
 import GameState.MoveInfo;
 import GameState.Node;
-import GameState.Timer;
+import MiniMax.MiniMaxSearch;
+import Search.DepthFirstSearch;
 import Serailization.MonteTreeSerailizer;
 import Simulation.Nueron;
+import Util.Timer;
 import sfs2x.client.entities.Room;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -188,6 +188,7 @@ public class COSC322Test extends GamePlayer {
 					Nueron Constants = null;
 					//Constants = new Nueron(new double[] {16.78718637149233 , 5.923965245482213 , 57.05858564944085 , 5.1519916507007615, 26.090402059971417,2.65972943328923 });
 					Constants = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
+					
 					try {
 						
 						Constants = MonteTreeSerailizer.LoadNueron("constants.txt");
@@ -208,9 +209,7 @@ public class COSC322Test extends GamePlayer {
 					notOurColor = 1;
 				}
 
-				if (ourColor == 1) {
-					//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
-						
+				if (ourColor == 1) {						
 					chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor,turn);
 						MoveSequence.sendPackageToServer(this.gamegui, this.gameClient,
 								MoveSequence.setSenderObj(chessBoard.moveInfo.getOldQPos(), chessBoard.moveInfo.getNewQPos(), chessBoard.moveInfo.getArrow()) );
@@ -275,7 +274,6 @@ public class COSC322Test extends GamePlayer {
 				turn++;
 				//generate our move
 				chessBoard = MoveSequence.GenerateMove(chessBoard, ourColor, turn);
-				//chessBoard = MiniMaxSearch.MiniMax(chessBoard, ourColor);
 				isValidQueen = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getOldQPos(),
 						chessBoard.moveInfo.getNewQPos());
 				isValidArrow = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),

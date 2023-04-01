@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import Search.TreeSearch.node;
-
 
 public class Node extends GameBoardState  {
 	
@@ -14,7 +12,7 @@ public class Node extends GameBoardState  {
 		int id = 1;
 		static int count = 1;
 		
-		public double miniMaxvVal = -1000000000;
+		private double miniMaxVal = -1000000000;
 		
 		private double M =0; //monte-carlo value
 		
@@ -60,13 +58,14 @@ public class Node extends GameBoardState  {
 		public void setUCB() {
 			this.ucb = getUCB();
 		}
-		
+		public void setMiniMax(double val) {miniMaxVal = val;}
+		public double getMiniMax() {return miniMaxVal;}
 
-		public double getValue() {
+		public double getTotalValue() {
 			//System.out.println(h1+h2+h3);
 
 			return (h1+h2+h3+h4+h5+h6+ucb);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
-
+		
 		
 		public double getH1() {return h1;}
 		public double getH2() {return h2;}
@@ -112,7 +111,7 @@ public class Node extends GameBoardState  {
 			id= count++;
 		}
 		/**
-		 * @deprecated
+		 * 
 		 * @param node
 		 */
 		public Node(Node node) {
@@ -120,6 +119,13 @@ public class Node extends GameBoardState  {
 			
 			M = node.M;
 			h1 = node.h1;
+			h2 = node.h2;
+			h3 = node.h3;
+			h4 = node.h4;
+			h5 = node.h5;
+			h6 = node.h6;
+			ucb = node.ucb;
+			miniMaxVal = node.miniMaxVal;
 			C = node.C;
 			id = node.id;
 			wins = node.wins;

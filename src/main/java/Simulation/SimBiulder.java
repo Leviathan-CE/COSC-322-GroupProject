@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ActionFactory.ActionFactory;
-import ActionFactory.MonteTreeSearch;
 import GameState.Node;
+import Search.DepthFirstSearch;
 import Serailization.MonteTreeSerailizer;
 import ubc.cosc322.MoveSequence;
 /**
@@ -15,7 +15,7 @@ import ubc.cosc322.MoveSequence;
  *
  */
 public class SimBiulder {
-	static String fileName = "constants2.txt";
+	static String fileName = "sim_start_0.txt";
 	static int[][] gameboard = { { 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
 			{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, }, { 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, }, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, },
@@ -41,6 +41,7 @@ public class SimBiulder {
 			throw new RuntimeException("Constants and wieghts for sim are not same length");
 
 		// apply constants
+		//MoveSequence.C = new double[] {0,0,0,0,0,0,0};
 		MoveSequence.C = Constants.Wieghts;
 		
 		int games = 0; // games player
@@ -102,6 +103,7 @@ public class SimBiulder {
 				}
 
 				MoveSequence.C[getLargestWieght()] -= .5f;
+				System.out.println("black lost");
 			}
 			if (e.getMessage().contains("WIN")) {
 				// apply small positive change to all
@@ -111,6 +113,7 @@ public class SimBiulder {
 					MoveSequence.C[i] += v;
 				}
 				MoveSequence.C[getLargestWieght()] += .5f;
+				System.out.println("black won");
 			}
 		}
 		else { // color = 2
@@ -123,6 +126,7 @@ public class SimBiulder {
 				}
 
 				MoveSequence.C[getLargestWieght()] += .5f;
+				System.out.println("white lost");
 			}
 			if (e.getMessage().contains("WIN")) {
 				// if enemy wins apply small negative change to all
@@ -132,6 +136,7 @@ public class SimBiulder {
 					MoveSequence.C[i] -= v;
 				}
 				MoveSequence.C[getLargestWieght()] -= .5f;
+				System.out.println("white won");
 			}
 		}
 		for (int i = 0; i < MoveSequence.C.length; i++) {			
@@ -159,7 +164,7 @@ public class SimBiulder {
 			throw new RuntimeException("WIN");
 		
 		MoveSequence.CalcUtilityScore(chioces, state, color);
-		return MonteTreeSearch.SearchMax(state);
+		return DepthFirstSearch.SearchMax(state);
 	}
 
 	//returns the largest hueristic C onststant C the list

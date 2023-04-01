@@ -1,4 +1,4 @@
-package GameState;
+package Util;
 
 public class Timer {
 	static long startTimer =0;
