@@ -57,7 +57,7 @@ public class MoveSequence {
 			
 		}else {
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
-			CalcUtilityScore(chioces, root, QueenColor);
+			CalcUtilityScore(chioces, root, QueenColor); 
 			chosenOne = DepthFirstSearch.SearchMax(root);
 		}
 		
