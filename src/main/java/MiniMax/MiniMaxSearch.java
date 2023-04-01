@@ -13,9 +13,9 @@ public class MiniMaxSearch {
 
 	private static int nodesVisited = 0;
 	private static int moveVisited = 0;
-	private static int depthlimit = 2;
+	private static int depthlimit = 3;
 	private static int leafVisited = 0;
-	private static double timeLimit = 25;
+	private static double timeLimit = 29;
 
 	/**
 	 * @EFFECTS Generated desired players moves then for each of those move
@@ -35,7 +35,8 @@ public class MiniMaxSearch {
 
 		// gen legal our moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
-		MoveSequence.CalcUtilityScore(chioces, root, QueenColor);
+		//this line break minimax and it probably should not  need  more testing
+		MoveSequence.CalcUtilityScore(chioces, root, QueenColor); //<- this guy
 
 		int enemyTeamColor = QueenColor % 2 + 1;
 		Node chosenOne = null;
@@ -47,7 +48,8 @@ public class MiniMaxSearch {
 			// if run out of time give 1 second to send it.
 			if (Timer.currentTime() > timeLimit)
 				break;
-
+			
+			//calc best move by depth first search and alpha beta pruning
 			ourMove.setMiniMax(minValue(ourMove, QueenColor, enemyTeamColor, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
 			if (ourMove.getMiniMax() > chosenOne.getMiniMax())
 				chosenOne = ourMove;

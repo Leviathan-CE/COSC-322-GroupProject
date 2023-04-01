@@ -47,11 +47,11 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if(turn < 15) {
+		if(turn < 20) {
 			chosenOne = MiniMaxSearch.MiniMax(root, QueenColor);
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 		}
-		if (turn > 15) {			
+		if (turn > 20) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
@@ -63,12 +63,9 @@ public class MoveSequence {
 		
 		
 		System.out.println("is null " +chosenOne !=null);
-		// Node chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
-// old stuff
-//		CalcUtilityScore(chioces, root, QueenColor);
+		//win loose conditions
 		if(chioces.size() == 0)
-			throw new GameLossException("WE LOOSE");
-		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
+			throw new GameLossException("WE LOOSE");	
 		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, true);
 		// if enen has no moves
 		if (Echioces.size() == 0)
