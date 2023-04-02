@@ -16,7 +16,7 @@ public class mctsUpgraded {
 		root.setPlayerNo(ourPlayer);
 		expand(root); 
 		double startTime;
-		double timeLimit = .28;
+		double timeLimit = 28;
 		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {

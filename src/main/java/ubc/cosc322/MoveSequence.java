@@ -46,7 +46,7 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if (turn > 20) {			
+		if (turn > 10) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
