@@ -15,7 +15,7 @@ public class MiniMaxSearch {
 	private static int moveVisited = 0;
 	private static int depthlimit = 3;
 	private static int leafVisited = 0;
-	private static double timeLimit = 29;
+	private static double timeLimit = 10;
 
 	/**
 	 * @EFFECTS Generated desired players moves then for each of those move

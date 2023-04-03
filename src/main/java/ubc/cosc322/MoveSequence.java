@@ -18,8 +18,8 @@ public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
-	public static double[] C = new double[] {10,1,50,.5f,20,.5f,10} ;
-	public static double[] C2 = new double[] {10,1,50,.5f,20,.5f,10};
+	public static double[] Cb = new double[] {10,1,50,.5f,20,.5f,10} ;
+	public static double[] Cw = new double[] {10,1,50,.5f,20,.5f,10};
 //	n.setH1(n.H1(color)* 1f); //v1:
 //	n.setH3(n.H3(color, 10)); //v1: 
 //	n.setH2(n.H2(color)* 5f);// v1:
@@ -47,11 +47,11 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if(turn < 20) {
+		if(turn < 10) {
 			chosenOne = MiniMaxSearch.MiniMax(root, QueenColor);
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 		}
-		if (turn > 20) {			
+		if (turn > 10) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
@@ -139,26 +139,26 @@ public class MoveSequence {
 	}
 	 public static double calcUtil(Node n, int color){
 		 if(color ==1) {	
-		 n.setH1(n.H1(color)* C[0]); //v1:
-			n.setH2(n.H2(color)* C[1]);// v1:
-			n.setH3(n.H3(color, C[2])); //v1: 			
-			n.setH4(n.H4()*C[3]);	//v1:
-			n.setH5(n.H5(color)*C[4]); //v1:
-			n.setUCB(n.getUCB() * C[6]);
+		 n.setH1(n.H1(color)* Cb[0]); //v1:
+			n.setH2(n.H2(color)* Cb[1]);// v1:
+			n.setH3(n.H3(color, Cb[2])); //v1: 			
+			n.setH4(n.H4()*Cb[3]);	//v1:
+			n.setH5(n.H5(color)*Cb[4]); //v1:
+			n.setUCB(n.getUCB() * Cb[6]);
 			if(curturn >20)
-				n.setH6(n.H6() * C[5]);
-			n.setUCB(n.getValueUCB() * C2[6]);
+				n.setH6(n.H6() * Cb[5]);
+			n.setUCB(n.getValueUCB() * Cw[6]);
 			}
 			else if(color ==2) {
-				n.setH1(n.H1(color)* C2[0]); //v1:
-				n.setH2(n.H2(color)* C2[1]);// v1:
-				n.setH3(n.H3(color, C2[2])); //v1: 				
-				n.setH4(n.H4()*C2[3]);		//v1:
-				n.setH5(n.H5(color)*C2[4]); //v1:
+				n.setH1(n.H1(color)* Cw[0]); //v1:
+				n.setH2(n.H2(color)* Cw[1]);// v1:
+				n.setH3(n.H3(color, Cw[2])); //v1: 				
+				n.setH4(n.H4()*Cw[3]);		//v1:
+				n.setH5(n.H5(color)*Cw[4]); //v1:
 			
 				if(curturn >20)
-					n.setH6(n.H6() * C2[5]);
-				n.setUCB(n.getValueUCB() * C2[6]);
+					n.setH6(n.H6() * Cw[5]);
+				n.setUCB(n.getValueUCB() * Cw[6]);
 			}
 		 return n.getTotalValue();
 	 }

@@ -178,35 +178,46 @@ public class COSC322Test extends GamePlayer {
 				String blackUserName = (String) msgDetails.get(AmazonsGameMessage.PLAYER_BLACK);
 				System.out.println(blackUserName);
 				
+				//load constraints from file
+				Nueron Constants_black = null;
+				Nueron Constants_white = null;
+				//Constants = new Nueron(new double[] {16.78718637149233 , 5.923965245482213 , 57.05858564944085 , 5.1519916507007615, 26.090402059971417,2.65972943328923 });
+				Constants_black = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
+				Constants_white = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
+				
+				try {
+					String fileName = "ctx_RL_01.txt";
+					Constants_black = MonteTreeSerailizer.LoadNueron("black_"+fileName);
+					Constants_white = MonteTreeSerailizer.LoadNueron("white_"+fileName);
+					System.out.println("loaded values");
+				}catch(Exception e) {
+					System.out.println("file not found not being created yet");
+					Constants_black = new Nueron(MoveSequence.Cb);
+					Constants_white = new Nueron(MoveSequence.Cw);
+				}
+				//apply constraints to heuristics
+				MoveSequence.Cb = Constants_black.getWieghts(); //balck 
+				MoveSequence.Cw = Constants_white.getWieghts(); //white
+				
 				//determine who is what color
 				if (blackUserName.equalsIgnoreCase(KEY)) {
 					ourColor = 1;
 					notOurColor = 2;
-					System.out.println("ourColor : "+ourColor);
-					
-					//load constraints from file
-					Nueron Constants = null;
-					//Constants = new Nueron(new double[] {16.78718637149233 , 5.923965245482213 , 57.05858564944085 , 5.1519916507007615, 26.090402059971417,2.65972943328923 });
-					Constants = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
-					
-					try {
-						
-						Constants = MonteTreeSerailizer.LoadNueron("constants.txt");
-						System.out.println("loaded values");
-					}catch(Exception e) {
-						System.out.println("file not found not being created yet");
-						Constants = new Nueron(MoveSequence.C);
-					}
-					//apply constraints to heuristics
-					MoveSequence.C = Constants.getWieghts(); //balck 
-					MoveSequence.C2 = Constants.getWieghts(); //white
-					for(int i = 0; i < MoveSequence.C.length;i++) {
-						System.out.print(MoveSequence.C[i]+" : ");
-					}
+					System.out.println("ourColor : "+ourColor);				
+				
+					//print 					
+					for(int i = 0; i < MoveSequence.Cb.length;i++) {
+						System.out.print(MoveSequence.Cb[i]+" : ");
+					}					
 				
 				} else {
 					ourColor = 2;
 					notOurColor = 1;
+					System.out.println();
+					for(int i = 0; i < MoveSequence.Cw.length;i++) {
+						System.out.print(MoveSequence.Cw[i]+" : ");
+					}
+
 				}
 
 				if (ourColor == 1) {						
