@@ -186,9 +186,10 @@ public class COSC322Test extends GamePlayer {
 				Constants_white = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
 				
 				try {
-					String fileName = "ctx_RL_01.txt";
-					Constants_black = MonteTreeSerailizer.LoadNueron("black_"+fileName);
-					Constants_white = MonteTreeSerailizer.LoadNueron("white_"+fileName);
+					String fileName = "constants.txt";
+					Constants_black = MonteTreeSerailizer.LoadNueron(fileName);
+					//Constants_black = MonteTreeSerailizer.LoadNueron("black_"+fileName);
+					//Constants_white = MonteTreeSerailizer.LoadNueron("white_"+fileName);
 					System.out.println("loaded values");
 				}catch(Exception e) {
 					System.out.println("file not found not being created yet");
@@ -197,7 +198,7 @@ public class COSC322Test extends GamePlayer {
 				}
 				//apply constraints to heuristics
 				MoveSequence.Cb = Constants_black.getWieghts(); //balck 
-				MoveSequence.Cw = Constants_white.getWieghts(); //white
+				MoveSequence.Cw = Constants_black.getWieghts(); //white
 				
 				//determine who is what color
 				if (blackUserName.equalsIgnoreCase(KEY)) {

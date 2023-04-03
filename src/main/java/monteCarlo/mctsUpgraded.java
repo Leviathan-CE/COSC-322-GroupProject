@@ -3,7 +3,6 @@ package monteCarlo;
 import java.util.ArrayList;
 import ActionFactory.ActionFactory;
 import GameState.Node;
-import Util.Timer;
 import ubc.cosc322.MoveSequence;
 /**
  * Monte Carlo Algorithm 
@@ -16,7 +15,7 @@ public class mctsUpgraded {
 		root.setPlayerNo(ourPlayer);
 		expand(root); 
 		double startTime;
-		double timeLimit = 10;
+		double timeLimit = 28;
 		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
