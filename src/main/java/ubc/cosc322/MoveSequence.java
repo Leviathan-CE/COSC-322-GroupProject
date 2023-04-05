@@ -9,7 +9,6 @@ import Exceptions.GameWinException;
 import GameState.Node;
 import MiniMax.MiniMaxSearch;
 import Search.DepthFirstSearch;
-import monteCarlo.mcts;
 import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
@@ -160,7 +159,7 @@ public class MoveSequence {
 					n.setH6(n.H6() * Cw[5]);
 				n.setUCB(n.getValueUCB() * Cw[6]);
 			}
-		 return n.getTotalValue();
+		 return n.GetUtilityVal();
 	 }
 
 	/**

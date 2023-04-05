@@ -10,10 +10,18 @@ import Serailization.MonteTreeSerailizer;
 import ubc.cosc322.MoveSequence;
 
 /**
- * SimBiulder is a class that simulates games of Amazons using A* were each team
- * has the same weights.
+ * SimBiulder is a class that simulates games of Amazons using A*. the bot plays against itself in 
+ * Evolutionary type manner being shocked with large amounts of randomness when it looses and take a penalty to its best stat,
+ * and when it wins is rewarded With small amount of randomness and a boost to its best stat. 
+ * with the idea we would find a local minimum and maximum of weights that would equalize between both bots 
+ *  
+ * @apiNote were other versions of this train such as always using the same weights for both
+ * or inputing human bais into the starting stats instead of bots starting from 0 among different reward systems
+ * overall we only managed to train it for about 500 times which was a fairly small sample size. and found that our 
+ * best iteration was starting with human made weights and then letting the training maximize the values
  * 
- * @author Cryst
+ * 
+ * 
  *
  */
 public class SimBiulder {
@@ -50,9 +58,7 @@ public class SimBiulder {
 				MoveSequence.Cw.length != Constants_white.Wieghts.length)
 			throw new RuntimeException("Constants and wieghts for sim are not same length");
 
-		// apply constants
-		//MoveSequence.Cb = new double[] {189.77388497742427 , 179.63772495444033 , 205.78277272712984 , 188.5387927282638, 193.7491110956116 , 181.09912751146086 , 183.94357657694178};
-		//MoveSequence.Cw = new double[] {184.93348711552434, 207.31695747700505 , 152.13079194952186 , 165.29813048898234 , 149.84757265833838 , 175.78270266647633 , 141.1291853038748};
+		// apply constants		
 	    //MoveSequence.Cb = new double[] {0,0,0,0,0,0,0};
 	    //MoveSequence.Cw = new double[] {0,0,0,0,0,0,0};
 		MoveSequence.Cb = Constants_black.Wieghts;
@@ -75,9 +81,6 @@ public class SimBiulder {
 					cur = playAturn(color, cur);
 				} catch (Exception e) {
 					// if win or loose apply a positive or negitive score
-					// TODO: currently because it plays against a copy of it self
-					// it always looses because it reads it self as both players instead of a single
-					// on.
 					System.out.println(color+" tiggered");
 					trianBlack(color, e);
 					trianWhite(color, e);

@@ -4,7 +4,12 @@ import java.util.ArrayList;
 
 import GameState.Node;
 
-
+/**
+ * 
+ * DepthFirst Search Recursive algorithm using tree search method
+ * this is used in our A* and was the foundation of many other components 
+ *
+ */
 public class DepthFirstSearch {
 
 	@SuppressWarnings("unused") // used only in search
@@ -12,7 +17,7 @@ public class DepthFirstSearch {
 	private static Node BestPick;
 
 	/**
-	 * @EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
+	 * EFFECTS: does a DFS Traversal of using tree style search. MODIFES: This.
 	 * 
 	 * @param root : the starting node to begin the search
 	 * @return : the highest value non leaf node.
@@ -23,62 +28,16 @@ public class DepthFirstSearch {
 		}
 
 		for (Node child : root.getChildren()) {
-			// child.setParent(root);
-
 			deepestChild = child;
 			if (BestPick == null || BestPick == root)
 				BestPick = child;
-			if (BestPick.getTotalValue() < child.getTotalValue())
+			if (BestPick.GetUtilityVal() < child.GetUtilityVal())
 				BestPick = child;
 			SearchMax(child);
 		}
 
 		return BestPick;
-	}
-	@Deprecated
-	public static Node SearchMax(Node root, boolean miniMax) {
-		if (root == null) {
-			return null;
-		}
-
-		for (Node child : root.getChildren()) {
-			// child.setParent(root);
-
-			deepestChild = child;
-			if (BestPick == null || BestPick == root)
-				BestPick = child;
-			if (miniMax) { //
-				if (BestPick.getTotalValue() < child.getMiniMax() && child.getChildren().isEmpty())
-					BestPick = child;
-			} else {
-				if (BestPick.getTotalValue() < child.getTotalValue() && child.getChildren().isEmpty())
-					BestPick = child;
-			}
-			SearchMax(child);
-		}
-
-		return BestPick;
-	}
-
-	public static Node SearchMin(Node root) {
-		if (root == null) {
-			return null;
-		}
-
-		for (Node child : root.getChildren()) {
-			// child.setParent(root);
-
-			deepestChild = child;
-			if (BestPick == null || BestPick == root)
-				BestPick = child;
-			if (BestPick.getTotalValue() > child.getTotalValue())
-				BestPick = child;
-			SearchMax(child);
-		}
-
-		return BestPick;
-	}
-
+	}	
 	/**
 	 * EFFECTS: Back propagates threw the tree and returns a list of the nodes
 	 * starting with the deepest one.

@@ -8,17 +8,21 @@ import Search.DepthFirstSearch;
 import Simulation.Nueron;
 import Util.Timer;
 import ubc.cosc322.MoveSequence;
-
+/**
+ * 
+ * MiniMax search Algorithm with alpha beta pruning, using a iterative depth first search.
+ *
+ */
 public class MiniMaxSearch {
 
 	private static int nodesVisited = 0;
 	private static int moveVisited = 0;
-	private static int depthlimit = 3;
+	private static int depthlimit = 5;
 	private static int leafVisited = 0;
-	private static double timeLimit = 10;
+	private static double timeLimit = 28;
 
 	/**
-	 * @EFFECTS Generated desired players moves then for each of those move
+	 *		    EEFECTS: Generated desired players moves then for each of those move
 	 *          generated generates and evaluates the miniax score which is is our
 	 *          best from the worst move and stores that value in the parent node.
 	 * @param root       : current baord state
@@ -35,8 +39,7 @@ public class MiniMaxSearch {
 
 		// gen legal our moves
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
-		//this line break minimax and it probably should not  need  more testing
-		MoveSequence.CalcUtilityScore(chioces, root, QueenColor); //<- this guy
+		MoveSequence.CalcUtilityScore(chioces, root, QueenColor);
 
 		int enemyTeamColor = QueenColor % 2 + 1;
 		Node chosenOne = null;
@@ -85,18 +88,18 @@ public class MiniMaxSearch {
 			return MoveSequence.calcUtil(move, ourTeam);
 		}
 
-		double v = Integer.MIN_VALUE;
+		double max = Integer.MIN_VALUE;
 		// alpha beta pruning
 		for (Node n : Chioces) {
 			if (Timer.currentTime() > timeLimit)
 				break;
 			Node temp = new Node(n);
-			v = Math.max(v, minValue(temp, ourTeam, EnemyTeam, a, b, depth));
-			if (v >= b)
-				return v;
-			a = Math.max(a, v);
+			max = Math.max(max, minValue(temp, ourTeam, EnemyTeam, a, b, depth));
+			if (max >= b)
+				return max;
+			a = Math.max(a, max);
 		}
-		return v;
+		return max;
 	}
 
 	/**
@@ -123,18 +126,18 @@ public class MiniMaxSearch {
 			return MoveSequence.calcUtil(move, EnemyTeam);
 		}
 
-		double v = Integer.MAX_VALUE;
+		double min = Integer.MAX_VALUE;
 		// alpha beta pruning
 		for (Node n : Chioces) {
 			if (Timer.currentTime() > timeLimit)
 				break;
 			Node temp = new Node(n);
-			v = Math.min(v, maxValue(temp, ourTeam, EnemyTeam, a, b, depth));
-			if (v <= a)
-				return v;
-			b = Math.min(b, v);
+			min = Math.min(min, maxValue(temp, ourTeam, EnemyTeam, a, b, depth));
+			if (min <= a)
+				return min;
+			b = Math.min(b, min);
 		}
-		return v;
+		return min;
 	}
 
 }

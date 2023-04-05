@@ -4,7 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 
+ * Node Representation for the game tree 
+ *
+ */
 public class Node extends GameBoardState  {
 	
 		
@@ -36,16 +40,14 @@ public class Node extends GameBoardState  {
 		Node parent;
 		ArrayList<Node> children = new ArrayList<>();
 		
-		
-		// F(n) = Evaluation(node) + C * root(ln(Visits(parent(node))/Visits(node)
-
-	//	public double getUCB() {return Math.abs( this.wins/this.visits + C*Math.sqrt(Math.log(this.parent.visits)/this.visits));} //UCBI Score
+		//calculation UBC value for Monte Carlo 
 		public double getUCB() {
 			if (this.visits == 0) {
 				return Integer.MAX_VALUE;
 			}
 			return (this.wins/(double)this.visits) + C*Math.sqrt(Math.log(this.parent.visits)/this.visits);
 			}
+		//calculate UBC Value for Ultility function
 		public double getValueUCB() {
 			if (this.visits == 0) {
 				return 0;
@@ -60,11 +62,10 @@ public class Node extends GameBoardState  {
 		}
 		public void setMiniMax(double val) {miniMaxVal = val;}
 		public double getMiniMax() {return miniMaxVal;}
-
-		public double getTotalValue() {
-			//System.out.println(h1+h2+h3);
-
-			return (h1+h2+h3+h4+h5+h6+ucb);}///visits + C*Math.sqrt(Math.log(parent.visits)/visits));} //UCBI Score
+		
+		//get the evaluation of the game board
+		public double GetUtilityVal() {
+			return (h1+h2+h3+h4+h5+h6+ucb);}
 		
 		
 		public double getH1() {return h1;}
@@ -111,7 +112,7 @@ public class Node extends GameBoardState  {
 			id= count++;
 		}
 		/**
-		 * 
+		 * deep copy a node
 		 * @param node
 		 */
 		public Node(Node node) {
@@ -140,12 +141,6 @@ public class Node extends GameBoardState  {
 		}
 		
 		//---HELP ME--------------	
-		//meant to be called through backprpagation to update weather the node that it has been visited and weather it won.
-		public void updateNode(boolean didWin) {
-			if(didWin)
-				wins++;
-			visits++;
-		}
 		public void setParent(Node node) {
 			parent = node;
 		}

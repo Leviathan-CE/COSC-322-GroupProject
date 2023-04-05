@@ -10,10 +10,13 @@ import GameState.Node;
  *	the idea is that if every gamestate can be transformed into a hashcode
  *	then gamestates that are the same will be overwritten with the new game data.
  *	while only ever storing every state the bot has picked ever with the values.
+ *
+ *	@deprecated Was not finished
  */
+@Deprecated
 public class MonteTree {
 	
-	//stores nodes if they have the same game state overrite the existing one
+	//stores nodes if they have the same game state overwrite the existing one
 	private static HashSet<Node> MonteTree = new HashSet<>();
 	
 	//add any number of nodes to tree

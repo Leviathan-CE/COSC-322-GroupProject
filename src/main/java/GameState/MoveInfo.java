@@ -1,5 +1,11 @@
 package GameState;
-
+/*
+ * A helper class that contains Move information 
+ * of a past and current play made to a game state
+ * in a format for GameBoardState and Node. doens't work with 
+ * server packages
+ * 
+ */
 public class MoveInfo {
 
 	private int[] oldQPos;
@@ -19,6 +25,9 @@ public class MoveInfo {
 	public int[] getNewQPos() {return newQPos;}
 	public int[] getArrow() {return arrow;}
 	
+	/*
+	 * deep copies the object
+	 */
 	public void copy(MoveInfo info) {
 		if (info.oldQPos != null)
 			oldQPos = new int[] { info.oldQPos[0], info.newQPos[1] };

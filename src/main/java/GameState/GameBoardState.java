@@ -15,11 +15,11 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
 /**
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
- * 
- * @Note Expected Range of values 0 = empty 2 = white queen 1 = black queen 3 =
+ *  
+ * @apiNote Expected Range of values 0 = empty 2 = white queen 1 = black queen 3 =
  *       arrow
  * 
- * @Note: size is not 10 because input also includes the labeling from 1-10 and
+ * @apiNote: size is not 10 because input also includes the labeling from 1-10 and
  *        a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
  * @param BOARD_DEMENSIONS = 11
@@ -45,11 +45,11 @@ public class GameBoardState implements Serializable {
 	private ArrayList<int[]> arrowsPos = new ArrayList<>();
 
 	/**
-	 * @CONSTRUCTOR : take in a 121 arraylist of integer and transforms it into a
+	 *  			take in a 121 arraylist of integer and transforms it into a
 	 *              readable 11x11 game board were positions are located between
 	 *              then down-sized to a 10x10 gamebaord.
-	 * @EFFECTS: currentBaord, creates 2d array representation of the game board.
-	 * @Modifies: currentBoard
+	 * EFFECTS: currentBaord, creates 2d array representation of the game board.
+	 * Modifies: currentBoard
 	 * 
 	 * @param gameBaord is list of integers collected from
 	 *                  AmazonsGameMessage.GAME_STATE
@@ -75,7 +75,7 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * @CONSTRUCTOR : create a new game state from a game board that is either 11x11
+	 *  create a new game state from a game board that is either 11x11
 	 *              to be down-sized to 10x10 or deep copy a 10x10 game board
 	 * 
 	 * @param gameBoard
@@ -90,12 +90,6 @@ public class GameBoardState implements Serializable {
 					ID = ID + gameBoard[y][x];
 				}
 			}
-//			for (int y = 0; y < INTERANL_STATE; y++) {
-//				for (int x = 0; x < INTERANL_STATE; x++) {
-//
-//					currentBoard[y][x] = gameBoard[y][x];
-//				}
-//			}
 		} else { // if board state is not 10x10 throw error
 			throw new IndexOutOfBoundsException("game Board must be of demensions of 10x10");
 		}
@@ -103,7 +97,9 @@ public class GameBoardState implements Serializable {
 	}
 
 	// ------Helper Methods-----------
-
+	/*
+	 * two Boards are equal id thier ID's are equal
+	 */
 	public boolean equals(Node node) {
 		if (this.ID.contentEquals(node.getID()))
 			return true;
@@ -112,7 +108,8 @@ public class GameBoardState implements Serializable {
 
 	/**
 	 * EFFECTS: sums the values in each row by the rows index and then sums the
-	 * column by the column index {X1j +X2j + xnj} * Xj
+	 * column by the column index {X1j +X2j + xnj} * Xj 
+	 * this forms the board 10x10 into a single integer value
 	 */
 	@Override
 	public int hashCode() {
@@ -143,7 +140,10 @@ public class GameBoardState implements Serializable {
 	public void print() {
 		System.out.println(toString());
 	}
-
+	
+	/*
+	 * Returns a 10x10 board representation were (0,0) is top left corner
+	 */
 	public int[][] getCurBoard() {
 		return currentBoard;
 	}
@@ -160,19 +160,31 @@ public class GameBoardState implements Serializable {
 		}
 		System.out.println();
 	}
-
+	
+	/*
+	 * returns a list  x,y pairs representing blacks queen positions
+	 */
 	public ArrayList<int[]> getQueenPosition1() {
 		return queenPosBlack1;
 	}
-
+	/*
+	 * returns a list  x,y pairs representing white queen positions
+	 */
 	public ArrayList<int[]> getQueenPosition2() {
 		return queenPosWhite2;
 	}
-
+	/*
+	 * returns a list  x,y pairs representing all arrow positions
+	 */
 	public ArrayList<int[]> getArrowPositions() {
 		return arrowsPos;
 	}
-
+	
+	/*
+	 * prints to console a the 10x10 board were 
+	 * queens black is 1 white is 2 arrows are 3 and and the (0,0)
+	 * position is the bottom left corner
+	 */
 	@Override
 	public String toString() {
 		String msg = "";
@@ -188,7 +200,7 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * @EFFECTS: sets new value of of board x position and y position MODIFIES:
+	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
 	 *           currentBaord
 	 * 
 	 * @param newValue the new value that will be set in the matrix
@@ -212,7 +224,7 @@ public class GameBoardState implements Serializable {
 
 	/**
 	 * @deprecated To be Removed
-	 * @EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: queenPosWhite2
+	 * EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: queenPosWhite2
 	 *           or queenPosBlack1, CurrentBoard
 	 * 
 	 * @param queenColor  the queen color to select 1 is white 2 is black
@@ -271,7 +283,7 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * @EFFECTS: count the the number of queens on both sides expected their should
+	 * EFFECTS: count the the number of queens on both sides expected their should
 	 *           always be four of each.
 	 * 
 	 * @return returns 2d array position 0 is white queen position 1 is black queen
@@ -317,11 +329,13 @@ public class GameBoardState implements Serializable {
 		arrowsPos = arrw;
 	}
 	/**
-	 * @TODO: horizontal paths are not checked only does diagnol
-	 * 
+	 * checks if their is a clear line between two positions such that
+	 * no obstacle is in the path and its a straight either vertical or horizaontal 
+	 * or diagonal 
+	 *  
 	 * @param pos1
 	 * @param pos2
-	 * @return
+	 * @return true if the path is straight and no obstacle is in the way
 	 */
 	public boolean checkIfPathIsClear(int[] pos1, int[] pos2) {
 		boolean isValid = false;
@@ -459,9 +473,11 @@ public class GameBoardState implements Serializable {
 //		return isValid;
 //	}
 
-	/*
+	/**
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
 	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
+	 * 
+	 * @Param queenColor the color of which queens which are ours
 	 */
 	public double H1(int queenColor) {
 
@@ -525,9 +541,14 @@ public class GameBoardState implements Serializable {
 		return 0;
 
 	}
-
+/**
+ * this heuristic will see all the moves the other team
+ * can make in comparison to the moves we can make 
+ * @param QueenColor our queen color
+ * @return utility value higher is better
+ */
 //getAllPossibleMoves(2).size()- getAllPossibleMoves(1).size()- 
-//this heuristic will see all the moves the other team can make minus the move we can make 
+//
 	public double H2(int QueenColor) {
 		if (QueenColor == 1) {
 			return getAllPossibleMoves(1).size() / (double) getAllPossibleMoves(2).size();
@@ -536,8 +557,8 @@ public class GameBoardState implements Serializable {
 		}
 
 	}
-
-	public ArrayList<int[]> getAllPossibleMoves(int colour) {
+	
+	private ArrayList<int[]> getAllPossibleMoves(int colour) {
 		ArrayList<int[]> movesList = new ArrayList<>();
 		ArrayList<int[]> QueenPosition = null;
 		if (colour == 1) {
@@ -558,7 +579,7 @@ public class GameBoardState implements Serializable {
 		return movesList;
 	}
 
-	public ArrayList<int[]> getAllMoves(int x, int y) {
+	private ArrayList<int[]> getAllMoves(int x, int y) {
 		ArrayList<int[]> list = new ArrayList<>();
 		list.addAll(getAllMoves(x, y, 0, -1, new ArrayList<int[]>())); // up
 		list.addAll(getAllMoves(x, y, 1, -1, new ArrayList<int[]>())); // topright
@@ -571,7 +592,7 @@ public class GameBoardState implements Serializable {
 		return list;
 	}
 
-	public ArrayList<int[]> getAllMoves(int x, int y, int IncreaseX, int IncreaseY, ArrayList<int[]> list) {
+	private ArrayList<int[]> getAllMoves(int x, int y, int IncreaseX, int IncreaseY, ArrayList<int[]> list) {
 		if (x + IncreaseX >= 0 && x + IncreaseX < 10 && y + IncreaseY >= 0 && y + IncreaseY < 10) {// checking to see if
 																									// the value is out
 																									// of bounds
@@ -588,7 +609,7 @@ public class GameBoardState implements Serializable {
 	 * 
 	 * @param color  : out team color
 	 * @param wieght : how much priority this move will have over others
-	 * @return
+	 * @return utility value based on the weight param
 	 */
 	public double H3(int color, double wieght) {
 		ArrayList<int[]> QueenPos = new ArrayList<int[]>();
@@ -626,8 +647,9 @@ public class GameBoardState implements Serializable {
 		return 0;
 	}
 	/**
-	 * Arrow placer hueristic that give priority to moves that place
-	 * an arrow adjacent to a enemy queen
+	 * Arrow placer heuristic that give priority to moves that place
+	 * an arrow adjacent to a enemy queen. with placing higher priority to 
+	 * states that have more objects next to a enemy queen
 	 * @param color
 	 * @return number blocked tiles around enemy queen
 	 */
@@ -670,7 +692,7 @@ public class GameBoardState implements Serializable {
 	}
 	/**
 	 * escape heuristic that determines how much free space is around the current move vs its old move
-	 * @return
+	 * @return utility value
 	 */
 	public double H4() {
 		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
@@ -688,8 +710,9 @@ public class GameBoardState implements Serializable {
 	}
 	private int countA = 0; // for use in getArea only
 	/**
-	 * counts the number of space it can possibly go to
-	 * @return total space it can go
+	 * counts the number of space it can possibly go to 
+	 * 
+	 * @return total space it can go to
 	 */
 	public double H6() {
 		int[][] copy = new int[10][10];
@@ -703,8 +726,8 @@ public class GameBoardState implements Serializable {
 	}
 	
 	/**
-	 * @EFFECTS recursively counts all empty tiles a position can reach
-	 * @REQUIRES a deep copy of the board to avoid changing its state
+	 * EFFECTS recursively counts all empty tiles a position can reach
+	 * REQUIRES a deep copy of the board to avoid changing its state
 	 * 
 	 * @param Pos the starting location
 	 * @param board  copy of the board 
@@ -736,121 +759,5 @@ public class GameBoardState implements Serializable {
 		return countA;
 	}
 
-//	public double H4(int team) {
-//		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0], moveInfo.getNewQPos()[1]);
-//		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0], moveInfo.getOldQPos()[1]);
-//
-//		ArrayList<Vector2> allQueenCoordsWhite = new ArrayList<>();
-//		ArrayList<Vector2> allQueenCoordsBlack = new ArrayList<>();
-//		ArrayList<Vector2> queensToSkipWhite = new ArrayList<>();
-//		ArrayList<Vector2> queensToSkipBlack = new ArrayList<>();// Queens will be added to list if they are to be
-//																	// prevented from having BFS performed on them.
-//		int spaceAvailableToQueensWhite = 0;
-//		int spaceAvailableToQueensBlack = 0;
-//		int[][] board = currentBoard;
-//		for (int[] transfer : queenPosWhite2) {
-//			allQueenCoordsWhite.add(new Vector2(transfer));
-//		}
-//		for (int[] transfer : queenPosBlack1) {
-//			allQueenCoordsBlack.add(new Vector2(transfer));
-//		}
-//
-//		for (Vector2 queenCoords : allQueenCoordsWhite) {
-//			if (queensToSkipWhite.contains(new Vector2(queenCoords)))
-//				continue;
-//
-//			LinkedList<Vector2> tileQueue = new LinkedList<>();
-//			HashSet<Vector2> tilesVisited = new HashSet<>();
-//			tileQueue.add(queenCoords);
-//
-//			// Breadth-first search
-//			while (!tileQueue.isEmpty()) {
-//				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-//
-//				System.out.println(tileQueue.size());
-//				tilesToAdd.addAll(getTilesAround(tileQueue.poll())); // Dequeue current tile, add its children to
-//																		// shortlist of tiles to expand upon
-//				for (Vector2 tile : tilesToAdd)
-//					// for each shortlisted tile,
-//					if (tile.getx() >= 0 && tile.getx() < 10 && tile.gety() >= 0 && tile.gety() < 10) {
-//						if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) { // if
-//																													// it
-//																													// is
-//																													// empty
-//																													// and
-//																													// has
-//																													// not
-//																													// been
-//																													// visited,
-//							tileQueue.add(tile); // add tile to queue
-//							tilesVisited.add(new Vector2(tile)); // mark tile as visited
-//							spaceAvailableToQueensWhite++; // Now, if the current tile is empty, add it to list of
-//															// available free tiles.
-//						}
-//
-//					}
-//			}
-//		}
-//		for (Vector2 queenCoords : allQueenCoordsBlack) {
-//			if (queensToSkipBlack.contains(new Vector2(queenCoords)))
-//				continue;
-//
-//			LinkedList<Vector2> tileQueue = new LinkedList<>();
-//			HashSet<Vector2> tilesVisited = new HashSet<>();
-//			tileQueue.add(queenCoords);
-//			System.out.println("doingthis");
-//			// Breadth-first search
-//			while (!tileQueue.isEmpty()) {
-//				ArrayList<Vector2> tilesToAdd = new ArrayList<>();
-//				System.out.println("begining of while loop");
-//				tilesToAdd.addAll(getTilesAround(tileQueue.poll())); // Dequeue current tile, add its children to
-//																		// shortlist of tiles to expand upon
-//				for (Vector2 tile : tilesToAdd) // for each shortlisted tile,
-//					if (!tilesVisited.contains(new Vector2(tile)) && board[tile.getx()][tile.gety()] == 0) { // if it is
-//																												// empty
-//																												// and
-//																												// has
-//																												// not
-//																												// been
-//																												// visited,
-//						tileQueue.add(tile); // add tile to queue
-//						tilesVisited.add(new Vector2(tile)); // mark tile as visited
-//						spaceAvailableToQueensBlack++; // Now, if the current tile is empty, add it to list of available
-//														// free tiles.
-//					}
-//				System.out.println(tileQueue.size());
-//			}
-//		}
-//		return spaceAvailableToQueensBlack;
-//
-//		if (team == 1) {
-//			return spaceAvailableToQueensBlack;
-//
-//			if (AllMovesNew.size() - AllMovesOld.size() < -1) {
-//				return 0;
-//			} else if (AllMovesNew.size() - AllMovesOld.size() == 0) {
-//				return 1;
-//
-//			} else {
-//				return AllMovesNew.size() - AllMovesOld.size();
-//			}
-//
-//		}
-//	}
-//	public  ArrayList<Vector2> getTilesAround(Vector2 vector2) {
-//	ArrayList<Vector2> proxmateTiles = new ArrayList<>();
-//		for (int x = -1; x <= 1; x++) {
-//			for (int y = -1; y <= 1; y++) {
-//				if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
-//					if (vector2.getx() + x >= 0 && vector2.gety() + x < 10
-//							&& vector2.getx() + y >= 0 &&vector2.gety() + y < 10) {
-//							proxmateTiles.add(new Vector2 (vector2.getx() + x, vector2.gety() + y));
-//					}
-//				}
-//			}
-//		}
-//	
-//	return proxmateTiles;
-//	}
 
 }

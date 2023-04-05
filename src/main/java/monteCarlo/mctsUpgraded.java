@@ -6,17 +6,22 @@ import GameState.Node;
 import Util.Timer;
 import ubc.cosc322.MoveSequence;
 /**
- * Monte Carlo Algorithm 
+ * Monte Carlo Algorithm, which simulates entire games until a timer is up
+ * for as many possible moves the current game is in using a calultion which only 
+ * found in the node being worked on using the visits, vists of its parent and how many 
+ * wins the node has. 
  * 
  *
  */
 public class mctsUpgraded {
+	private static double  timeLimit = 10; //time in seconds
+	
+	
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
 		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
 		expand(root); 
-		double startTime;
-		double timeLimit = 10;
+		double startTime;		
 		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
@@ -52,24 +57,8 @@ public class mctsUpgraded {
 			if (node == null) {System.out.println("node is null");}
 		}
 		return node;
-	}
-	
-	//	returns parent's best child based on UCB
-//	private static Node findBestChild(Node parent) {
-//		ArrayList<Node> children = parent.getChildren();
-//		
-//		double largestUCB = -1;
-//		double tempUCB;
-//		Node bestChild = null;
-//		for (Node c : children) {	 //iterate through children and select child with highest UCB
-//			tempUCB = c.getUCB();
-//			if(tempUCB > largestUCB) {
-//				largestUCB = tempUCB;
-//				bestChild = c;
-//			}
-//		}
-//		return bestChild;
-//	}	
+	}	
+
 	//	returns parent's best child based on UCB
 	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
@@ -84,7 +73,7 @@ public class mctsUpgraded {
 		return chosen;
 	}
 	/**
-	 * Find best child with H+UBC
+	 * Find best child using the Heuristics+UBC, using a linear search
 	 * @param parent
 	 * @param color
 	 * @return best node
@@ -96,7 +85,7 @@ public class mctsUpgraded {
 		for( Node n : children) {
 			if(chosen == null)
 				chosen = n;
-			if(chosen.getTotalValue() < n.getTotalValue())
+			if(chosen.GetUtilityVal() < n.GetUtilityVal())
 				chosen = n;
 		}
 		

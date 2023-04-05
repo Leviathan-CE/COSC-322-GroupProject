@@ -181,14 +181,12 @@ public class COSC322Test extends GamePlayer {
 				//load constraints from file
 				Nueron Constants_black = null;
 				Nueron Constants_white = null;
-				//Constants = new Nueron(new double[] {16.78718637149233 , 5.923965245482213 , 57.05858564944085 , 5.1519916507007615, 26.090402059971417,2.65972943328923 });
-				Constants_black = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
-				Constants_white = new Nueron(new double[] {23.807710378542495, 16.417378464160365, 63.18407750764788, 16.432774982256827, 34.48291091629646, 11.208162228727014, 10 });
+			
 				
 				try {
-					String fileName = "ctx_RL_01.txt";
-					Constants_black = MonteTreeSerailizer.LoadNueron("black_"+fileName);
-					Constants_white = MonteTreeSerailizer.LoadNueron("white_"+fileName);
+					String fileName = "constants.txt";
+					Constants_black = MonteTreeSerailizer.LoadNueron(fileName);
+					Constants_white = MonteTreeSerailizer.LoadNueron(fileName);
 					System.out.println("loaded values");
 				}catch(Exception e) {
 					System.out.println("file not found not being created yet");
@@ -245,11 +243,6 @@ public class COSC322Test extends GamePlayer {
 				ArrayList<Integer> newQueenPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_NEXT);
 				ArrayList<Integer> arrowPos = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
 
-				// is the opponent move a valid move?
-
-
-				// TODO: from action factory calculate move and send it to server
-				// <code> start for action
 
 				// update local game state to match the new state
 				// mutate data to readable
@@ -260,6 +253,7 @@ public class COSC322Test extends GamePlayer {
 				System.out.println("old Q pos; "+newQnPos[0]+";"+newQnPos[1]);
 				System.out.println("old Q pos; "+arrw[0]+";"+arrw[1]);
 				
+				// is the opponent move a valid move?
 				boolean isValidQueen = chessBoard.checkIfPathIsClear(QnPos, newQnPos);
 				boolean isValidArrow = chessBoard.checkIfPathIsClear(newQnPos,arrw);
 				if (!isValidQueen || !isValidArrow ) {
@@ -289,6 +283,7 @@ public class COSC322Test extends GamePlayer {
 						chessBoard.moveInfo.getNewQPos());
 				isValidArrow = chessBoard.checkIfPathIsClear(chessBoard.moveInfo.getNewQPos(),
 						chessBoard.moveInfo.getArrow());
+				//checkout our move is valid
 				if (!isValidQueen || !isValidArrow ) {
 					System.out.println("---------------------------------------");
 					System.out.println("---------------------------------------");
