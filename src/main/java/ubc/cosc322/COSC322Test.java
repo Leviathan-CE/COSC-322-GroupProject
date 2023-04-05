@@ -166,10 +166,6 @@ public class COSC322Test extends GamePlayer {
 				chessBoard = new Node(GottenGameState);
 				chessBoard.updateQueenPoses();
 				chessBoard.printQPoses();
-
-				//System.out.println(chessBoard.toString());
-//				System.out.println("h1 = " + chessBoard.getH1(ourColor));
-//				System.out.println("h2 = " + chessBoard.getH2(ourColor));
 				break;
 
 			case GameMessage.GAME_ACTION_START:
@@ -182,20 +178,21 @@ public class COSC322Test extends GamePlayer {
 				Nueron Constants_black = null;
 				Nueron Constants_white = null;
 			
-				
+				//attempt to load weights
 				try {
 					String fileName = "constants.txt";
 					Constants_black = MonteTreeSerailizer.LoadNueron(fileName);
 					Constants_white = MonteTreeSerailizer.LoadNueron(fileName);
+
 					System.out.println("loaded values");
 				}catch(Exception e) {
 					System.out.println("file not found not being created yet");
 					Constants_black = new Nueron(MoveSequence.Cb);
 					Constants_white = new Nueron(MoveSequence.Cw);
 				}
-				//apply constraints to heuristics
+				//apply weight constraints to heuristics
 				MoveSequence.Cb = Constants_black.getWieghts(); //balck 
-				MoveSequence.Cw = Constants_white.getWieghts(); //white
+				MoveSequence.Cw = Constants_black.getWieghts(); //white
 				
 				//determine who is what color
 				if (blackUserName.equalsIgnoreCase(KEY)) {

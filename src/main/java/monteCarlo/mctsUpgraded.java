@@ -3,7 +3,6 @@ package monteCarlo;
 import java.util.ArrayList;
 import ActionFactory.ActionFactory;
 import GameState.Node;
-import Util.Timer;
 import ubc.cosc322.MoveSequence;
 /**
  * Monte Carlo Algorithm, which simulates entire games until a timer is up
@@ -14,14 +13,16 @@ import ubc.cosc322.MoveSequence;
  *
  */
 public class mctsUpgraded {
-	private static double  timeLimit = 10; //time in seconds
+	private static double  timeLimit = 28; //time in seconds
 	
 	
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
 		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
 		expand(root); 
+
 		double startTime;		
+
 		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {

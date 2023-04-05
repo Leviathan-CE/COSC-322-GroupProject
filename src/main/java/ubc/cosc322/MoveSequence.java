@@ -46,11 +46,11 @@ public class MoveSequence {
 		// gen legal moves
 		Node chosenOne = null;
 		ArrayList<Node> chioces= null;
-		if(turn < 10) {
+		if(turn < 0) {
 			chosenOne = MiniMaxSearch.MiniMax(root, QueenColor);
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 		}
-		if (turn > 10) {			
+		if (turn > 12) {			
 			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
 			
