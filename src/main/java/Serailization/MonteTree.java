@@ -10,8 +10,9 @@ import GameState.Node;
  *	the idea is that if every gamestate can be transformed into a hashcode
  *	then gamestates that are the same will be overwritten with the new game data.
  *	while only ever storing every state the bot has picked ever with the values.
- *
- *	@deprecated Was not finished
+ * 	Essentially giving the bot a longterm memory.
+ *	
+ *@deprecated Was not finished
  */
 @Deprecated
 public class MonteTree {

@@ -15,12 +15,12 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
 /**
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
- *  
- * @apiNote Expected Range of values 0 = empty 2 = white queen 1 = black queen 3 =
- *       arrow
  * 
- * @apiNote: size is not 10 because input also includes the labeling from 1-10 and
- *        a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
+ * @apiNote Expected Range of values 0 = empty 2 = white queen 1 = black queen 3
+ *          = arrow
+ * 
+ * @apiNote: size is not 10 because input also includes the labeling from 1-10
+ *           and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
  * @param BOARD_DEMENSIONS = 11
  * @param INTERNAL_STATE   = 10 : the default game board size
@@ -45,11 +45,10 @@ public class GameBoardState implements Serializable {
 	private ArrayList<int[]> arrowsPos = new ArrayList<>();
 
 	/**
-	 *  			take in a 121 arraylist of integer and transforms it into a
-	 *              readable 11x11 game board were positions are located between
-	 *              then down-sized to a 10x10 gamebaord.
-	 * EFFECTS: currentBaord, creates 2d array representation of the game board.
-	 * Modifies: currentBoard
+	 * take in a 121 arraylist of integer and transforms it into a readable 11x11
+	 * game board were positions are located between then down-sized to a 10x10
+	 * gamebaord. EFFECTS: currentBaord, creates 2d array representation of the game
+	 * board. Modifies: currentBoard
 	 * 
 	 * @param gameBaord is list of integers collected from
 	 *                  AmazonsGameMessage.GAME_STATE
@@ -75,8 +74,8 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 *  create a new game state from a game board that is either 11x11
-	 *              to be down-sized to 10x10 or deep copy a 10x10 game board
+	 * create a new game state from a game board that is either 11x11 to be
+	 * down-sized to 10x10 or deep copy a 10x10 game board
 	 * 
 	 * @param gameBoard
 	 */
@@ -108,8 +107,8 @@ public class GameBoardState implements Serializable {
 
 	/**
 	 * EFFECTS: sums the values in each row by the rows index and then sums the
-	 * column by the column index {X1j +X2j + xnj} * Xj 
-	 * this forms the board 10x10 into a single integer value
+	 * column by the column index {X1j +X2j + xnj} * Xj this forms the board 10x10
+	 * into a single integer value
 	 */
 	@Override
 	public int hashCode() {
@@ -140,9 +139,9 @@ public class GameBoardState implements Serializable {
 	public void print() {
 		System.out.println(toString());
 	}
-	
-	/*
-	 * Returns a 10x10 board representation were (0,0) is top left corner
+
+	/**
+	 * @return a 10x10 board representation were (0,0) is top left corner
 	 */
 	public int[][] getCurBoard() {
 		return currentBoard;
@@ -160,30 +159,31 @@ public class GameBoardState implements Serializable {
 		}
 		System.out.println();
 	}
-	
-	/*
-	 * returns a list  x,y pairs representing blacks queen positions
+
+	/**
+	 * @return a list x,y pairs representing blacks queen positions
 	 */
 	public ArrayList<int[]> getQueenPosition1() {
 		return queenPosBlack1;
 	}
-	/*
-	 * returns a list  x,y pairs representing white queen positions
+
+	/**
+	 * @return a list x,y pairs representing white queen positions
 	 */
 	public ArrayList<int[]> getQueenPosition2() {
 		return queenPosWhite2;
 	}
-	/*
-	 * returns a list  x,y pairs representing all arrow positions
+
+	/**
+	 * @return a list x,y pairs representing all arrow positions
 	 */
 	public ArrayList<int[]> getArrowPositions() {
 		return arrowsPos;
 	}
-	
+
 	/*
-	 * prints to console a the 10x10 board were 
-	 * queens black is 1 white is 2 arrows are 3 and and the (0,0)
-	 * position is the bottom left corner
+	 * prints to console a the 10x10 board were queens black is 1 white is 2 arrows
+	 * are 3 and and the (0,0) position is the bottom left corner
 	 */
 	@Override
 	public String toString() {
@@ -201,7 +201,7 @@ public class GameBoardState implements Serializable {
 
 	/**
 	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
-	 *           currentBaord
+	 * currentBaord
 	 * 
 	 * @param newValue the new value that will be set in the matrix
 	 * @param x        is the x integer value position of a column 1-10
@@ -223,9 +223,8 @@ public class GameBoardState implements Serializable {
 	}
 
 	/**
-	 * @deprecated To be Removed
-	 * EFFECTS: Moves a single Queen and shoots a arrow. MODIFIES: queenPosWhite2
-	 *           or queenPosBlack1, CurrentBoard
+	 * @deprecated To be Removed EFFECTS: Moves a single Queen and shoots a arrow.
+	 *             MODIFIES: queenPosWhite2 or queenPosBlack1, CurrentBoard
 	 * 
 	 * @param queenColor  the queen color to select 1 is white 2 is black
 	 * @param oldPosXY    is the current queens position as a (x,y) pair
@@ -284,7 +283,7 @@ public class GameBoardState implements Serializable {
 
 	/**
 	 * EFFECTS: count the the number of queens on both sides expected their should
-	 *           always be four of each.
+	 * always be four of each.
 	 * 
 	 * @return returns 2d array position 0 is white queen position 1 is black queen
 	 */
@@ -328,13 +327,13 @@ public class GameBoardState implements Serializable {
 		queenPosWhite2 = q2b;
 		arrowsPos = arrw;
 	}
+
 	/**
-	 * checks if their is a clear line between two positions such that
-	 * no obstacle is in the path and its a straight either vertical or horizaontal 
-	 * or diagonal 
-	 *  
-	 * @param pos1
-	 * @param pos2
+	 * checks if their is a clear line between two positions such that no obstacle
+	 * is in the path and its a straight either vertical or horizaontal or diagonal
+	 * 
+	 * @param pos1 start position
+	 * @param pos2 end position
 	 * @return true if the path is straight and no obstacle is in the way
 	 */
 	public boolean checkIfPathIsClear(int[] pos1, int[] pos2) {
@@ -368,111 +367,6 @@ public class GameBoardState implements Serializable {
 
 	}
 
-//	public boolean getIfMoveIsValid(int[] oldQ, int[] newQ, int[] arrw) {
-////			if(checkIfPathIsClear(oldQ,newQ)) {
-////				if(checkIfPathIsClear(newQ,arrw)) {
-////					return true;
-////				}
-////			}
-////			return false;
-//		
-//				if (ifMoveIsValid(oldQ[0],oldQ[1],newQ[0], newQ[1]) && /// check if it is valid to move from (qx1,qy1) to (qx2, qy2)
-//			ifMoveIsValid(newQ[0], newQ[1], arrw[0], arrw[1])) { // then check if it is valid to shot arrow from (qx2, qy2) to (ax,
-//													// ay)
-//				return true;
-//			}
-//		
-//
-//		return false;
-//	}
-//
-//	public boolean ifMoveIsValid(int qx1, int qy1, int qx2, int qy2) {
-//		boolean isValid = false;
-//		int[][] board = currentBoard;
-//		if ((qy1 == qy2) && (qx1 == qx2)) { // when it is located at the same coordinate.
-//			return isValid;
-//		}
-//
-//		if (qy1 == qy2) { // when coordinates of y is same, check vertically
-//
-//			if (qx1 < qx2) {
-//				for (int i = qx1 + 1; i <= qx2; i++) { // this for loop checks the vertical path of the queen from start
-//					// to end and checks to make sure that path is clear
-//					if (board[i][qy1] != 0)
-//						return false;
-//				}
-//			} else if (qx1 > qx2) {
-//				for (int i = qx1 - 1; i >= qx2; i--) { // this for loop checks the vertical path of the queen from start
-//					// to end and checks to make sure that path is clear
-//					if (board[i][qy1] != 0)
-//						return false;
-//				}
-//			}
-//			System.out.println("is not true");
-//			isValid = true;
-////			return isValid;
-//		}
-//
-//		if (qx1 == qx2) { // when coordinates of x is same, check horizontally
-//
-//			if (qy1 < qy2) {
-//				for (int i = qy1 + 1; i <= qy2; i++) { // this for loop checks the horizontal path of the queen from
-//														// start
-//					// to end and checks to make sure that path is clear
-//					if (board[qx1][i] != 0)
-//						return false;
-//				}
-//			} else if (qy1 > qy2) {
-//				for (int i = qy1 - 1; i >= qy2; i--) { // this for loop checks the horizontal path of the queen from
-//														// start
-//					// to end and checks to make sure that path is clear
-//					if (board[qx1][i] != 0)
-//						return false;
-//				}
-//
-//			}
-//			System.out.println("is not true");
-//			isValid = true;
-////			return isValid;
-//		}
-//
-//		// diagonal checks
-//		if (Math.abs(qx2 - qx1) == Math.abs(qy2 - qy1)) { // when coordinates on the y= 1*x + c, check diagonally
-//			if ((qx1 < qx2) && (qy1 < qy2)) {
-//				for (int i = qx1 + 1, j = qy1 + 1; i <= qx2 && j <= qy2; i++, j++) { // q1 to q2(from left to right,
-//																						// bottom to top)
-//					if (board[i][j] != 0)
-//						return false;
-//				}
-//			} else if ((qx1 < qx2) && (qy1 > qy2)) {
-//				for (int i = qx1 + 1, j = qy1 - 1; i <= qx2 && j >= qy2; i++, j--) { // q1 to q2(from left to right, top
-//																						// to bottom)
-//					if (board[i][j] != 0)
-//						return false;
-//				}
-//
-//			} else if ((qx1 > qx2) && (qy1 < qy2)) {
-//				for (int i = qx1 - 1, j = qy1 + 1; i >= qx2 && j <= qy2; i--, j++) { // q2 to q1(from left to right,
-//																						// bottom to top)
-//					if (board[i][j] != 0)
-//						return false;
-//				}
-//
-//			} else if ((qx1 > qx2) && (qy1 > qy2)) {
-//				for (int i = qx1 - 1, j = qy1 - 1; i >= qx2 && j >= qy2; i--, j--) { // q2 to q1(from left to right, top
-//																						// to bottom)
-//					if (board[i][j] != 0)
-//						return false;
-//				}
-//
-//			}
-////			isValid = true;
-////			return isValid;
-//		}
-//
-//		return isValid;
-//	}
-
 	/**
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
 	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
@@ -491,11 +385,10 @@ public class GameBoardState implements Serializable {
 				for (int y = -1; y <= 1; y++) {
 					if (!(x == 0 && y == 0)) { // if tile is queen tile then skip
 
-						if (queen[0] + x >= 0 && queen[0] + x < 10
-								&& queen[1] + y >= 0 && queen[1] + y < 10) {
-							if (board[queen [0] + x][queen[1] + y ] == 0) {
+						if (queen[0] + x >= 0 && queen[0] + x < 10 && queen[1] + y >= 0 && queen[1] + y < 10) {
+							if (board[queen[0] + x][queen[1] + y] == 0) {
 								sumOfWhiteQueen++;
-							} 
+							}
 
 						}
 					}
@@ -520,35 +413,35 @@ public class GameBoardState implements Serializable {
 
 		if (queenColor == 1) {
 			double sum;
-			if(sumOfWhiteQueen ==0 ) {
-				sumOfWhiteQueen=1;
+			if (sumOfWhiteQueen == 0) {
+				sumOfWhiteQueen = 1;
 			}
-			if(sumOfBlackQueen>sumOfWhiteQueen ) {
-				//System.out.println("black is bigger");
-				sum =((double) sumOfBlackQueen) ;
-			}else {
-				sum =((double) sumOfBlackQueen);
-				//System.out.println("white is bigger");
+			if (sumOfBlackQueen > sumOfWhiteQueen) {
+				// System.out.println("black is bigger");
+				sum = ((double) sumOfBlackQueen);
+			} else {
+				sum = ((double) sumOfBlackQueen);
+				// System.out.println("white is bigger");
 			}
 			return sum;
-		} else if(queenColor == 2) {
-			double sum =  (double)sumOfWhiteQueen;
-			if(sum <0 ) {
-				sum =0;
+		} else if (queenColor == 2) {
+			double sum = (double) sumOfWhiteQueen;
+			if (sum < 0) {
+				sum = 0;
 			}
 			return sum;
 		}
 		return 0;
 
 	}
-/**
- * this heuristic will see all the moves the other team
- * can make in comparison to the moves we can make 
- * @param QueenColor our queen color
- * @return utility value higher is better
- */
-//getAllPossibleMoves(2).size()- getAllPossibleMoves(1).size()- 
-//
+
+	/**
+	 * this heuristic will see all the moves the other team can make in comparison
+	 * to the moves we can make
+	 * 
+	 * @param QueenColor our queen color
+	 * @return utility value higher is better
+	 */
 	public double H2(int QueenColor) {
 		if (QueenColor == 1) {
 			return getAllPossibleMoves(1).size() / (double) getAllPossibleMoves(2).size();
@@ -557,7 +450,7 @@ public class GameBoardState implements Serializable {
 		}
 
 	}
-	
+
 	private ArrayList<int[]> getAllPossibleMoves(int colour) {
 		ArrayList<int[]> movesList = new ArrayList<>();
 		ArrayList<int[]> QueenPosition = null;
@@ -646,11 +539,13 @@ public class GameBoardState implements Serializable {
 
 		return 0;
 	}
+
 	/**
-	 * Arrow placer heuristic that give priority to moves that place
-	 * an arrow adjacent to a enemy queen. with placing higher priority to 
-	 * states that have more objects next to a enemy queen
-	 * @param color
+	 * Arrow placer heuristic that give priority to moves that place an arrow
+	 * adjacent to a enemy queen. with placing higher priority to states that have
+	 * more objects next to a enemy queen
+	 * 
+	 * @param color : color of team to calculate for
 	 * @return number blocked tiles around enemy queen
 	 */
 	public double H5(int color) {
@@ -690,74 +585,76 @@ public class GameBoardState implements Serializable {
 
 		return 0;
 	}
+
 	/**
-	 * escape heuristic that determines how much free space is around the current move vs its old move
+	 * escape heuristic that determines how much free space is around the current
+	 * move vs its old move
+	 * 
 	 * @return utility value
 	 */
 	public double H4() {
-		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0],moveInfo.getNewQPos()[1]);
-		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0],moveInfo.getOldQPos()[1]);
-		
-		if(AllMovesNew.size() - AllMovesOld.size() <-1 ) {
+		ArrayList<int[]> AllMovesNew = getAllMoves(moveInfo.getNewQPos()[0], moveInfo.getNewQPos()[1]);
+		ArrayList<int[]> AllMovesOld = getAllMoves(moveInfo.getOldQPos()[0], moveInfo.getOldQPos()[1]);
+
+		if (AllMovesNew.size() - AllMovesOld.size() < -1) {
 			return 0;
-		}else if(AllMovesNew.size() - AllMovesOld.size() ==0){
+		} else if (AllMovesNew.size() - AllMovesOld.size() == 0) {
 			return 1;
-		}else {
-			return AllMovesNew.size() - AllMovesOld.size(); 
+		} else {
+			return AllMovesNew.size() - AllMovesOld.size();
 		}
 
-	
 	}
+
 	private int countA = 0; // for use in getArea only
+
 	/**
-	 * counts the number of space it can possibly go to 
+	 * counts the number of space it can possibly go to
 	 * 
 	 * @return total space it can go to
 	 */
 	public double H6() {
 		int[][] copy = new int[10][10];
-		for(int x =0; x< 9; x++) {
-			for( int y=0; y < 9; y++){
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
 				copy[x][y] = currentBoard[x][y];
 			}
 		}
-		   countA = 0;
-	  	  return getArea(moveInfo.getNewQPos(),copy);
+		countA = 0;
+		return getArea(moveInfo.getNewQPos(), copy);
 	}
-	
+
 	/**
-	 * EFFECTS recursively counts all empty tiles a position can reach
-	 * REQUIRES a deep copy of the board to avoid changing its state
+	 * EFFECTS recursively counts all empty tiles a position can reach REQUIRES a
+	 * deep copy of the board to avoid changing its state
 	 * 
-	 * @param Pos the starting location
-	 * @param board  copy of the board 
+	 * @param Pos     the starting location
+	 * @param board   copy of the board
 	 * @param empties empty array
 	 * @return count of the empty tiles that position can reach
 	 */
 	private int getArea(int[] Pos, int[][] board) {
-		
+
 		// if out of bounds return
-		if(Pos[0] < 0 || Pos[1] < 0 || Pos[0] > 9 || Pos[1] > 9)
+		if (Pos[0] < 0 || Pos[1] < 0 || Pos[0] > 9 || Pos[1] > 9)
 			return countA;
-		
-		
-		//if not empty return
-	    if (board[Pos[0]][Pos[1]] != 0) {
-	        return countA;
-	    }
-	    board[Pos[0]][Pos[1]] = -1;	    
-	    countA++;
-	    //go threw adjacent squares and count them
-		for(int x = -1; x <= 1; x++) {
-			for(int y = -1; y <= 1; y++) {	
-						//exclude center square
-						if(x != 0 || y != 0) {							
-							getArea(new int[] {Pos[0]+x,Pos[1]+y}, board);					
-						}
+
+		// if not empty return
+		if (board[Pos[0]][Pos[1]] != 0) {
+			return countA;
+		}
+		board[Pos[0]][Pos[1]] = -1;
+		countA++;
+		// go threw adjacent squares and count them
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				// exclude center square
+				if (x != 0 || y != 0) {
+					getArea(new int[] { Pos[0] + x, Pos[1] + y }, board);
 				}
 			}
+		}
 		return countA;
 	}
-
 
 }

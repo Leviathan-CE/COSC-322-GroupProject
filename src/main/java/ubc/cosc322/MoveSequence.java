@@ -12,22 +12,20 @@ import Search.DepthFirstSearch;
 import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
-
+/**
+ * 
+ * How We calculate a move based on the different methods implemented
+ *
+ */
 public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
 	public static double[] Cb = new double[] {10,1,50,.5f,20,.5f,10} ;
 	public static double[] Cw = new double[] {10,1,50,.5f,20,.5f,10};
-//	n.setH1(n.H1(color)* 1f); //v1:
-//	n.setH3(n.H3(color, 10)); //v1: 
-//	n.setH2(n.H2(color)* 5f);// v1:
-//	n.setH4(n.H4()*.5f);	//v1:
-//	n.setH5(n.H5(color)*.35f); //v1:
-//	if(curturn >30)
-//		n.setH6(n.H6() * .5f);
+
 	/**
-	 * @EFFECTS : generates all possible legal actions from action factory and then
+	 * EFFECTS : generates all possible legal actions from action factory and then
 	 *          calculates the utility score for each. then chooses the maxuim from
 	 *          the deepest node using a depth first search and extracts which move
 	 *          was made and returns a sender object for the game client.
@@ -84,13 +82,6 @@ public class MoveSequence {
 		chosenOne.printQPoses();
 
 		chosenOne.print();
-//		try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
 		System.out.println("------END OF STATE--------");
 		
 	
@@ -98,7 +89,7 @@ public class MoveSequence {
 	}
 
 	/**
-	 * @EFFECTS : is the package sender. that sends packages to the server
+	 * EFFECTS : is the package sender. that sends packages to the server
 	 * 
 	 * @param ui             : is the GameBaseGUI reference to update the client GUI
 	 * @param client         : is the server Package reference we want to ship to
@@ -113,7 +104,7 @@ public class MoveSequence {
 	}
 
 	/**
-	 * @EFFFECTS : from the root applies heuristics and Monte-cCrlo through the Node
+	 * EFFFECTS : from the root applies heuristics and Monte-cCrlo through the Node
 	 * @param chioces : all the children of the root
 	 * @param root    : the original state and Parent
 	 */
@@ -163,7 +154,7 @@ public class MoveSequence {
 	 }
 
 	/**
-	 * @EFFECTS : decouples all choices from root that were not the chosen node to
+	 * EFFECTS : decouples all choices from root that were not the chosen node to
 	 *          make a move on. to prevent potential memory leaks.
 	 * @param chosenMove : move picked to send to client
 	 * @param chioces    : all the children of root
@@ -180,14 +171,23 @@ public class MoveSequence {
 			}
 		}
 	}
-
+	/**
+	 * Removes all children from parent node 
+	 * @param root : parent node to children want to be removed
+	 */
 	public static void decoupleAllChildren(Node root) {
 		// decouple all children including choice		
 			root.setChildren(null);
 		
 
 	}
-
+	/**
+	 * Transforms our data that contains a move into a format that server can read
+	 * @param oldQ : old queen position
+	 * @param newQ : the move made
+	 * @param arrw : new arrow position
+	 * @return list a of lists that server can read.
+	 */
 	public static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
 
 		ArrayList<ArrayList<Integer>> SenderOBJ = new ArrayList<>();

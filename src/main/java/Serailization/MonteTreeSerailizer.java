@@ -171,21 +171,4 @@ public class MonteTreeSerailizer {
 		
 	}
 	
-//	public static void main(String[] args) {
-//		Integer[] state = new Integer[] {0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-//		ArrayList<Integer> x = new ArrayList<>();
-//		for( int i : state) {
-//			x.add(i);
-//		}
-//		Node n = new Node(x);
-//		Node n2 = new Node(x);
-//		ArrayList<Node> tree = new ArrayList<>();
-//		tree.add(n);
-//		tree.add(n2);
-//		System.out.println(tree.size());
-//		SaveTree(tree);
-//		tree.clear();
-//		tree = LoadTree();
-//		System.out.println(tree.size());
-//	}
 }

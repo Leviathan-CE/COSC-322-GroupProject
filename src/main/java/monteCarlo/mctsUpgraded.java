@@ -6,16 +6,17 @@ import GameState.Node;
 import ubc.cosc322.MoveSequence;
 /**
  * Monte Carlo Algorithm, which simulates entire games until a timer is up
- * for as many possible moves the current game is in using a calultion which only 
- * found in the node being worked on using the visits, vists of its parent and how many 
- * wins the node has. 
- * 
- *
+ * and returns a UCB value as a heuristic
  */
 public class mctsUpgraded {
 	private static double  timeLimit = 28; //time in seconds
 	
-	
+	/**
+	 * generates a Monte Carlo Move and returns the Node
+	 * @param root : current board state
+	 * @param ourPlayer : our team color
+	 * @return a node conatianing out move
+	 */
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
 		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
