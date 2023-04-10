@@ -14,14 +14,14 @@ import java.io.*;
  * and load those constant when they are needed 
  * 
  * 
- * @apiNote  serailizer write to data folder and read from data folder 
+ * Note:  serailizer write to data folder and read from data folder 
  * Note; static fields will not be serialized. 
  * another note: if you get a bunch of errors the most liekly 
  * cause is you change something in that class and will need to delete
  * the savedfile and run again. this is because each time you change a 
  * serailezed files non static fields you change how the file is read and thus 
  * causes a error when it doesn't expect a new field or a missing field.
- * 
+ *
  * 
  * 
  *

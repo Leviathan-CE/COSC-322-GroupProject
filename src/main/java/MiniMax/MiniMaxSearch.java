@@ -23,7 +23,7 @@ public class MiniMaxSearch {
 
 	/**
 	 *		    EEFECTS: Generated desired players moves then for each of those move
-	 *          generated generates and evaluates the miniax score which is is our
+	 *          generated generates and evaluates the miniax score which is our
 	 *          best from the worst move and stores that value in the parent node.
 	 * @param root       : current baord state
 	 * @param QueenColor : out team colour

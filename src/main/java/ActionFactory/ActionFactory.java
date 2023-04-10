@@ -10,8 +10,7 @@ import GameState.Node;
 
 /**
  * 
- * TODO; create function that moves a queen and places a arrow on GameBoardState
- * TODO; create function that detects illegal moves.
+ * Generates possible Legal Game States from a inital game state
  */
 public class ActionFactory {
 

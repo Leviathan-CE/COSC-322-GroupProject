@@ -15,7 +15,7 @@ import ubc.cosc322.MoveSequence;
  * and when it wins is rewarded With small amount of randomness and a boost to its best stat. 
  * with the idea we would find a local minimum and maximum of weights that would equalize between both bots 
  *  
- * @apiNote were other versions of this train such as always using the same weights for both
+ * Note: were other versions of this train such as always using the same weights for both
  * or inputing human bais into the starting stats instead of bots starting from 0 among different reward systems
  * overall we only managed to train it for about 500 times which was a fairly small sample size. and found that our 
  * best iteration was starting with human made weights and then letting the training maximize the values
@@ -190,7 +190,7 @@ public class SimBiulder {
 	 * 
 	 * @param color, player black = 1 white = 2
 	 * @param state, current turn node
-	 * @return
+	 * @return node chosen
 	 */
 	private static Node playAturn(int color, Node state) {
 		ArrayList<Node> chioces = ActionFactory.getLegalMoves(state, color, false);

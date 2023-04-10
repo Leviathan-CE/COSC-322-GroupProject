@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Neuron class holds weights which are applied to heuristic
  * functions. 
  * 
- * @apiNote wasn't finished but was working on having a string of nodes 
+ * Note: wasn't finished but was working on having a string of nodes 
  * to dynamically apply weights for each turn, allowing the bot to change 
  * strategies on a dime once the string was trained.
  *
@@ -39,13 +39,24 @@ public class Nueron implements Serializable{
 		this.parent = newNode;
 		newNode.child = this;
 	}
-	
+	/**
+	 * @deprecated unfinished
+	 * @return child neuron
+	 */
 	public Nueron next() {
 		return child;
 	}
+	/**
+	 * @deprecated unfinished
+	 * @return parent neuron
+	 */
 	public Nueron prevoius() {
 		return parent;
 	}
+	/**
+	 * returns list of weights Constants
+	 * @return a list of weight Constants
+	 */
 	public double[] getWieghts() {
 		return Wieghts;
 	}

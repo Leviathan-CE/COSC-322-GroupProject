@@ -14,6 +14,7 @@ import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
 /**
  * 
+ * 
  * How We calculate a move based on the different methods implemented
  *
  */
@@ -21,7 +22,13 @@ public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
+	/**
+	 * Weight Constants for heuristics for black team
+	 */
 	public static double[] Cb = new double[] {10,1,50,.5f,20,.5f,10} ;
+	/**
+	 * Weight Constants for heuristics for white team
+	 */
 	public static double[] Cw = new double[] {10,1,50,.5f,20,.5f,10};
 
 	/**
@@ -127,6 +134,12 @@ public class MoveSequence {
 		}
 		return root;
 	}
+	 /**
+	  * Calculates a single Nodes utility score for a particular team
+	  * @param n : target node to calculate
+	  * @param color : color of team 
+	  * @return utility score
+	  */
 	 public static double calcUtil(Node n, int color){
 		 if(color ==1) {	
 		 n.setH1(n.H1(color)* Cb[0]); //v1:

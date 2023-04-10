@@ -1,4 +1,4 @@
-package MonteCarlo;
+package monteCarlo;
 
 import static org.junit.Assert.assertTrue;
 

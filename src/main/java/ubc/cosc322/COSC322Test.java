@@ -144,7 +144,7 @@ public class COSC322Test extends GamePlayer {
 	 * @return returns true when a action is sent to server or successfully received
 	 *         from server false otherwise.
 	 * 
-	 * @apiNote This method will be called by the GameClient when it receives a
+	 *       Note: This method will be called by the GameClient when it receives a
 	 *       game-related message from the server.
 	 * 
 	 *       For a detailed description of the message types and format, see the

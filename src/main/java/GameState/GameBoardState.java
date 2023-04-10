@@ -16,24 +16,32 @@ import ygraph.ai.smartfox.games.amazons.AmazonsGameMessage;
  * GameState class which holds a local game state represented as a 2d matrix.
  * the game state values.
  * 
- * @apiNote Expected Range of values 0 = empty 2 = white queen 1 = black queen 3
+ * Note Expected Range of values 0 = empty 2 = white queen 1 = black queen 3
  *          = arrow
  * 
- * @apiNote: size is not 10 because input also includes the labeling from 1-10
+ * Note: size is not 10 because input also includes the labeling from 1-10
  *           and a-j for gui which is why BOARD_WIDTH and BOARD_HIEGHT are 11.
  * 
- * @param BOARD_DEMENSIONS = 11
- * @param INTERNAL_STATE   = 10 : the default game board size
  * 
+ *
  * 
  *
  */
 public class GameBoardState implements Serializable {
 
 	private static final long serialVersionUID = 1004773758902058794L;
+	/**
+	 *  BOARD_DEMENSIONS = 11
+	 */
 	public final static int BORAD_DEMENSIONS = 11;
+	/**
+	 * INTERNAL_STATE   = 10 : the default game board size
+	 */
 	public final static int INTERANL_STATE = 10;
-
+	
+	/**
+	 * contains move info about this state
+	 */
 	public MoveInfo moveInfo = null;
 
 	private String ID = "";
@@ -50,7 +58,7 @@ public class GameBoardState implements Serializable {
 	 * gamebaord. EFFECTS: currentBaord, creates 2d array representation of the game
 	 * board. Modifies: currentBoard
 	 * 
-	 * @param gameBaord is list of integers collected from
+	 * @param gameBoard is list of integers collected from
 	 *                  AmazonsGameMessage.GAME_STATE
 	 */
 	public GameBoardState(ArrayList<Integer> gameBoard) {
@@ -96,8 +104,8 @@ public class GameBoardState implements Serializable {
 	}
 
 	// ------Helper Methods-----------
-	/*
-	 * two Boards are equal id thier ID's are equal
+	/**
+	 * two Boards are equal id their ID's are equal
 	 */
 	public boolean equals(Node node) {
 		if (this.ID.contentEquals(node.getID()))
@@ -146,7 +154,10 @@ public class GameBoardState implements Serializable {
 	public int[][] getCurBoard() {
 		return currentBoard;
 	}
-
+	
+	/**
+	 * prints quesn positions to console
+	 */
 	public void printQPoses() {
 		for (int i = 0; i < queenPosBlack1.size(); i++) {
 			System.out.print("1:Black :: " + Arrays.toString(queenPosBlack1.get(i)));
@@ -203,7 +214,7 @@ public class GameBoardState implements Serializable {
 	 * EFFECTS: sets new value of of board x position and y position MODIFIES:
 	 * currentBaord
 	 * 
-	 * @param newValue the new value that will be set in the matrix
+	 * @param newvalue the new value that will be set in the matrix
 	 * @param x        is the x integer value position of a column 1-10
 	 * @param y        is the y integer value position of a row 1-10
 	 */
@@ -214,7 +225,14 @@ public class GameBoardState implements Serializable {
 		ArrayList<Integer> posVal = new ArrayList<Integer>((Arrays.asList(x, y)));
 		return posVal;
 	}
-
+	
+	/**
+	 * sets a position of a tile
+	 * @param newvalue : value to which that position will be set to
+	 * @param x : target x position
+	 * @param y : target y Position
+	 * @return (x, y) pair
+	 */
 	public int[] setPos(int newvalue, int x, int y) {
 		if (x < 0 || y < 0 || x > 9 || y > 9)
 			throw new IndexOutOfBoundsException("index must be between 1-11 inclusive");
@@ -301,7 +319,9 @@ public class GameBoardState implements Serializable {
 		// System.out.println("q1 = " + Queen1 + " q2 = " + Queen2);
 		return new int[] { Queen1, Queen2 };
 	}
-
+	/**
+	 * updates queens positions of this state
+	 */
 	public void updateQueenPoses() {
 		ArrayList<int[]> q1w = new ArrayList<>(4);
 		ArrayList<int[]> q2b = new ArrayList<>(4);
@@ -371,7 +391,7 @@ public class GameBoardState implements Serializable {
 	 * heuristic1: looks at all the tiles around the queens. If the tiles dont = 1
 	 * then we add to each teams score we then return sumEnemyteam - sumOurteam
 	 * 
-	 * @Param queenColor the color of which queens which are ours
+	 * @param queenColor the color of which queens which are ours
 	 */
 	public double H1(int queenColor) {
 
