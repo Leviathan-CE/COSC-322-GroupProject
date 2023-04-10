@@ -2,26 +2,26 @@ package ActionFactory;
 
 import java.util.ArrayList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import GameState.GameBoardState;
 import GameState.MoveInfo;
-import Search.TreeSearch;
-import Search.TreeSearch.node;
-
-import GameState.GameBoardState;
+import GameState.Node;
 
 /**
  * 
- * TODO; create function that moves a queen and places a arrow on GameBoardState
- * TODO; create function that detects illegal moves.
+ * Generates possible Legal Game States from a inital game state
  */
 public class ActionFactory {
 
 	/**
 	 * EFFECTS: takes in the Board state and then returns the branch factor of all
 	 * possible actions based off of what actions can be taken.
+	 * 
+	 * This function generates all legal moves for a given player on the gameboard.
+	 * function assumes player will be an int of value 1 or 2
+	 * takes a 2d array as its input value and returns a array list of 2d arrays
+	 * that represent possible child states.
 	 * 
 	 * @param node is the root for which we calculate the branch factor based
 	 *                  from a move set.
@@ -30,13 +30,6 @@ public class ActionFactory {
 	 * @return all possible game states from the root
 	 * 
 	 */
-
-	// This function generates all legal moves for a given player on the gameboard.
-	// function assumes player will be an int of value 1 or 2
-	// takes a 2d array as its input value and returns a array list of 2d arrays
-	// that represent possible child states.
-	// TODO Modify to work with our gameboardstate and Node - cons fult with team
-	// members
 	public static ArrayList<Node> getLegalMoves(Node node, int player, boolean monte) {
 		// Initialize an empty ArrayList to store the legal moves.
 		ArrayList<Node> legalMoves = new ArrayList<>();
@@ -105,8 +98,9 @@ public class ActionFactory {
 												//store the move made in a info data class
 												game.moveInfo = new MoveInfo(new int[] { i, j }, new int[] { x, y },
 														new int[] { bx, by }, player);
-												game.setParent(node);
-
+												if(!monte) {
+													game.setParent(node);
+												}
 												// Add the new gameboard to the list of legal moves.
 												legalMoves.add(game);
 											}

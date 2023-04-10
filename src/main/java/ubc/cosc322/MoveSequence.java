@@ -4,28 +4,35 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import ActionFactory.ActionFactory;
-import ActionFactory.MonteTreeSearch;
-import ActionFactory.Node;
-import monteCarlo.mcts;
+import Exceptions.GameLossException;
+import Exceptions.GameWinException;
+import GameState.Node;
+import MiniMax.MiniMaxSearch;
+import Search.DepthFirstSearch;
 import monteCarlo.mctsUpgraded;
 import ygraph.ai.smartfox.games.BaseGameGUI;
 import ygraph.ai.smartfox.games.GameClient;
-
+/**
+ * 
+ * 
+ * How We calculate a move based on the different methods implemented
+ *
+ */
 public class MoveSequence {
 	//{1f,10,5f,.5f,.35,.5f} v1
 	//{10,50,1,.5f,20,.5f} v2
 	private static int curturn;
-	public static double[] C = new double[] {10,50,1,.5f,20,.5f} ;
-	public static double[] C2 = new double[] {10,50,1,.5f,20,.5f};
-//	n.setH1(n.H1(color)* 1f); //v1:
-//	n.setH3(n.H3(color, 10)); //v1: 
-//	n.setH2(n.H2(color)* 5f);// v1:
-//	n.setH4(n.H4()*.5f);	//v1:
-//	n.setH5(n.H5(color)*.35f); //v1:
-//	if(curturn >30)
-//		n.setH6(n.H6() * .5f);
 	/**
-	 * @EFFECTS : generates all possible legal actions from action factory and then
+	 * Weight Constants for heuristics for black team
+	 */
+	public static double[] Cb = new double[] {10,1,50,.5f,20,.5f,10} ;
+	/**
+	 * Weight Constants for heuristics for white team
+	 */
+	public static double[] Cw = new double[] {10,1,50,.5f,20,.5f,10};
+
+	/**
+	 * EFFECTS : generates all possible legal actions from action factory and then
 	 *          calculates the utility score for each. then chooses the maxuim from
 	 *          the deepest node using a depth first search and extracts which move
 	 *          was made and returns a sender object for the game client.
@@ -43,22 +50,32 @@ public class MoveSequence {
 
 		// gen legal moves
 		Node chosenOne = null;
-		ArrayList<Node> chioces;
-		if (turn > 150) {
-			chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
-				chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+		ArrayList<Node> chioces= null;
+		if(turn < 0) {
+			chosenOne = MiniMaxSearch.MiniMax(root, QueenColor);
+			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+		}
+		if (turn > 12) {			
+			chosenOne =  mctsUpgraded.getMonteMove(root, QueenColor);	
+			chioces = ActionFactory.getLegalMoves(root, QueenColor, true);
+			
 		}else {
 			chioces = ActionFactory.getLegalMoves(root, QueenColor, false);
-			CalcUtilityScore(chioces, root, QueenColor);
-			chosenOne = MonteTreeSearch.SearchMax(root);
+			CalcUtilityScore(chioces, root, QueenColor); 
+			chosenOne = DepthFirstSearch.SearchMax(root);
 		}
-		// Node chosenOne = mctsUpgraded.getMonteMove(root, QueenColor);
-// old stuff
-//		CalcUtilityScore(chioces, root, QueenColor);
+		
+		
+		System.out.println("is null " +chosenOne !=null);
+		//win loose conditions
 		if(chioces.size() == 0)
-			throw new RuntimeException("WE LOOSE");
-		//Node chosenOne =  MonteTreeSearch.SearchMax(root);
-
+			throw new GameLossException("WE LOOSE");	
+		ArrayList<Node> Echioces = ActionFactory.getLegalMoves(root, QueenColor % 2 + 1, true);
+		// if enen has no moves
+		if (Echioces.size() == 0)
+			throw new GameWinException("WIN");
+		
+		
 		System.out.println("children in root: " + root.childCount());
 		chosenOne.updateQueenPoses();
 
@@ -72,20 +89,14 @@ public class MoveSequence {
 		chosenOne.printQPoses();
 
 		chosenOne.print();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 		System.out.println("------END OF STATE--------");
-
+		
+	
 		return chosenOne;
 	}
 
 	/**
-	 * @EFFECTS : is the package sender. that sends packages to the server
+	 * EFFECTS : is the package sender. that sends packages to the server
 	 * 
 	 * @param ui             : is the GameBaseGUI reference to update the client GUI
 	 * @param client         : is the server Package reference we want to ship to
@@ -100,7 +111,7 @@ public class MoveSequence {
 	}
 
 	/**
-	 * @EFFFECTS : from the root applies heuristics and Monte-cCrlo through the Node
+	 * EFFFECTS : from the root applies heuristics and Monte-cCrlo through the Node
 	 * @param chioces : all the children of the root
 	 * @param root    : the original state and Parent
 	 */
@@ -117,68 +128,79 @@ public class MoveSequence {
 
 			}
 			n.updateQueenPoses();
-
-			//n.C = Math.random() * 6;
-
-//			n.setH1(n.H1(color)* 1f); //v1:
-//			n.setH3(n.H3(color, 10)); //v1: 
-//			n.setH2(n.H2(color)* 5f);// v1:
-//			n.setH4(n.H4()*.5f);	//v1:
-//			n.setH5(n.H5(color)*.35f); //v1:
-//			if(curturn >30)
-//				n.setH6(n.H6() * .5f);
-			if(color ==1) {
-			n.setH1(n.H1(color)* C[0]); //v1:
-			n.setH2(n.H2(color)* C[1]);// v1:
-			n.setH3(n.H3(color, C[2])); //v1: 			
-			n.setH4(n.H4()*C[3]);	//v1:
-			n.setH5(n.H5(color)*C[4]); //v1:
-			if(curturn >30)
-				n.setH6(n.H6() * C[5]);
-			}
-			else if(color ==2) {
-				n.setH1(n.H1(color)* C2[0]); //v1:
-				n.setH2(n.H2(color)* C2[1]);// v1:
-				n.setH3(n.H3(color, C2[2])); //v1: 				
-				n.setH4(n.H4()*C2[3]);		//v1:
-				n.setH5(n.H5(color)*C2[4]); //v1:
-				if(curturn >30)
-					n.setH6(n.H6() * C2[5]);
-				
-			}			
+			calcUtil(n,color);
 			//System.out.println("h1: "+n.getH1() +" h2: "+n.getH2()+" h3: "+n.getH3()+ " h4: "+n.getH4()+" h5: "+n.getH5());
 
 		}
 		return root;
 	}
+	 /**
+	  * Calculates a single Nodes utility score for a particular team
+	  * @param n : target node to calculate
+	  * @param color : color of team 
+	  * @return utility score
+	  */
+	 public static double calcUtil(Node n, int color){
+		 if(color ==1) {	
+		 n.setH1(n.H1(color)* Cb[0]); //v1:
+			n.setH2(n.H2(color)* Cb[1]);// v1:
+			n.setH3(n.H3(color, Cb[2])); //v1: 			
+			n.setH4(n.H4()*Cb[3]);	//v1:
+			n.setH5(n.H5(color)*Cb[4]); //v1:
+			n.setUCB(n.getUCB() * Cb[6]);
+			if(curturn >20)
+				n.setH6(n.H6() * Cb[5]);
+			n.setUCB(n.getValueUCB() * Cw[6]);
+			}
+			else if(color ==2) {
+				n.setH1(n.H1(color)* Cw[0]); //v1:
+				n.setH2(n.H2(color)* Cw[1]);// v1:
+				n.setH3(n.H3(color, Cw[2])); //v1: 				
+				n.setH4(n.H4()*Cw[3]);		//v1:
+				n.setH5(n.H5(color)*Cw[4]); //v1:
+			
+				if(curturn >20)
+					n.setH6(n.H6() * Cw[5]);
+				n.setUCB(n.getValueUCB() * Cw[6]);
+			}
+		 return n.GetUtilityVal();
+	 }
 
 	/**
-	 * @EFFECTS : decouples all choices from root that were not the chosen node to
+	 * EFFECTS : decouples all choices from root that were not the chosen node to
 	 *          make a move on. to prevent potential memory leaks.
 	 * @param chosenMove : move picked to send to client
 	 * @param chioces    : all the children of root
 	 * @param root       : the initial game state node
 	 */
-	protected static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
+	public static void decoupleUnusedChildren(Node chosenMove, ArrayList<Node> chioces, Node root) {
 
 		chioces.remove(chosenMove);
 		// only decouples nodes that are not part of the monte carlo tree
 		for (Node n : chioces) {
-			if (n.getvisits() > 1) {
+			if (n.getVisits() > 0) {
 				n.setParent(null);
 				root.RemoveChild(n);
 			}
 		}
 	}
-
-	protected static void decoupleAllChildren(ArrayList<Node> chioces, Node root) {
-		// decouple all children including choice
-		for (Node n : chioces) {
-			root.RemoveChild(n);
-		}
+	/**
+	 * Removes all children from parent node 
+	 * @param root : parent node to children want to be removed
+	 */
+	public static void decoupleAllChildren(Node root) {
+		// decouple all children including choice		
+			root.setChildren(null);
+		
 
 	}
-
+	/**
+	 * Transforms our data that contains a move into a format that server can read
+	 * @param oldQ : old queen position
+	 * @param newQ : the move made
+	 * @param arrw : new arrow position
+	 * @return list a of lists that server can read.
+	 */
 	public static ArrayList<ArrayList<Integer>> setSenderObj(int[] oldQ, int[] newQ, int[] arrw) {
 
 		ArrayList<ArrayList<Integer>> SenderOBJ = new ArrayList<>();

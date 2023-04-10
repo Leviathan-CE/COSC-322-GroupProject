@@ -2,13 +2,19 @@ package Serailization;
 
 import java.util.ArrayList;
 
-import ActionFactory.Node;
+import GameState.Node;
 import Simulation.Nueron;
 
 import java.io.*;
 
 /**
- * MonteTree serailizer write to data folder and read from data folder 
+ * 
+ * Used to hold Heuristic constants which determine how much weight 
+ * is applied to each. allowing for very radically different behaviors, we then save 
+ * and load those constant when they are needed 
+ * 
+ * 
+ * Note:  serailizer write to data folder and read from data folder 
  * Note; static fields will not be serialized. 
  * another note: if you get a bunch of errors the most liekly 
  * cause is you change something in that class and will need to delete
@@ -16,17 +22,22 @@ import java.io.*;
  * serailezed files non static fields you change how the file is read and thus 
  * causes a error when it doesn't expect a new field or a missing field.
  *
+ * 
+ * 
+ *
  */
 public class MonteTreeSerailizer {
 	 private static final String filepath= "src\\main\\java\\Serailization\\Data\\";
+	 //private static final String filepath= "src/main/java/Serailization/Data/";
 	 public static String fileName ="test.txt";
 	 
 	 public String getFileName() {return fileName;}
 	 public void setFileName(String newFile) {fileName = newFile;}
 	 
 	 /**
-	  * save Nueron Hueristic values
-	  * @param node
+	  * save Neuron Heuristic values
+	  * @param node : target nueron with heuristics values to be saved
+	  * @param fileName : the file name of the file wanting to be saved
 	  */
 	 public static void saveNueron(Nueron node, String fileName) {
 		 File data = new File(filepath+fileName);
@@ -53,8 +64,9 @@ public class MonteTreeSerailizer {
 			System.out.println(data.exists() +";"+ data.getAbsolutePath());
 	 }
 	 /**
-	  * load hueristic Constants from nueron
-	  * @return
+	  * load heuristic Constants from neuron
+	  * @param fileName : the file wanting to load from the data folder
+	  * @return a new neuron containing the constants
 	  */
 	 public static Nueron LoadNueron(String fileName){
 			File data = new File(filepath+fileName);
@@ -91,8 +103,9 @@ public class MonteTreeSerailizer {
 		}
 	 
 	 /**
-	  * serailzies and saves to file list of nodes
-	  * @param tree
+	  * Serializes and saves to file list of nodes
+	  * @param tree : list of nodes to save
+	  *  @deprecated not finished
 	  */
 	public static void SaveTree(ArrayList<Node> tree) {
 		File data = new File(filepath+fileName);
@@ -121,7 +134,8 @@ public class MonteTreeSerailizer {
 	
 	/**
 	 * read from serzilized file
-	 * @return arraylist of nodes
+	 * @return list of nodes
+	 * @deprecated not finished
 	 */
 	public static ArrayList<Node> LoadTree(){
 		File data = new File(filepath+fileName);
@@ -157,21 +171,4 @@ public class MonteTreeSerailizer {
 		
 	}
 	
-	public static void main(String[] args) {
-		Integer[] state = new Integer[] {0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-		ArrayList<Integer> x = new ArrayList<>();
-		for( int i : state) {
-			x.add(i);
-		}
-		Node n = new Node(x);
-		Node n2 = new Node(x);
-		ArrayList<Node> tree = new ArrayList<>();
-		tree.add(n);
-		tree.add(n2);
-		System.out.println(tree.size());
-		SaveTree(tree);
-		tree.clear();
-		tree = LoadTree();
-		System.out.println(tree.size());
-	}
 }

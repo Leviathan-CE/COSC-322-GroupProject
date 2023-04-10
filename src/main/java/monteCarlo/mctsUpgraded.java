@@ -2,17 +2,29 @@ package monteCarlo;
 
 import java.util.ArrayList;
 import ActionFactory.ActionFactory;
-import ActionFactory.Node;
-import GameState.Timer;
-
+import GameState.Node;
+import ubc.cosc322.MoveSequence;
+/**
+ * Monte Carlo Algorithm, which simulates entire games until a timer is up
+ * and returns a UCB value as a heuristic
+ */
 public class mctsUpgraded {
+	private static double  timeLimit = 28; //time in seconds
+	
+	/**
+	 * generates a Monte Carlo Move and returns the Node
+	 * @param root : current board state
+	 * @param ourPlayer : our team color
+	 * @return a node conatianing out move
+	 */
 	public static Node getMonteMove(Node root, int ourPlayer) { // ourPlayer : our queen colour (1 or 2)
 		System.out.println("generating monte move ");
 		root.setPlayerNo(ourPlayer);
-		root.incrVisits(); // no need to simulate root
-		double startTime;
-		double timeLimit = 25;
-		startTime = (System.currentTimeMillis() / 1000);	// snatched from ejohn, implement our timer instead?
+		expand(root); 
+
+		double startTime;		
+
+		startTime = (System.currentTimeMillis() / 1000);
 		
 		while ((System.currentTimeMillis() / 1000 - startTime) < timeLimit) {
 			// selection
@@ -20,7 +32,9 @@ public class mctsUpgraded {
 			// expansion
 			if(leaf.getVisits() != 1) { // only expand if you have already simulated the node
 				expand(leaf);
-				leaf = leaf.getChildren().get(0); 
+				if (leaf.getChildren().size() > 0) {
+					leaf = leaf.getChildren().get(0);   // !!!FIX FOR ENDGAME CONDITION "Index 0 out of bounds for length 0"
+				}
 			}
 			// simulation
 			simulate(leaf, ourPlayer);
@@ -28,7 +42,13 @@ public class mctsUpgraded {
 			backprop(leaf);
 		}
 		System.out.println("TIMES UP! ");
-		return findBestChild(root);
+		for (Node c : root.getChildren()) {
+			System.out.printf("UCB: %.6f" + ", wins: " + c.getWins() + ", visits: " + c.getVisits() + "\n", c.getUCB() );
+			}
+		System.out.println("root visits: " + root.getVisits() );
+		Node chosen = findBestChildWUtil(root, ourPlayer);
+		MoveSequence.decoupleAllChildren(root);
+		return chosen;
 	}
 	
 	//	traverses through tree using UCB, returns leaf
@@ -36,26 +56,44 @@ public class mctsUpgraded {
 		Node node = root;
 		while(node.getChildren().size() > 0) {
 			node = findBestChild(node);
+			if (node == null) {System.out.println("node is null");}
 		}
 		return node;
-	}
-	
+	}	
+
 	//	returns parent's best child based on UCB
 	private static Node findBestChild(Node parent) {
 		ArrayList<Node> children = parent.getChildren();
-		double largestUCB = 0;
-		double tempUCB;
-		Node bestChild = null;
-		for (int c = 0; c < children.size(); c++) {	 //iterate through children and select child with highest UCB
-			tempUCB = children.get(c).getUCB();
-			if(tempUCB > largestUCB) {
-				largestUCB = tempUCB;
-				bestChild = children.get(c);
-			}
-		}
-		return bestChild;
-	}
 	
+		Node chosen = null;
+		for( Node n : children) {
+			if(chosen == null)
+				chosen = n;
+			if(chosen.getUCB() < n.getUCB())
+				chosen = n;
+		}
+		return chosen;
+	}
+	/**
+	 * Find best child using the Heuristics+UBC, using a linear search
+	 * @param parent
+	 * @param color
+	 * @return best node
+	 */
+	private static Node findBestChildWUtil(Node parent, int color) {
+		ArrayList<Node> children = parent.getChildren();
+		MoveSequence.CalcUtilityScore(children, parent, color);
+		Node chosen = null;
+		for( Node n : children) {
+			if(chosen == null)
+				chosen = n;
+			if(chosen.GetUtilityVal() < n.GetUtilityVal())
+				chosen = n;
+		}
+		
+		//MoveSequence.decoupleUnusedChildren(bestChild, children,parent);
+		return chosen;
+	}	
 	//	assigns all possible gamestates to a node as children
 	private static void expand(Node parent) {
 		int team = parent.getPlayerNo();
@@ -64,7 +102,7 @@ public class mctsUpgraded {
 			c.setParent(parent);
 			c.setPlayerNo(3 - team); // set children nodes as opponent team
 		}
-		parent.setChildren(children); // ADD : expand based on playerNo and assign opponentNo to children
+		parent.setChildren(children); 
 	}
 	
 	// simulates random game from input node, look into possibly fixing up ?
@@ -95,6 +133,13 @@ public class mctsUpgraded {
 			node.incrVisits();
 			node.incrWins(simResult);
 		}
+	}
+	private static ArrayList<Node> getchildrenUCB(Node parent) {
+		ArrayList<Node> children = parent.getChildren();
+		for (Node c : children) {	 //iterate through children and select child with highest UCB
+			c.setUCB();
+		}
+		return children;
 	}
 	
 }
